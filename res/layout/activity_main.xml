@@ -8,10 +8,14 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="主界面"/>
-    <Button android:layout_width="fill_parent"
+    <Button
+            android:id="@+id/mama"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="妈妈"/>
-    <Button android:layout_width="fill_parent"
+    <Button
+            android:id="@+id/baby"
+            android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:text="baby"/>
 </LinearLayout>

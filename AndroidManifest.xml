@@ -16,6 +16,8 @@
         <activity android:name=".activity.MainActivity"/>
         <activity android:name=".activity.MamaActivity"/>
         <activity android:name=".activity.BabyActivity"/>
+        <activity android:name=".activity.MarketActivity"/>
+        <activity android:name=".activity.PetsActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>

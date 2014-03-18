@@ -3,7 +3,49 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-        >
+              android:background="#FFFFFF">
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+        <Button
+                android:id="@+id/petMarket"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:text="宠物商店"/>
+        <Button
+                android:id="@+id/petDog"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:text="宠物狗"/>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_weight="1">
+        <Button
+                android:id="@+id/petCat"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:text="宠物猫"/>
+        <Button
+                android:id="@+id/petRabbit"
+                android:layout_width="0dp"
+                android:layout_height="fill_parent"
+                android:layout_weight="1"
+                android:layout_margin="10dp"
+                android:text="宠物兔"/>
+
+    </LinearLayout>
 
 </LinearLayout>
 

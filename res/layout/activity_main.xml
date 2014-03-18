@@ -4,19 +4,40 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
         >
-    <TextView
+    <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:text="主界面"/>
-    <Button
-            android:id="@+id/mama"
+            android:orientation="vertical"
+            android:layout_weight="5">
+
+
+        <ImageView
             android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:background="@drawable/ic_launcher"
+            android:layout_gravity="center_horizontal"
+            />
+    </LinearLayout>
+
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_weight="1"
+            android:layout_marginTop="40dp">
+        <Button
+            android:id="@+id/mama"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
             android:text="妈妈"/>
-    <Button
+
+        <Button
             android:id="@+id/baby"
-            android:layout_width="fill_parent"
+            android:layout_width="100dp"
             android:layout_height="wrap_content"
-            android:text="baby"/>
+            android:text="宝宝"
+            android:layout_marginLeft="30dp"/>
+    </LinearLayout>
 </LinearLayout>
 

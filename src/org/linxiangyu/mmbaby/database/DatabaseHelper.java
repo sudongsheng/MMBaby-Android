@@ -1,13 +1,12 @@
 package org.linxiangyu.mmbaby.database;
 
 import android.content.Context;
-import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 /**
- * Created by helloworld on 14-3-18.
+ * Created by sudongsheng on 14-3-18.
  */
 public class DatabaseHelper extends SQLiteOpenHelper{
 
@@ -26,12 +25,12 @@ public class DatabaseHelper extends SQLiteOpenHelper{
 
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
-        Log.i("db", "create a database");
-        sqLiteDatabase.execSQL("create table task(title varchar(50),content varchar(500),money int,completeOrNot boolean)");
+        Log.i("TAB", "create a database");
+        sqLiteDatabase.execSQL("create table record(title TEXT,content TEXT,time TEXT,field TEXT,photo BLOB,money int,integral int)");
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase sqLiteDatabase, int i, int i2) {
-        Log.i("db", "upgrade a database"+"olderVersion:"+i+" newVersion:"+i2);
+        Log.i("TAB", "upgrade a database"+"olderVersion:"+i+"  newVersion:"+i2);
     }
 }

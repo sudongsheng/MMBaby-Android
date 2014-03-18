@@ -1,16 +1,16 @@
 package org.linxiangyu.mmbaby.activity;
 
 import android.app.Activity;
-import android.content.ContentValues;
 import android.content.Context;
+import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
+import android.view.ViewGroup;
+import android.widget.*;
 import org.linxiangyu.mmbaby.R;
 import org.linxiangyu.mmbaby.database.DatabaseHelper;
 
@@ -19,9 +19,11 @@ import org.linxiangyu.mmbaby.database.DatabaseHelper;
  */
 public class MamaActivity extends Activity {
 
-    private EditText title;
-    private EditText content;
-    private Button submit;
+    private Button newTask;
+    private ListView historyItem;
+
+    private SQLiteDatabase sqLiteDatabase;
+    private Cursor cursor;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,21 +31,16 @@ public class MamaActivity extends Activity {
         setContentView(R.layout.activity_mama);
 
         DatabaseHelper dbHelper = new DatabaseHelper(MamaActivity.this, "MMBaby");
-        final SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+        sqLiteDatabase = dbHelper.getReadableDatabase();
+        cursor = sqLiteDatabase.rawQuery("SELECT * FROM record", null);
 
         findViewByIds();
-        submit.setOnClickListener(new View.OnClickListener() {
+        historyItem.setAdapter(new MyAdapter(this,cursor));
+        newTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (title.getText().equals("")) {
-                    Toast.makeText(MamaActivity.this, "标题不能为空", Toast.LENGTH_LONG).show();
-                } else {
-                    ContentValues cv = new ContentValues();
-                    cv.put("title", title.getText().toString());
-                    cv.put("content", content.getText().toString());
-                    sqLiteDatabase.insert("task", null, cv);
-                    iterator(sqLiteDatabase);
-                }
+                Intent intent=new Intent(MamaActivity.this,NewRecordActivity.class);
+                startActivity(intent);
             }
         });
 
@@ -51,18 +48,51 @@ public class MamaActivity extends Activity {
     }
 
     private void findViewByIds() {
-        title = (EditText) findViewById(R.id.title);
-        content = (EditText) findViewById(R.id.content);
-        submit = (Button) findViewById(R.id.submit);
+        newTask = (Button) findViewById(R.id.new_task);
+        historyItem=(ListView)findViewById(R.id.history_item);
     }
-    private void iterator(SQLiteDatabase sqLiteDatabase){
-        Cursor c = sqLiteDatabase.rawQuery("SELECT * FROM task", null);
-        String s = new String();
-        while (c.moveToNext()) {
-            for (int i = 0; i < c.getCount(); i++)
-                s = s + c.getString(i) + "   ";
-            s=s+"\n";
+
+    private class MyAdapter extends BaseAdapter{
+        private LayoutInflater inflater;
+        private Cursor c;
+
+        public MyAdapter(Context context,Cursor c) {
+            this.inflater = LayoutInflater.from(context);
+            this.c=c;
         }
-        Log.i("task", s);
+
+        @Override
+        public int getCount() {
+            return c.getCount();
+        }
+        @Override
+        public View getView(final int i, View view, ViewGroup viewGroup) {
+            view=inflater.inflate(R.layout.view_history_item,null);
+            TextView title=(TextView)view.findViewById(R.id.history_item_title);
+            TextView time=(TextView)view.findViewById(R.id.history_item_time);
+            c.moveToPosition(i);
+            time.setText(c.getString(c.getColumnIndex("time")));
+            Log.i("TAG",c.getString(c.getColumnIndex("time")));
+            title.setText(c.getString(c.getColumnIndex("title")));
+            view.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    Intent intent=new Intent(MamaActivity.this,DetailRecordActivity.class);
+                    intent.putExtra("position",i);
+                    startActivity(intent);
+                }
+            });
+            return view;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return 0;
+        }
     }
 }

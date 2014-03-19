@@ -1,49 +1,53 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
-    <TextView android:id="@+id/detail_time"
-                android:layout_width="wrap_content"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+            android:orientation="vertical"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent">
+    <LinearLayout android:layout_width="fill_parent" android:layout_height="wrap_content"
+                  android:orientation="vertical">
+        <TextView android:id="@+id/detail_time"
+                  android:layout_width="wrap_content"
+                  android:layout_height="wrap_content"/>
+        <RadioGroup
+                android:id="@+id/detail_field"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+            <RadioButton
+                    android:id="@+id/detail_morality"
+                    android:checked="true"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="品德"/>
+            <RadioButton
+                    android:id="@+id/detail_intelligence"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="智力"/>
+            <RadioButton
+                    android:id="@+id/detail_physical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="体育"/>
+        </RadioGroup>
+        <EditText
+                android:id="@+id/detail_title"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"/>
-    <RadioGroup
-            android:id="@+id/detail_field"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-        <RadioButton
-                android:id="@+id/detail_morality"
-                android:checked="true"
+        <EditText android:id="@+id/detail_content"
+                  android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"/>
+        <ImageView android:id="@+id/detail_mBaby"
+                   android:layout_width="fill_parent"
+                   android:layout_height="400dp"
+                   android:scaleType="fitCenter"/>
+        <Button android:id="@+id/detail_back"
                 android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="品德"/>
-        <RadioButton
-                android:id="@+id/detail_intelligence"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="智力"/>
-        <RadioButton
-                android:id="@+id/detail_physical"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="体育"/>
-    </RadioGroup>
-    <EditText
-            android:id="@+id/detail_title"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"/>
-    <EditText android:id="@+id/detail_content"
-              android:layout_width="fill_parent"
-              android:layout_height="wrap_content"/>
-    <ImageView android:id="@+id/detail_mBaby"
-               android:layout_width="fill_parent"
-               android:layout_height="wrap_content"/>
-    <Button android:id="@+id/detail_back"
-            android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:text="确定"/>
-</LinearLayout>
+                android:text="确定"/>
+    </LinearLayout>
+</ScrollView>
 

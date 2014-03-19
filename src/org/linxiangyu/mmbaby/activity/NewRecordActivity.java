@@ -1,8 +1,11 @@
 package org.linxiangyu.mmbaby.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
@@ -24,7 +27,8 @@ import java.util.Calendar;
  */
 public class NewRecordActivity extends Activity {
 
-    private DatePicker datePicker;
+    private TextView date;
+
     private RadioGroup field;
     private RadioButton morality;
     private RadioButton intelligence;
@@ -34,6 +38,11 @@ public class NewRecordActivity extends Activity {
     private Button photo;
     private ImageView mBaby;
     private Button submit;
+    private EditText moneyEdit;
+    private EditText integralEdit;
+
+    private int money=0;
+    private int integral=0;
 
     private String time;
     private String mField;
@@ -54,14 +63,21 @@ public class NewRecordActivity extends Activity {
     private void setListeners() {
         //日期选择
         Calendar calendar = Calendar.getInstance();
-        int year = calendar.get(Calendar.YEAR);
-        int monthOfYear = calendar.get(Calendar.MONTH);
-        int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
+        final int year = calendar.get(Calendar.YEAR);
+        final int monthOfYear = calendar.get(Calendar.MONTH);
+        final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
         time = year + "年" + (monthOfYear + 1) + "月" + dayOfMonth + "日";
-        datePicker.init(year, monthOfYear, dayOfMonth, new DatePicker.OnDateChangedListener() {
-            public void onDateChanged(DatePicker view, int year,
-                                      int monthOfYear, int dayOfMonth) {
-                time = year + "年" + (monthOfYear + 1) + "月" + dayOfMonth + "日";
+        date.setText(time);
+        final DatePickerDialog.OnDateSetListener dateSet = new DatePickerDialog.OnDateSetListener() {
+            public void onDateSet (DatePicker view, int y, int m, int d) {
+                time = y + "年" + (m + 1) + "月" + d + "日";
+                date.setText(time);
+            }
+        };
+        date.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                new DatePickerDialog(NewRecordActivity.this,dateSet,year,monthOfYear,dayOfMonth).show();
             }
         });
         field.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -137,6 +153,8 @@ public class NewRecordActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                money=Integer.parseInt(moneyEdit.getText().toString()==""?"0":moneyEdit.getText().toString());
+                integral=Integer.parseInt(integralEdit.getText().toString()==""?"0":integralEdit.getText().toString());
                 if (title.getText().equals("")) {
                     Toast.makeText(NewRecordActivity.this, "标题不能为空", Toast.LENGTH_LONG).show();
                 } else {
@@ -146,6 +164,8 @@ public class NewRecordActivity extends Activity {
                     cv.put("title", title.getText().toString());
                     cv.put("content", content.getText().toString());
                     cv.put("photo",baby);
+                    cv.put("money",money);
+                    cv.put("integral",integral);
                     DatabaseHelper dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
                     sqLiteDatabase.insert("record", null, cv);
@@ -183,13 +203,15 @@ public class NewRecordActivity extends Activity {
         startActivityForResult(intent, REQUEST_CODE_CUT_IMAGE);
     }
     private void findViewByIds() {
-        datePicker = (DatePicker) findViewById(R.id.datePicker);
+        date=(TextView)findViewById(R.id.time);
         field = (RadioGroup) findViewById(R.id.field);
         morality = (RadioButton) findViewById(R.id.morality);
         intelligence = (RadioButton) findViewById(R.id.intelligence);
         physical = (RadioButton) findViewById(R.id.physical);
         title = (EditText) findViewById(R.id.title);
         content = (EditText) findViewById(R.id.content);
+        moneyEdit=(EditText)findViewById(R.id.money);
+        integralEdit=(EditText)findViewById(R.id.integral);
         photo = (Button) findViewById(R.id.photo);
         mBaby = (ImageView) findViewById(R.id.mBaby);
         submit = (Button) findViewById(R.id.submit);

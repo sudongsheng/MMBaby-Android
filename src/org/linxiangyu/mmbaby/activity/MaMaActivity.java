@@ -15,7 +15,7 @@ import org.linxiangyu.mmbaby.R;
 import org.linxiangyu.mmbaby.database.DatabaseHelper;
 
 /**
- * Created by helloworld on 14-3-17.
+ * Created by sudongsheng on 14-3-17.
  */
 public class MamaActivity extends Activity {
 
@@ -35,7 +35,15 @@ public class MamaActivity extends Activity {
         cursor = sqLiteDatabase.rawQuery("SELECT * FROM record", null);
 
         findViewByIds();
-        historyItem.setAdapter(new MyAdapter(this,cursor));
+        historyItem.setAdapter(new MyAdapter(this, cursor));
+        historyItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                Intent intent=new Intent(MamaActivity.this,DetailRecordActivity.class);
+                intent.putExtra("position",i);
+                startActivity(intent);
+            }
+        });
         newTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -72,16 +80,7 @@ public class MamaActivity extends Activity {
             TextView time=(TextView)view.findViewById(R.id.history_item_time);
             c.moveToPosition(i);
             time.setText(c.getString(c.getColumnIndex("time")));
-            Log.i("TAG",c.getString(c.getColumnIndex("time")));
             title.setText(c.getString(c.getColumnIndex("title")));
-            view.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    Intent intent=new Intent(MamaActivity.this,DetailRecordActivity.class);
-                    intent.putExtra("position",i);
-                    startActivity(intent);
-                }
-            });
             return view;
         }
 

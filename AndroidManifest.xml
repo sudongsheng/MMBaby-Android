@@ -18,6 +18,8 @@
         <activity android:name=".activity.BabyActivity"/>
         <activity android:name=".activity.NewRecordActivity"/>
         <activity android:name=".activity.DetailRecordActivity"/>
+        <activity android:name=".activity.MarketActivity"/>
+        <activity android:name=".activity.PetsActivity"/>
     </application>
 
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE"></uses-permission>

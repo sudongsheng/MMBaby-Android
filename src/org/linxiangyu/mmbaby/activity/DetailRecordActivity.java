@@ -13,7 +13,7 @@ import org.linxiangyu.mmbaby.R;
 import org.linxiangyu.mmbaby.database.DatabaseHelper;
 
 /**
- * Created by helloworld on 14-3-18.
+ * Created by sudongsheng on 14-3-18.
  */
 public class DetailRecordActivity extends Activity {
 
@@ -39,25 +39,30 @@ public class DetailRecordActivity extends Activity {
         findViewByIds();
 
         date.setText(cursor.getString(cursor.getColumnIndex("time")));
-        if(cursor.getString(cursor.getColumnIndex("field"))=="morality")
+        if (cursor.getString(cursor.getColumnIndex("field")) == "morality")
             field.check(R.id.detail_morality);
-        else if(cursor.getString(cursor.getColumnIndex("field"))=="intelligence")
+        else if (cursor.getString(cursor.getColumnIndex("field")) == "intelligence")
             field.check(R.id.detail_intelligence);
-        if(cursor.getString(cursor.getColumnIndex("field"))=="physical")
+        if (cursor.getString(cursor.getColumnIndex("field")) == "physical")
             field.check(R.id.detail_physical);
         title.setText(cursor.getString(cursor.getColumnIndex("title")));
         content.setText(cursor.getString(cursor.getColumnIndex("content")));
-        byte[] in=cursor.getBlob(cursor.getColumnIndex("photo"));
-        Bitmap bitmap= BitmapFactory.decodeByteArray(in, 0, in.length);
-        mBaby.setImageBitmap(bitmap);
+        try {
+            byte[] in = cursor.getBlob(cursor.getColumnIndex("photo"));
+            Bitmap bitmap = BitmapFactory.decodeByteArray(in, 0, in.length);
+            mBaby.setImageBitmap(bitmap);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-               Intent intent=new Intent(DetailRecordActivity.this,MamaActivity.class);
+                Intent intent = new Intent(DetailRecordActivity.this, MamaActivity.class);
                 startActivity(intent);
             }
         });
     }
+
     private void findViewByIds() {
         date = (TextView) findViewById(R.id.detail_time);
         field = (RadioGroup) findViewById(R.id.detail_field);

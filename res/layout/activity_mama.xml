@@ -3,6 +3,47 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent">
+    <RadioGroup
+            android:id="@+id/field"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/white"
+            android:orientation="horizontal">
+        <RadioButton
+                android:id="@+id/morality"
+                android:checked="true"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/radio_button"
+                android:textColor="@drawable/textcolor_radiobutton"
+                android:text="品德"/>
+        <RadioButton
+                android:id="@+id/intelligence"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@drawable/radio_button"
+                android:textColor="@drawable/textcolor_radiobutton"
+                android:text="智力"/>
+        <RadioButton
+                android:id="@+id/physical"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:button="@null"
+                android:gravity="center"
+                android:layout_gravity="center"
+                android:background="@color/white"
+                android:textColor="@drawable/textcolor_radiobutton"
+                android:text="体育"/>
+    </RadioGroup>
     <Button android:id="@+id/new_task"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

@@ -8,7 +8,7 @@ import android.widget.Button;
 import org.linxiangyu.mmbaby.R;
 
 /**
- * Created by helloworld on 14-3-17.
+ * Created by sudongsheng on 14-3-17.
  */
 public class MainActivity extends Activity{
     private Button mama;

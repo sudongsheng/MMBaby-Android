@@ -2,7 +2,8 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent">
+              android:layout_height="fill_parent"
+              android:background="@drawable/background">
     <RadioGroup
             android:id="@+id/field"
             android:layout_width="fill_parent"
@@ -47,6 +48,7 @@
     <Button android:id="@+id/new_task"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
+            android:background="@drawable/button"
             android:text="新建任务"/>
     <ListView android:id="@+id/history_item"
               android:layout_width="fill_parent"

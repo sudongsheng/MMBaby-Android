@@ -26,7 +26,7 @@
                     android:layout_height="wrap_content"
                     android:text="金币：1000"
                     android:textSize="20sp"
-                    android:layout_marginLeft="80dp"/>
+                    android:layout_marginLeft="40dp"/>
               </LinearLayout>
     <ProgressBar android:id="@+id/progress_horizontal"
                  style="?android:attr/progressBarStyleHorizontal"

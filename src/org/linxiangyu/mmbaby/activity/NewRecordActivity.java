@@ -152,7 +152,7 @@ public class NewRecordActivity extends Activity {
         submit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (title.getText().equals("")) {
+                if (title.getText().toString().equals("")) {
                     Toast.makeText(NewRecordActivity.this, "标题不能为空", Toast.LENGTH_LONG).show();
                 } else {
                     ContentValues cv = new ContentValues();
@@ -171,10 +171,10 @@ public class NewRecordActivity extends Activity {
                         Toast.makeText(NewRecordActivity.this, "新建记录成功", Toast.LENGTH_LONG).show();
                     } else {
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
-                        Toast.makeText(NewRecordActivity.this, "修改记录成功", Toast.LENGTH_LONG).show();
                     }
-                    Intent intent = new Intent(NewRecordActivity.this, MamaActivity.class);
+                    Intent intent=new Intent(NewRecordActivity.this,MamaActivity.class);
                     startActivity(intent);
+                    NewRecordActivity.this.finish();
                 }
             }
         });
@@ -192,7 +192,7 @@ public class NewRecordActivity extends Activity {
             record.photo = os.toByteArray();
         } else if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && null != data) {
             startPhotoZoom(data.getData());
-        } else if (requestCode == REQUEST_CODE_CUT_IMAGE && resultCode == RESULT_OK && null != data) {
+        } else if (requestCode == REQUEST_CODE_CUT_IMAGE && null != data) {
             Bundle bundle = data.getExtras();
             if (bundle != null) {
                 Bitmap photo = bundle.getParcelable("data");

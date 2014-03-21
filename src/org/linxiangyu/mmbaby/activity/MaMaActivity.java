@@ -135,6 +135,12 @@ public class MamaActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed() {
+        Intent intent=new Intent(MamaActivity.this,MainActivity.class);
+        startActivity(intent);
+    }
+
+    @Override
     protected void finalize() throws Throwable {
         cursor.close();
         sqLiteDatabase.close();

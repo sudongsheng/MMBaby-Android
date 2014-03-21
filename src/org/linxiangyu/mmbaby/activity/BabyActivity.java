@@ -36,15 +36,16 @@ public class BabyActivity extends Activity {
                 startActivity(intent);
             }
         });
-        petDog.setOnClickListener(new PetClickListener(AppConstant.PET_DOG));
-        petCat.setOnClickListener(new PetClickListener(AppConstant.PET_CAT));
-        petRabbit.setOnClickListener(new PetClickListener(AppConstant.PET_RABBIT));
+        petDog.setOnClickListener(new PetClickListener("旺财",AppConstant.PET_DOG));
+        petCat.setOnClickListener(new PetClickListener("猫咪",AppConstant.PET_CAT));
+        petRabbit.setOnClickListener(new PetClickListener("兰花",AppConstant.PET_RABBIT));
     }
     public class PetClickListener implements View.OnClickListener {
         private Intent intent;
-        public PetClickListener(int i){
+        public PetClickListener(String petsName, int level){
             intent =new Intent(BabyActivity.this,PetsActivity.class);
-            intent.putExtra("PET",i);
+            intent.putExtra("level",level);
+            intent.putExtra("petsName",petsName);
         }
         @Override
         public void onClick(View view) {

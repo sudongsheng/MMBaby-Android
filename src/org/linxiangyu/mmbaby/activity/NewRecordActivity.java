@@ -69,7 +69,6 @@ public class NewRecordActivity extends Activity {
             dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
             sqLiteDatabase = dbHelper.getReadableDatabase();
             cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
-            Log.i("TAG", "position:" + position);
             cursor.moveToPosition(position);
             record.time = cursor.getString(cursor.getColumnIndex("time"));
             record.title = cursor.getString(cursor.getColumnIndex("title"));
@@ -117,8 +116,8 @@ public class NewRecordActivity extends Activity {
                 dialog.setContentView(R.layout.view_pick_dialog);
                 dialog.setCancelable(true);
                 dialog.setCanceledOnTouchOutside(true);
-                Button fromCamera = (Button) dialog.findViewById(R.id.fromCamera);
-                Button fromAlbum = (Button) dialog.findViewById(R.id.fromAlbum);
+                TextView fromCamera = (TextView) dialog.findViewById(R.id.fromCamera);
+                TextView fromAlbum = (TextView) dialog.findViewById(R.id.fromAlbum);
                 fromCamera.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View view) {

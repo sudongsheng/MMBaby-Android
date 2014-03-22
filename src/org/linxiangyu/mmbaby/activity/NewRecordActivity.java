@@ -5,6 +5,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
@@ -12,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
+import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.View;
 import android.widget.*;
@@ -20,6 +22,7 @@ import org.linxiangyu.mmbaby.database.DatabaseHelper;
 import org.linxiangyu.mmbaby.database.Record;
 
 import java.io.ByteArrayOutputStream;
+import java.io.FileNotFoundException;
 import java.util.Calendar;
 
 /**
@@ -42,6 +45,12 @@ public class NewRecordActivity extends Activity {
     private Cursor cursor;
     private int position;
 
+    private SharedPreferences preferences;
+    private int money;
+    private int integral;
+    private int money_old;
+    private int integral_old;
+
     private final int REQUEST_CODE_CAPTURE_CAMERA = 1;
     private final int REQUEST_CODE_PICK_IMAGE = 2;
     private final int REQUEST_CODE_CUT_IMAGE = 3;
@@ -63,6 +72,10 @@ public class NewRecordActivity extends Activity {
 
         setListeners();
 
+        preferences= PreferenceManager.getDefaultSharedPreferences(NewRecordActivity.this);
+        money=preferences.getInt("money",0);
+        integral=preferences.getInt("integral",0);
+
         //判断新建记录或者读取记录并把读取的数据显示出来
         position = getIntent().getIntExtra("position", -1);
         if (position != -1) {
@@ -74,6 +87,8 @@ public class NewRecordActivity extends Activity {
             record.title = cursor.getString(cursor.getColumnIndex("title"));
             record.content = cursor.getString(cursor.getColumnIndex("content"));
             record.rating = cursor.getInt(cursor.getColumnIndex("rating"));
+            money_old=record.rating*100;
+            integral_old=record.rating*100;
             record.primary_key = cursor.getInt(cursor.getColumnIndex("primary_key"));
             date.setText(record.time);
             title.setText(record.title);
@@ -166,13 +181,25 @@ public class NewRecordActivity extends Activity {
                     }
                     DatabaseHelper dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
+
+                    SharedPreferences.Editor editor = preferences.edit();
                     if (position == -1) {
                         sqLiteDatabase.insert("record", null, cv);
                         Toast.makeText(NewRecordActivity.this, "新建记录成功", Toast.LENGTH_LONG).show();
+                        money=money+record.rating*100;
+                        integral=integral+record.rating*100;
+                        editor.putInt("money",money);
+                        editor.putInt("intel",integral);
                     } else {
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
+                        money=money+record.rating*100-money_old;
+                        integral=integral+record.rating*100-integral_old;
+                        editor.putInt("money",money);
+                        editor.putInt("intel",integral);
                     }
-                    Intent intent=new Intent(NewRecordActivity.this,MamaActivity.class);
+                    editor.commit();
+
+                    Intent intent = new Intent(NewRecordActivity.this, MamaActivity.class);
                     startActivity(intent);
                     NewRecordActivity.this.finish();
                 }
@@ -182,7 +209,6 @@ public class NewRecordActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-
         if (requestCode == REQUEST_CODE_CAPTURE_CAMERA && resultCode == RESULT_OK && null != data) {
             Bundle bundle = data.getExtras();
             Bitmap photo = bundle.getParcelable("data");
@@ -193,14 +219,23 @@ public class NewRecordActivity extends Activity {
         } else if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && null != data) {
             startPhotoZoom(data.getData());
         } else if (requestCode == REQUEST_CODE_CUT_IMAGE && null != data) {
-            Bundle bundle = data.getExtras();
-            if (bundle != null) {
-                Bitmap photo = bundle.getParcelable("data");
-                mBaby.setImageBitmap(photo);
-                ByteArrayOutputStream os = new ByteArrayOutputStream();
-                photo.compress(Bitmap.CompressFormat.PNG, 100, os);
-                record.photo = os.toByteArray();
+            Uri imgUri = data.getData();
+            Bitmap bitmap = null;
+            if (imgUri != null) {
+                try {
+                    bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(imgUri));
+                } catch (FileNotFoundException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                Bundle bundle = data.getExtras();
+                if (bundle != null)
+                    bitmap = bundle.getParcelable("data");
             }
+            mBaby.setImageBitmap(bitmap);
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
+            record.photo = os.toByteArray();
         }
     }
 
@@ -214,6 +249,7 @@ public class NewRecordActivity extends Activity {
 //        }
 //        Log.i("task", s);
 //    }
+
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
@@ -225,7 +261,9 @@ public class NewRecordActivity extends Activity {
         // outputX,outputY 是剪裁图片的宽高
         intent.putExtra("outputX", 400);
         intent.putExtra("outputY", 600);
-        intent.putExtra("return-data", true);
+        intent.putExtra("scale", true);
+        intent.putExtra("noFaceDetection", true);
+        intent.putExtra("return-data", false);
         startActivityForResult(intent, REQUEST_CODE_CUT_IMAGE);
     }
 

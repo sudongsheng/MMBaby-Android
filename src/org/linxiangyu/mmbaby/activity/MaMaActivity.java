@@ -18,7 +18,7 @@ import org.linxiangyu.mmbaby.database.DatabaseHelper;
 /**
  * Created by sudongsheng on 14-3-17.
  */
-public class MaMaActivity extends Activity {
+public class MamaActivity extends Activity {
 
     private Button newTask;
     private ListView historyItem;

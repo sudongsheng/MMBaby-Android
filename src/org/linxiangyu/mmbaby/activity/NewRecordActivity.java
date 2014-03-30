@@ -74,7 +74,7 @@ public class NewRecordActivity extends Activity {
 
         preferences= PreferenceManager.getDefaultSharedPreferences(NewRecordActivity.this);
         money=preferences.getInt("money",0);
-        integral=preferences.getInt("integral",0);
+        integral=preferences.getInt(record.field+"integral",0);
 
         //判断新建记录或者读取记录并把读取的数据显示出来
         position = getIntent().getIntExtra("position", -1);
@@ -189,13 +189,13 @@ public class NewRecordActivity extends Activity {
                         money=money+record.rating*100;
                         integral=integral+record.rating*100;
                         editor.putInt("money",money);
-                        editor.putInt("intel",integral);
+                        editor.putInt(record.field+"integral",integral);
                     } else {
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
                         money=money+record.rating*100-money_old;
                         integral=integral+record.rating*100-integral_old;
                         editor.putInt("money",money);
-                        editor.putInt("intel",integral);
+                        editor.putInt(record.field+"integral",integral);
                     }
                     editor.commit();
 

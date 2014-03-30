@@ -13,7 +13,6 @@ import org.linxiangyu.mmbaby.utils.AppConstant;
  */
 public class BabyActivity extends Activity {
 
-    private Button petMarket;
     private Button petDog;
     private Button petCat;
     private Button petRabbit;
@@ -24,18 +23,10 @@ public class BabyActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby);
-        petMarket = (Button)findViewById(R.id.petMarket);
         petDog = (Button)findViewById(R.id.petDog);
         petCat = (Button)findViewById(R.id.petCat);
         petRabbit = (Button)findViewById(R.id.petRabbit);
 
-        petMarket.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent intent = new Intent(BabyActivity.this,MarketActivity.class);
-                startActivity(intent);
-            }
-        });
         petDog.setOnClickListener(new PetClickListener("旺财",AppConstant.PET_DOG));
         petCat.setOnClickListener(new PetClickListener("猫咪",AppConstant.PET_CAT));
         petRabbit.setOnClickListener(new PetClickListener("兰花",AppConstant.PET_RABBIT));

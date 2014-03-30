@@ -10,18 +10,9 @@
             android:orientation="horizontal"
             android:layout_weight="1">
         <Button
-                android:id="@+id/petMarket"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:scaleType="fitCenter"
-                android:text="宠物商店"/>
-        <Button
                 android:id="@+id/petDog"
-                android:layout_width="0dp"
+                android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:layout_weight="1"
                 android:layout_margin="10dp"
                 android:text="宠物狗"/>
 

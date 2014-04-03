@@ -4,7 +4,7 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="#ffffff">
+              android:background="#FFFFFF">
               <LinearLayout android:layout_width="fill_parent"
                             android:layout_height="wrap_content"
                             android:orientation="horizontal"
@@ -37,125 +37,17 @@
                  android:max="100"
                  android:progress="50"
                  android:layout_marginTop="10dp"/>
-    <TextView android:layout_width="fill_parent"
+    <ImageView android:layout_width="fill_parent"
               android:layout_height="320dp"
               android:layout_marginTop="10dp"
               android:background="@drawable/ic_launcher"/>
 
-    <HorizontalScrollView android:layout_width="match_parent"
-                          android:layout_height="wrap_content"
-                          android:layout_marginTop="10dp">
-        <LinearLayout android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:orientation="horizontal">
-            <RelativeLayout android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                <ImageView android:layout_width="80dp"
-                           android:layout_height="140dp"
-                           android:id="@+id/petImage"
-                           android:background="@drawable/ic_launcher"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/goodsName"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_marginTop="10dp"
-                          android:text="狗粮"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/ownedNumber"
-                          android:layout_marginTop="10dp"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_below="@id/goodsName"
-                          android:text="已拥有:0"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/up"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_below="@id/ownedNumber"
-                          android:text="+200经验"
-                          android:layout_marginTop="10dp"/>
-                <Button android:layout_width="wrap_content"
-                        android:id="@+id/feedButton"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/up"
-                        android:layout_toRightOf="@id/petImage"
-                        android:layout_marginTop="10dp"
-                        android:text="喂养"/>
-            </RelativeLayout>
+    <org.linxiangyu.mmbaby.utils.HorizontialListView
+            android:id="@+id/horizontialListView"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"/>
 
-            <RelativeLayout android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                <ImageView android:layout_width="80dp"
-                           android:layout_height="140dp"
-                           android:id="@+id/petImage"
-                           android:background="@drawable/ic_launcher"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/goodsName"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_marginTop="10dp"
-                          android:text="狗粮"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/state"
-                          android:layout_marginTop="10dp"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_below="@id/goodsName"
-                          android:text="已拥有:1"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/up"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_below="@id/state"
-                          android:text="+200经验"
-                          android:layout_marginTop="10dp"/>
-                <Button android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/up"
-                        android:layout_toRightOf="@id/petImage"
-                        android:layout_marginTop="10dp"
-                        android:text="喂养"/>
-            </RelativeLayout>
-
-            <RelativeLayout android:layout_width="wrap_content"
-                            android:layout_height="wrap_content">
-                <ImageView android:layout_width="80dp"
-                           android:layout_height="140dp"
-                           android:id="@+id/petImage"
-                           android:background="@drawable/ic_launcher"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/goodsName"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_marginTop="10dp"
-                          android:text="狗粮"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/state"
-                          android:layout_marginTop="10dp"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_below="@id/goodsName"
-                          android:text="已拥有:1"/>
-                <TextView android:layout_width="wrap_content"
-                          android:layout_height="wrap_content"
-                          android:id="@+id/up"
-                          android:layout_toRightOf="@id/petImage"
-                          android:layout_below="@id/state"
-                          android:text="+200经验"
-                          android:layout_marginTop="10dp"/>
-                <Button android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_below="@id/up"
-                        android:layout_toRightOf="@id/petImage"
-                        android:layout_marginTop="10dp"
-                        android:text="喂养"/>
-            </RelativeLayout>
-
-
-
-        </LinearLayout>
-
-    </HorizontalScrollView>
 
 
 </LinearLayout>

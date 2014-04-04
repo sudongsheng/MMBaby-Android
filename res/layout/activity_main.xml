@@ -3,33 +3,91 @@
               android:orientation="vertical"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@drawable/background_main">
+              android:background="@drawable/main_background">
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
+            android:layout_height="fill_parent"
             android:orientation="vertical"
             android:layout_weight="5">
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:orientation="horizontal"
+                android:layout_weight="13">
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4"/>
+            <ImageButton
+                    android:id="@+id/setting"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="15"
+                    android:gravity="center_vertical"
+                    android:background="#00000000"
+                    android:src="@drawable/selectors_setting"
+                    android:scaleType="fitCenter"/>
+        </LinearLayout>
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:background="@drawable/main_background1"
+                android:layout_weight="5">
+
+        </LinearLayout>
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_marginBottom="20dp"
             android:orientation="horizontal"
-            android:layout_gravity="center_horizontal"
-            android:layout_weight="1"
-            android:layout_marginTop="40dp">
-        <Button
-            android:id="@+id/mama"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="妈妈"/>
+            android:layout_weight="9">
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+            <ImageButton
+                    android:id="@+id/mama"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00000000"
+                    android:src="@drawable/selectors_mama_button"
+                    android:scaleType="fitCenter"/>
+            <TextView
+                    android:id="@+id/mama_tex"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="妈妈"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"/>
+        </FrameLayout>
 
-        <Button
-            android:id="@+id/baby"
-            android:layout_width="100dp"
-            android:layout_height="wrap_content"
-            android:text="宝宝"
-            android:layout_marginLeft="30dp"/>
+        <FrameLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="1">
+            <ImageButton
+                    android:id="@+id/baby"
+                    android:layout_width="120dp"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:background="#00000000"
+                    android:src="@drawable/selectors_baby_button"
+                    android:scaleType="fitCenter"/>
+            <TextView
+                    android:id="@+id/baby_tex"
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:gravity="center"
+                    android:text="宝宝"
+                    android:textSize="25sp"
+                    android:textColor="@color/black"/>
+        </FrameLayout>
     </LinearLayout>
 </LinearLayout>
 

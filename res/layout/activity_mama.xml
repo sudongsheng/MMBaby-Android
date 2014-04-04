@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:id="@+id/mama_activity"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
-              android:background="@drawable/background">
+              android:longClickable="true"
+              android:background="@color/mama_background">
     <RadioGroup
             android:id="@+id/field"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:background="@color/white"
             android:orientation="horizontal">
         <RadioButton
                 android:id="@+id/morality"
@@ -41,17 +42,131 @@
                 android:button="@null"
                 android:gravity="center"
                 android:layout_gravity="center"
-                android:background="@color/white"
+                android:background="@drawable/radio_button_right"
                 android:textColor="@drawable/textcolor_radiobutton"
                 android:text="体育"/>
     </RadioGroup>
-    <Button android:id="@+id/new_task"
+    <ImageView android:layout_width="fill_parent" android:layout_height="3dp" android:background="@color/orange"/>
+    <ImageView android:id="@+id/divide" android:layout_width="fill_parent" android:layout_height="5dp" android:background="@color/orange"/>
+    <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button"
-            android:text="新建任务"/>
+            android:layout_height="fill_parent"
+            android:orientation="vertical"
+            android:layout_marginRight="18dp"
+            android:layout_marginLeft="18dp"
+            android:layout_weight="3">
+        <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_marginTop="10dp"
+                android:layout_weight="3"
+                android:orientation="horizontal">
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="20dp"
+                    android:paddingTop="5dp"
+                    android:background="@drawable/edit_corner"
+                    android:layout_weight="3"
+                    android:orientation="vertical">
+                <TextView
+                        android:id="@+id/state_tex"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:text="品德现状:"
+                        android:gravity="center_vertical"
+                        android:textSize="25sp"
+                        android:textColor="@color/orange"/>
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_marginBottom="10dp"
+                        android:layout_weight="4">
+                    <TextView
+                            android:id="@+id/grade_num1"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:layout_margin="2dp"
+                            android:text="0"
+                            android:textSize="30sp"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edit_corner2"/>
+                    <TextView
+                            android:id="@+id/grade_num2"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:layout_margin="2dp"
+                            android:text="0"
+                            android:textSize="30sp"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edit_corner2"/>
+                    <TextView
+                            android:id="@+id/grade_num3"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:layout_margin="2dp"
+                            android:text="0"
+                            android:textSize="30sp"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edit_corner2"/>
+                    <TextView
+                            android:id="@+id/grade_num4"
+                            android:layout_width="fill_parent"
+                            android:layout_height="fill_parent"
+                            android:layout_weight="1"
+                            android:layout_margin="2dp"
+                            android:text="0"
+                            android:textSize="30sp"
+                            android:gravity="center"
+                            android:textColor="@color/white"
+                            android:background="@drawable/edit_corner2"/>
+                </LinearLayout>
+            </LinearLayout>
+            <LinearLayout
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="4"
+                    android:layout_marginLeft="5dp"
+                    android:orientation="vertical">
+                <Button android:id="@+id/new_task"
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:background="@drawable/selectors_new_record"
+                        android:text="新建任务"
+                        android:textSize="18sp"
+                        android:gravity="center_horizontal|bottom"
+                        android:textColor="@color/white"
+                        android:paddingBottom="10dp"/>
+            </LinearLayout>
+        </LinearLayout>
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="fill_parent"
+                android:layout_weight="5"
+                android:text="历史记录"
+                android:textSize="25sp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/edit_corner2"/>
+    </LinearLayout>
+
     <ListView android:id="@+id/history_item"
               android:layout_width="fill_parent"
-              android:layout_height="fill_parent"/>
+              android:layout_height="fill_parent"
+              android:layout_marginRight="18dp"
+              android:layout_marginLeft="18dp"
+              android:divider="@null"
+              android:dividerHeight="2dp"
+              android:layout_weight="2"/>
 </LinearLayout>
 

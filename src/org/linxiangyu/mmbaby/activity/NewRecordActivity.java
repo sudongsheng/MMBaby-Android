@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.ContentValues;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
@@ -15,14 +16,19 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.*;
 import org.linxiangyu.mmbaby.R;
 import org.linxiangyu.mmbaby.database.DatabaseHelper;
 import org.linxiangyu.mmbaby.database.Record;
+import org.linxiangyu.mmbaby.utils.AppConstant;
+import org.linxiangyu.mmbaby.utils.FontManager;
 
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
+import java.util.ArrayList;
 import java.util.Calendar;
 
 /**
@@ -33,10 +39,11 @@ public class NewRecordActivity extends Activity {
     private TextView date;
     private EditText title;
     private EditText content;
-    private Button photo;
     private ImageView mBaby;
     private Button submit;
     private RatingBar rating;
+    private ImageView back;
+    private GridView photos;
 
     private Record record;
 
@@ -48,18 +55,25 @@ public class NewRecordActivity extends Activity {
     private SharedPreferences preferences;
     private int money;
     private int integral;
+    private int grade;
     private int money_old;
     private int integral_old;
+    private int grade_old;
 
     private final int REQUEST_CODE_CAPTURE_CAMERA = 1;
     private final int REQUEST_CODE_PICK_IMAGE = 2;
     private final int REQUEST_CODE_CUT_IMAGE = 3;
+
+    private MyAdapter myAdapter;
+    private int position_photo;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_new_record);
         init();
+        myAdapter = new MyAdapter(this);
+        photos.setAdapter(myAdapter);
     }
 
     private void init() {
@@ -72,9 +86,10 @@ public class NewRecordActivity extends Activity {
 
         setListeners();
 
-        preferences= PreferenceManager.getDefaultSharedPreferences(NewRecordActivity.this);
-        money=preferences.getInt("money",0);
-        integral=preferences.getInt(record.field+"integral",0);
+        preferences = PreferenceManager.getDefaultSharedPreferences(NewRecordActivity.this);
+        money = preferences.getInt("money", 0);
+        integral = preferences.getInt(record.field + "_integral", 0);
+        grade = preferences.getInt(record.field + "_grade", 0);
 
         //判断新建记录或者读取记录并把读取的数据显示出来
         position = getIntent().getIntExtra("position", -1);
@@ -87,21 +102,35 @@ public class NewRecordActivity extends Activity {
             record.title = cursor.getString(cursor.getColumnIndex("title"));
             record.content = cursor.getString(cursor.getColumnIndex("content"));
             record.rating = cursor.getInt(cursor.getColumnIndex("rating"));
-            money_old=record.rating*100;
-            integral_old=record.rating*100;
+            money_old = record.rating * 100;
+            integral_old = record.rating * 100;
+            grade_old = record.rating;
             record.primary_key = cursor.getInt(cursor.getColumnIndex("primary_key"));
             date.setText(record.time);
             title.setText(record.title);
             content.setText(record.content);
             rating.setRating(record.rating);
             try {
-                record.photo = cursor.getBlob(cursor.getColumnIndex("photo"));
-                Bitmap bitmap = BitmapFactory.decodeByteArray(record.photo, 0, record.photo.length);
-                mBaby.setImageBitmap(bitmap);
+                for (int i = 0; i < 6; i++) {
+                    record.photo[i] = cursor.getBlob(cursor.getColumnIndex("photo" + i));
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                Log.i("TAG","exception:"+e.toString());
             }
         }
+
+        ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
+        FontManager.changeFonts(v, NewRecordActivity.this, AppConstant.Mama);
+    }
+
+    private void findViewByIds() {
+        date = (TextView) findViewById(R.id.time);
+        title = (EditText) findViewById(R.id.title);
+        content = (EditText) findViewById(R.id.content);
+        submit = (Button) findViewById(R.id.submit);
+        rating = (RatingBar) findViewById(R.id.ratingBar);
+        back = (ImageView) findViewById(R.id.back);
+        photos = (GridView) findViewById(R.id.photoGridView);
     }
 
     private void setListeners() {
@@ -110,11 +139,11 @@ public class NewRecordActivity extends Activity {
         final int year = calendar.get(Calendar.YEAR);
         final int monthOfYear = calendar.get(Calendar.MONTH);
         final int dayOfMonth = calendar.get(Calendar.DAY_OF_MONTH);
-        record.time = year + "年" + (monthOfYear + 1) + "月" + dayOfMonth + "日";
+        record.time = year + "." + ((monthOfYear + 1) < 10 ? "0" + (monthOfYear + 1) : (monthOfYear + 1)) + "." + (dayOfMonth < 10 ? "0" + dayOfMonth : dayOfMonth);
         date.setText(record.time);
         final DatePickerDialog.OnDateSetListener dateSet = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int y, int m, int d) {
-                record.time = y + "年" + (m + 1) + "月" + d + "日";
+                record.time = y + "." + (m + 1) + "." + d;
                 date.setText(record.time);
             }
         };
@@ -124,38 +153,11 @@ public class NewRecordActivity extends Activity {
                 new DatePickerDialog(NewRecordActivity.this, dateSet, year, monthOfYear, dayOfMonth).show();
             }
         });
-        photo.setOnClickListener(new View.OnClickListener() {
+        back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                final Dialog dialog = new Dialog(NewRecordActivity.this, R.style.pickDialog);
-                dialog.setContentView(R.layout.view_pick_dialog);
-                dialog.setCancelable(true);
-                dialog.setCanceledOnTouchOutside(true);
-                TextView fromCamera = (TextView) dialog.findViewById(R.id.fromCamera);
-                TextView fromAlbum = (TextView) dialog.findViewById(R.id.fromAlbum);
-                fromCamera.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        String state = Environment.getExternalStorageState();
-                        if (state.equals(Environment.MEDIA_MOUNTED)) {
-                            Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-                            startActivityForResult(getImageByCamera, REQUEST_CODE_CAPTURE_CAMERA);
-                            dialog.dismiss();
-                        } else {
-                            Toast.makeText(NewRecordActivity.this, "请确认已经插入SD卡", Toast.LENGTH_LONG).show();
-                        }
-                    }
-                });
-                fromAlbum.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent getImageByAlbum = new Intent(Intent.ACTION_PICK);
-                        getImageByAlbum.setType("image/*");//相片类型
-                        startActivityForResult(getImageByAlbum, REQUEST_CODE_PICK_IMAGE);
-                        dialog.dismiss();
-                    }
-                });
-                dialog.show();
+                onBackPressed();
+                NewRecordActivity.this.finish();
             }
         });
         rating.setOnRatingBarChangeListener(new RatingBar.OnRatingBarChangeListener() {
@@ -176,8 +178,10 @@ public class NewRecordActivity extends Activity {
                     cv.put("title", title.getText().toString());
                     cv.put("content", content.getText().toString());
                     cv.put("rating", record.rating);
-                    if (record.photo != null) {
-                        cv.put("photo", record.photo);
+                    for (int i = 0; i < 6; i++) {
+                        if (record.photo[i] != null) {
+                            cv.put("photo" + i, record.photo[i]);
+                        }
                     }
                     DatabaseHelper dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
@@ -186,16 +190,20 @@ public class NewRecordActivity extends Activity {
                     if (position == -1) {
                         sqLiteDatabase.insert("record", null, cv);
                         Toast.makeText(NewRecordActivity.this, "新建记录成功", Toast.LENGTH_LONG).show();
-                        money=money+record.rating*100;
-                        integral=integral+record.rating*100;
-                        editor.putInt("money",money);
-                        editor.putInt(record.field+"integral",integral);
+                        money = money + record.rating * 100;
+                        integral = integral + record.rating * 100;
+                        grade = grade + record.rating;
+                        editor.putInt("money", money);
+                        editor.putInt(record.field + "_integral", integral);
+                        editor.putInt(record.field + "_grade", grade);
                     } else {
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
-                        money=money+record.rating*100-money_old;
-                        integral=integral+record.rating*100-integral_old;
-                        editor.putInt("money",money);
-                        editor.putInt(record.field+"integral",integral);
+                        money = money + record.rating * 100 - money_old;
+                        integral = integral + record.rating * 100 - integral_old;
+                        grade = grade + record.rating - grade_old;
+                        editor.putInt("money", money);
+                        editor.putInt(record.field + "_integral", integral);
+                        editor.putInt(record.field + "_grade", grade);
                     }
                     editor.commit();
 
@@ -209,13 +217,15 @@ public class NewRecordActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        int position = data.getIntExtra("position", -1);
+        Log.i("TAG", "position:" + position_photo);
         if (requestCode == REQUEST_CODE_CAPTURE_CAMERA && resultCode == RESULT_OK && null != data) {
             Bundle bundle = data.getExtras();
             Bitmap photo = bundle.getParcelable("data");
             mBaby.setImageBitmap(photo);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             photo.compress(Bitmap.CompressFormat.PNG, 100, os);
-            record.photo = os.toByteArray();
+            record.photo[position_photo] = os.toByteArray();
         } else if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && null != data) {
             startPhotoZoom(data.getData());
         } else if (requestCode == REQUEST_CODE_CUT_IMAGE && null != data) {
@@ -235,8 +245,15 @@ public class NewRecordActivity extends Activity {
             mBaby.setImageBitmap(bitmap);
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-            record.photo = os.toByteArray();
+            record.photo[position_photo] = os.toByteArray();
         }
+        int count = 0;
+        for (int i = 0; i < 6; i++) {
+            if (record.photo[i] != null)
+                count++;
+        }
+        myAdapter.count = count;
+        myAdapter.notifyDataSetChanged();
     }
 
     //    private void iterator(SQLiteDatabase sqLiteDatabase){
@@ -267,13 +284,89 @@ public class NewRecordActivity extends Activity {
         startActivityForResult(intent, REQUEST_CODE_CUT_IMAGE);
     }
 
-    private void findViewByIds() {
-        date = (TextView) findViewById(R.id.time);
-        title = (EditText) findViewById(R.id.title);
-        content = (EditText) findViewById(R.id.content);
-        photo = (Button) findViewById(R.id.photo);
-        mBaby = (ImageView) findViewById(R.id.mBaby);
-        submit = (Button) findViewById(R.id.submit);
-        rating = (RatingBar) findViewById(R.id.ratingBar);
+    private class MyAdapter extends BaseAdapter {
+        private LayoutInflater inflater;
+        private int count = 6;
+
+        public MyAdapter(Context context) {
+            this.inflater = LayoutInflater.from(context);
+            for (int i = 5; i >= 0; i--) {
+                if (record.photo[i] == null)
+                    count--;
+            }
+        }
+
+        @Override
+        public int getCount() {
+            return count + 1;
+        }
+
+        @Override
+        public Object getItem(int i) {
+            return null;
+        }
+
+        @Override
+        public long getItemId(int i) {
+            return i;
+        }
+
+        @Override
+        public View getView(final int i, View view, ViewGroup viewGroup) {
+            view = inflater.inflate(R.layout.view_photos_item, null);
+            mBaby = (ImageView) view.findViewById(R.id.mBaby);
+            if (i == count && i < 6) {
+                mBaby.setImageResource(R.drawable.add);
+                mBaby.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        final Dialog dialog = new Dialog(NewRecordActivity.this, R.style.pickDialog);
+                        dialog.setContentView(R.layout.view_pick_dialog);
+                        dialog.setCancelable(true);
+                        dialog.setCanceledOnTouchOutside(true);
+                        TextView fromCamera = (TextView) dialog.findViewById(R.id.fromCamera);
+                        TextView fromAlbum = (TextView) dialog.findViewById(R.id.fromAlbum);
+                        fromCamera.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                String state = Environment.getExternalStorageState();
+                                if (state.equals(Environment.MEDIA_MOUNTED)) {
+                                    Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
+                                    //                           getImageByCamera.putExtra("position", i);
+                                    position_photo = i;
+                                    startActivityForResult(getImageByCamera, REQUEST_CODE_CAPTURE_CAMERA);
+                                    dialog.dismiss();
+                                } else {
+                                    Toast.makeText(NewRecordActivity.this, "请确认已经插入SD卡", Toast.LENGTH_LONG).show();
+                                }
+                            }
+                        });
+                        fromAlbum.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                Intent getImageByAlbum = new Intent(Intent.ACTION_PICK);
+                                getImageByAlbum.setType("image/*");//相片类型
+                                //                        getImageByAlbum.putExtra("position", i);
+                                position_photo = i;
+                                startActivityForResult(getImageByAlbum, REQUEST_CODE_PICK_IMAGE);
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
+                    }
+                });
+            } else {
+                Bitmap bitmap = BitmapFactory.decodeByteArray(record.photo[i], 0, record.photo[i].length);
+                mBaby.setImageBitmap(bitmap);
+            }
+            return view;
+        }
+    }
+
+    @Override
+    protected void finalize() throws Throwable {
+        cursor.close();
+        dbHelper.close();
+        sqLiteDatabase.close();
     }
 }

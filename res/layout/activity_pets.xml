@@ -42,7 +42,7 @@
               android:layout_marginTop="10dp"
               android:background="@drawable/ic_launcher"/>
 
-    <org.linxiangyu.mmbaby.utils.HorizontialListView
+    <org.mmclub.mmbaby.utils.HorizontialListView
             android:id="@+id/horizontialListView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

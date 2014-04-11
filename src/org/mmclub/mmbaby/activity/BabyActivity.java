@@ -1,12 +1,12 @@
-package org.linxiangyu.mmbaby.activity;
+package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
-import org.linxiangyu.mmbaby.R;
-import org.linxiangyu.mmbaby.utils.AppConstant;
+import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.utils.AppConstant;
 
 /**
  * Created by helloworld on 14-3-17.

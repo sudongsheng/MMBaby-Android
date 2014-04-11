@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.database;
+package org.mmclub.mmbaby.database;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
@@ -26,7 +26,7 @@ public class DatabaseHelper extends SQLiteOpenHelper{
     @Override
     public void onCreate(SQLiteDatabase sqLiteDatabase) {
         Log.i("TAB", "create a database");
-        sqLiteDatabase.execSQL("create table record(primary_key INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,time TEXT,field TEXT,photo0 BLOB,photo1 BLOB,photo2 BLOB,photo3 BLOB,photo4 BLOB,photo5 BLOB,rating INTEGER)");
+        sqLiteDatabase.execSQL("create table record(primary_key INTEGER PRIMARY KEY AUTOINCREMENT,title TEXT,content TEXT,time TEXT,field TEXT,photoNum INTEGER,rating INTEGER)");
     }
 
     @Override

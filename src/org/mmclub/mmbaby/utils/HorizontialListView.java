@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.utils;
+package org.mmclub.mmbaby.utils;
 
 import java.util.LinkedList;
 import java.util.Queue;

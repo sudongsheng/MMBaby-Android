@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.database;
+package org.mmclub.mmbaby.database;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,6 @@ public class Record {
     public String content;
     public String time;
     public String field;
-    public byte photo[][]=new byte[6][];
+    public int photoNum;
     public int rating;
 }

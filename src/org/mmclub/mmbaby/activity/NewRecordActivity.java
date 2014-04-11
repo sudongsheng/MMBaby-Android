@@ -1,32 +1,34 @@
-package org.linxiangyu.mmbaby.activity;
+package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-import android.content.ContentValues;
-import android.content.Context;
-import android.content.Intent;
-import android.content.SharedPreferences;
+import android.content.*;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.preference.PreferenceManager;
+import android.provider.MediaStore;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import org.linxiangyu.mmbaby.R;
-import org.linxiangyu.mmbaby.database.DatabaseHelper;
-import org.linxiangyu.mmbaby.database.Record;
-import org.linxiangyu.mmbaby.utils.AppConstant;
-import org.linxiangyu.mmbaby.utils.FontManager;
+import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.database.DatabaseHelper;
+import org.mmclub.mmbaby.database.Record;
+import org.mmclub.mmbaby.utils.AppConstant;
+import org.mmclub.mmbaby.utils.FileUtils;
+import org.mmclub.mmbaby.utils.FontManager;
 
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -44,6 +46,7 @@ public class NewRecordActivity extends Activity {
     private RatingBar rating;
     private ImageView back;
     private GridView photos;
+    private LinearLayout linearLayout;
 
     private Record record;
 
@@ -66,6 +69,10 @@ public class NewRecordActivity extends Activity {
 
     private MyAdapter myAdapter;
     private int position_photo;
+    private int position_flag;
+
+    private int screenWidth;
+    private int screenHeight;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -77,12 +84,15 @@ public class NewRecordActivity extends Activity {
     }
 
     private void init() {
+        screenWidth = getWindowManager().getDefaultDisplay().getWidth();
+        screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 
         findViewByIds();
 
         record = new Record();
         record.field = getIntent().getStringExtra("Field");
         record.rating = (int) rating.getRating();
+        record.photoNum = 0;
 
         setListeners();
 
@@ -102,6 +112,7 @@ public class NewRecordActivity extends Activity {
             record.title = cursor.getString(cursor.getColumnIndex("title"));
             record.content = cursor.getString(cursor.getColumnIndex("content"));
             record.rating = cursor.getInt(cursor.getColumnIndex("rating"));
+            record.photoNum = cursor.getInt(cursor.getColumnIndex("photoNum"));
             money_old = record.rating * 100;
             integral_old = record.rating * 100;
             grade_old = record.rating;
@@ -110,13 +121,16 @@ public class NewRecordActivity extends Activity {
             title.setText(record.title);
             content.setText(record.content);
             rating.setRating(record.rating);
-            try {
-                for (int i = 0; i < 6; i++) {
-                    record.photo[i] = cursor.getBlob(cursor.getColumnIndex("photo" + i));
-                }
-            } catch (Exception e) {
-                Log.i("TAG","exception:"+e.toString());
-            }
+            linearLayout.setFocusable(true);
+            linearLayout.setFocusableInTouchMode(true);
+
+            position_flag = position;
+        } else {
+            dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
+            position_flag = cursor.getCount();
+            Log.i("TAG", "position_flag:" + position_flag);
         }
 
         ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
@@ -131,6 +145,7 @@ public class NewRecordActivity extends Activity {
         rating = (RatingBar) findViewById(R.id.ratingBar);
         back = (ImageView) findViewById(R.id.back);
         photos = (GridView) findViewById(R.id.photoGridView);
+        linearLayout=(LinearLayout)findViewById(R.id.edit_linear);
     }
 
     private void setListeners() {
@@ -143,7 +158,7 @@ public class NewRecordActivity extends Activity {
         date.setText(record.time);
         final DatePickerDialog.OnDateSetListener dateSet = new DatePickerDialog.OnDateSetListener() {
             public void onDateSet(DatePicker view, int y, int m, int d) {
-                record.time = y + "." + (m + 1) + "." + d;
+                record.time = y + "." + ((m + 1) < 10 ? "0" + (m + 1) : (m + 1)) + "." + (d < 10 ? "0" + d : d);
                 date.setText(record.time);
             }
         };
@@ -178,11 +193,7 @@ public class NewRecordActivity extends Activity {
                     cv.put("title", title.getText().toString());
                     cv.put("content", content.getText().toString());
                     cv.put("rating", record.rating);
-                    for (int i = 0; i < 6; i++) {
-                        if (record.photo[i] != null) {
-                            cv.put("photo" + i, record.photo[i]);
-                        }
-                    }
+                    cv.put("photoNum", record.photoNum);
                     DatabaseHelper dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
 
@@ -217,15 +228,9 @@ public class NewRecordActivity extends Activity {
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-//        int position = data.getIntExtra("position", -1);
-        Log.i("TAG", "position:" + position_photo);
-        if (requestCode == REQUEST_CODE_CAPTURE_CAMERA && resultCode == RESULT_OK && null != data) {
-            Bundle bundle = data.getExtras();
-            Bitmap photo = bundle.getParcelable("data");
-            mBaby.setImageBitmap(photo);
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            photo.compress(Bitmap.CompressFormat.PNG, 100, os);
-            record.photo[position_photo] = os.toByteArray();
+        Log.i("TAG", "position_photo:" + position_photo);
+        if (requestCode == REQUEST_CODE_CAPTURE_CAMERA && resultCode == RESULT_OK) {
+            record.photoNum++;
         } else if (requestCode == REQUEST_CODE_PICK_IMAGE && resultCode == RESULT_OK && null != data) {
             startPhotoZoom(data.getData());
         } else if (requestCode == REQUEST_CODE_CUT_IMAGE && null != data) {
@@ -243,16 +248,12 @@ public class NewRecordActivity extends Activity {
                     bitmap = bundle.getParcelable("data");
             }
             mBaby.setImageBitmap(bitmap);
+            record.photoNum++;
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-            record.photo[position_photo] = os.toByteArray();
+            new FileUtils().write2SDFromBitmap("亲子习惯养成/" + record.field + position_flag, position_photo + ".jpg", bitmap);
         }
-        int count = 0;
-        for (int i = 0; i < 6; i++) {
-            if (record.photo[i] != null)
-                count++;
-        }
-        myAdapter.count = count;
+        myAdapter.count = record.photoNum;
         myAdapter.notifyDataSetChanged();
     }
 
@@ -273,10 +274,10 @@ public class NewRecordActivity extends Activity {
         // crop为true是设置在开启的intent中设置显示的view可以剪裁
         intent.putExtra("crop", "true");
         // aspectX aspectY 是宽高的比例
-        intent.putExtra("aspectX", 2);
-        intent.putExtra("aspectY", 3);
+        intent.putExtra("aspectX", 3);
+        intent.putExtra("aspectY", 4);
         // outputX,outputY 是剪裁图片的宽高
-        intent.putExtra("outputX", 400);
+        intent.putExtra("outputX", 450);
         intent.putExtra("outputY", 600);
         intent.putExtra("scale", true);
         intent.putExtra("noFaceDetection", true);
@@ -286,14 +287,12 @@ public class NewRecordActivity extends Activity {
 
     private class MyAdapter extends BaseAdapter {
         private LayoutInflater inflater;
-        private int count = 6;
+        private int count;
 
         public MyAdapter(Context context) {
             this.inflater = LayoutInflater.from(context);
-            for (int i = 5; i >= 0; i--) {
-                if (record.photo[i] == null)
-                    count--;
-            }
+            count = record.photoNum;
+            Log.i("TAG", "count:" + count);
         }
 
         @Override
@@ -332,7 +331,17 @@ public class NewRecordActivity extends Activity {
                                 String state = Environment.getExternalStorageState();
                                 if (state.equals(Environment.MEDIA_MOUNTED)) {
                                     Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
-                                    //                           getImageByCamera.putExtra("position", i);
+                                    FileUtils fileUtils = new FileUtils();
+                                    fileUtils.createSDDir("亲子习惯养成/" + record.field + position_flag);
+                                    File file = null;
+                                    try {
+                                        file = fileUtils.createFileInSDCard("亲子习惯养成/" + record.field + position_flag, i + ".jpg");
+                                    } catch (Exception e) {
+                                    }
+                                    Uri imageUri = Uri.fromFile(file);
+                                    getImageByCamera.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
+                                    getImageByCamera.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
+                                    getImageByCamera.putExtra("return-data", true);
                                     position_photo = i;
                                     startActivityForResult(getImageByCamera, REQUEST_CODE_CAPTURE_CAMERA);
                                     dialog.dismiss();
@@ -346,7 +355,6 @@ public class NewRecordActivity extends Activity {
                             public void onClick(View view) {
                                 Intent getImageByAlbum = new Intent(Intent.ACTION_PICK);
                                 getImageByAlbum.setType("image/*");//相片类型
-                                //                        getImageByAlbum.putExtra("position", i);
                                 position_photo = i;
                                 startActivityForResult(getImageByAlbum, REQUEST_CODE_PICK_IMAGE);
                                 dialog.dismiss();
@@ -355,9 +363,69 @@ public class NewRecordActivity extends Activity {
                         dialog.show();
                     }
                 });
-            } else {
-                Bitmap bitmap = BitmapFactory.decodeByteArray(record.photo[i], 0, record.photo[i].length);
-                mBaby.setImageBitmap(bitmap);
+            } else if (i < 6) {
+                final ArrayList<String> arrayList = new FileUtils().readFileName("亲子习惯养成/" + record.field + position_flag);
+                //解决用户手动删除内存卡的图片出现的异常情况
+                if (arrayList.size() < record.photoNum) {
+                    record.photoNum = arrayList.size();
+                    myAdapter.count = record.photoNum;
+                    myAdapter.notifyDataSetChanged();
+                }
+                Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
+                final int h = bitmap.getHeight();
+                final int w = bitmap.getWidth();
+                Log.i("TAG", "w:" + w + "h:" + h);
+                Matrix matrix = new Matrix();
+                if (h > w) {
+                    matrix.postScale(240f / w, 320f / h);
+                } else {
+                    matrix.postScale(240f / h, 320f / w);
+                    matrix.postRotate(90);
+                }
+                Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+                bitmap.recycle();
+                mBaby.setImageBitmap(resizeBmp);
+                mBaby.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+                        Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
+                        ImageView img = new ImageView(NewRecordActivity.this);
+                        Matrix matrix = new Matrix();
+                        Log.i("TAG","screenWidth:"+screenWidth+"screenHeight:"+screenHeight);
+                        if (h > w) {
+                            matrix.postScale(screenWidth / 7f / w * 6f, screenHeight / 4f / h * 3f);
+                        } else {
+                            matrix.postScale(screenWidth / 7f / h * 6f, screenHeight / 4f / w * 3f);
+                            matrix.postRotate(90);
+                        }
+                        Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+                        bitmap.recycle();
+                        img.setImageBitmap(resizeBmp);
+                        new AlertDialog.Builder(NewRecordActivity.this).setView(img).create().show();
+                    }
+                });
+                mBaby.setOnLongClickListener(new View.OnLongClickListener() {
+                    @Override
+                    public boolean onLongClick(View view) {
+                        new AlertDialog.Builder(NewRecordActivity.this).setTitle("是否删除图片？").setPositiveButton("确定",
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        File file = new File(arrayList.get(i));
+                                        file.delete();
+                                        record.photoNum--;
+                                        for (int j = i + 1; j < arrayList.size(); j++) {
+                                            File file1 = new File(arrayList.get(j));
+                                            file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + position_flag + "/" + (j - 1) + ".jpg"));
+                                        }
+                                        myAdapter.count--;
+                                        myAdapter.notifyDataSetChanged();
+                                    }
+                                }
+                        ).setNegativeButton("取消", null).show();
+                        return false;
+                    }
+                });
             }
             return view;
         }

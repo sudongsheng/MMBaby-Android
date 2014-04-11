@@ -140,7 +140,7 @@
                         android:layout_width="fill_parent"
                         android:layout_height="fill_parent"
                         android:background="@drawable/selectors_new_record"
-                        android:text="新建任务"
+                        android:text="新建记录"
                         android:textSize="18sp"
                         android:gravity="center_horizontal|bottom"
                         android:textColor="@color/white"

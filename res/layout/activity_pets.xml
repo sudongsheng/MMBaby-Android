@@ -71,7 +71,7 @@
               android:layout_gravity="center_horizontal"
               android:background="@drawable/sunflower_image"/>
 
-    <org.linxiangyu.mmbaby.utils.HorizontialListView
+    <org.mmclub.mmbaby.utils.HorizontialListView
             android:id="@+id/horizontialListView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"

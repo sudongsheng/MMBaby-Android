@@ -19,14 +19,4 @@
                     android:bottomRightRadius="8dip"/>
         </shape>
     </item>
-    <item>
-        <shape>
-            <stroke android:color="@color/orange" android:width="1px"/>
-            <solid
-                    android:color="@color/white"/>
-            <corners
-                    android:bottomLeftRadius="8dip"
-                    android:bottomRightRadius="8dip"/>
-        </shape>
-    </item>
 </selector>

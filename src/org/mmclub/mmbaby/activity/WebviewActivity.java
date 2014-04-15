@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.activity;
+package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
 import android.os.Bundle;
@@ -7,7 +7,7 @@ import android.view.Window;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import org.linxiangyu.mmbaby.R;
+import org.mmclub.mmbaby.R;
 
 /**
  * 载入一个网页的Activity

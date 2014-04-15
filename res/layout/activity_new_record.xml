@@ -1,104 +1,127 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="fill_parent"
+              android:layout_height="wrap_content"
+              android:orientation="vertical"
+              android:id="@+id/new_record_activity"
+              android:background="@color/mama_background">
+    <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:id="@+id/new_record_activity"
-            android:background="@color/mama_background"
-            android:scrollbars="vertical">
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:orientation="vertical">
+            android:layout_height="50dp"
+            android:orientation="horizontal"
+            android:background="@color/orange">
         <LinearLayout
                 android:layout_width="fill_parent"
-                android:layout_height="50dp"
-                android:orientation="horizontal"
-                android:background="@color/orange">
-            <LinearLayout
+                android:layout_height="fill_parent"
+                android:layout_weight="2"
+                android:orientation="horizontal">
+            <ImageButton
+                    android:id="@+id/back"
                     android:layout_width="fill_parent"
                     android:layout_height="fill_parent"
-                    android:layout_weight="2"
-                    android:orientation="horizontal">
-                <ImageButton
-                        android:id="@+id/back"
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="10"
-                        android:background="#00000000"
-                        android:paddingBottom="10dp"
-                        android:paddingTop="10dp"
-                        android:src="@drawable/selectors_back_button"
-                        android:paddingLeft="10dp"
-                        android:scaleType="centerInside"/>
-                <TextView
-                        android:layout_width="fill_parent"
-                        android:layout_height="fill_parent"
-                        android:layout_weight="1"
-                        android:text="新建记录"
-                        android:textColor="@color/white"
-                        android:textSize="25sp"
-                        android:gravity="center"/>
-            </LinearLayout>
-            <Button
-                    android:id="@+id/submit"
-                    android:layout_width="fill_parent"
-                    android:layout_height="fill_parent"
-                    android:layout_weight="11"
-                    android:layout_marginRight="10dp"
-                    android:layout_marginBottom="10dp"
-                    android:layout_marginTop="10dp"
-                    android:text="确定"
-                    android:textColor="@color/white"
-                    android:background="@drawable/selectors_new_record_button"/>
-        </LinearLayout>
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="vertical"
-                android:layout_margin="10dp">
-            <TextView android:id="@+id/time"
-                      android:layout_width="fill_parent"
-                      android:layout_height="40dp"
-                      android:textColor="@color/orange"
-                      android:background="@drawable/edit_corner"
-                      android:gravity="center"
-                      android:textSize="30sp"/>
-            <EditText
-                    android:id="@+id/title"
-                    android:layout_width="fill_parent"
-                    android:layout_height="40dp"
-                    android:layout_marginTop="10dp"
+                    android:layout_weight="10"
+                    android:background="#00000000"
+                    android:paddingBottom="10dp"
+                    android:paddingTop="10dp"
+                    android:src="@drawable/selectors_back_button"
                     android:paddingLeft="10dp"
-                    android:background="@drawable/edit_corner"
-                    android:hint="输入标题"/>
-            <EditText android:id="@+id/content"
-                      android:layout_width="fill_parent"
-                      android:layout_height="80dp"
-                      android:layout_marginTop="10dp"
-                      android:paddingLeft="10dp"
-                      android:background="@drawable/edit_corner"
-                      android:hint="详细描述"/>
+                    android:scaleType="centerInside"/>
+            <TextView
+                    android:layout_width="fill_parent"
+                    android:layout_height="fill_parent"
+                    android:layout_weight="1"
+                    android:text="新建记录"
+                    android:textColor="@color/white"
+                    android:textSize="25sp"
+                    android:gravity="center"/>
         </LinearLayout>
-
-        <RatingBar android:id="@+id/ratingBar"
-                   android:layout_width="wrap_content"
-                   android:layout_height="wrap_content"
-                   android:layout_margin="10dp"
-                   android:numStars="5"
-                   android:stepSize="1"
-                   android:rating="3"/>
-        <GridView
-                android:id="@+id/photoGridView"
-                android:layout_marginTop="10dp"
-                android:layout_marginLeft="10dp"
-                android:layout_marginRight="10dp"
-                android:verticalSpacing="15dp"
-                android:horizontalSpacing="20dp"
-                android:scrollbars="none"
+        <Button
+                android:id="@+id/submit"
                 android:layout_width="fill_parent"
-                android:layout_height="500dp"
-                android:numColumns="auto_fit"
-                android:columnWidth="100dp"
-                android:stretchMode="columnWidth"/>
+                android:layout_height="fill_parent"
+                android:layout_weight="11"
+                android:layout_marginRight="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginTop="10dp"
+                android:text="确定"
+                android:textColor="@color/white"
+                android:background="@drawable/selectors_new_record_button"/>
     </LinearLayout>
-</ScrollView>
+    <ScrollView android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:scrollbars="vertical">
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="wrap_content"
+                      android:orientation="vertical">
+            <LinearLayout
+                    android:id="@+id/edit_linear"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:layout_margin="10dp">
+                <TextView android:id="@+id/time"
+                          android:layout_width="fill_parent"
+                          android:layout_height="40dp"
+                          android:textColor="@color/orange"
+                          android:background="@drawable/edit_corner"
+                          android:gravity="center"
+                          android:textSize="30sp"/>
+                <EditText
+                        android:id="@+id/title"
+                        android:layout_width="fill_parent"
+                        android:layout_height="40dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:background="@drawable/edit_corner"
+                        android:hint="输入标题"/>
+                <EditText android:id="@+id/content"
+                          android:layout_width="fill_parent"
+                          android:layout_height="80dp"
+                          android:layout_marginTop="10dp"
+                          android:maxLines="3"
+                          android:paddingLeft="10dp"
+                          android:background="@drawable/edit_corner"
+                          android:hint="详细描述"/>
+                <LinearLayout
+                        android:layout_width="fill_parent"
+                        android:layout_height="50dp"
+                        android:layout_marginTop="10dp"
+                        android:paddingLeft="10dp"
+                        android:orientation="horizontal"
+                        android:background="@drawable/edit_corner">
+                    <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="fill_parent"
+                            android:gravity="center_vertical"
+                            android:text="星级评价"
+                            android:textSize="20sp"
+                            android:textColor="@color/orange"/>
+                    <RatingBar android:id="@+id/ratingBar"
+                               style="@style/roomRatingBar"
+                               android:layout_marginLeft="30dp"
+                               android:layout_width="wrap_content"
+                               android:layout_height="wrap_content"
+                               android:layout_gravity="center"
+                               android:numStars="5"
+                               android:stepSize="1"
+                               android:rating="3"/>
+                </LinearLayout>
+            </LinearLayout>
+
+            <GridView
+                    android:id="@+id/photoGridView"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginLeft="10dp"
+                    android:layout_marginRight="10dp"
+                    android:verticalSpacing="15dp"
+                    android:horizontalSpacing="20dp"
+                    android:scrollbars="none"
+                    android:layout_width="fill_parent"
+                    android:layout_height="700dp"
+                    android:numColumns="auto_fit"
+                    android:columnWidth="100dp"
+                    android:stretchMode="columnWidth"/>
+        </LinearLayout>
+    </ScrollView>
+</LinearLayout>
 

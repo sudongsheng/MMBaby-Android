@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.activity;
+package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -7,7 +7,7 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.util.Log;
 import com.umeng.analytics.MobclickAgent;
-import org.linxiangyu.mmbaby.R;
+import org.mmclub.mmbaby.R;
 
 public class SplashActivity extends Activity {
     /**

@@ -64,9 +64,99 @@
 
         <LinearLayout
                 android:layout_width="fill_parent"
+                android:layout_height="120dp"
+                android:orientation="vertical"
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_corner">
+            <LinearLayout
+                    android:id="@+id/set_morality"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/selectors_edit_top_corner">
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:text="设置品德换取金币倍率"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"/>
+                <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/more"
+                        android:scaleType="fitCenter"/>
+            </LinearLayout>
+            <ImageView android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@drawable/img_line"/>
+            <LinearLayout
+                    android:id="@+id/set_intelligence"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/selectors_edit_center_corner">
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:text="设置智力换取金币倍率"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"/>
+                <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/more"
+                        android:scaleType="fitCenter"/>
+            </LinearLayout>
+            <ImageView android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@drawable/img_line"/>
+            <LinearLayout
+                    android:id="@+id/set_physical"
+                    android:layout_width="fill_parent"
+                    android:layout_height="40dp"
+                    android:paddingLeft="20dp"
+                    android:orientation="horizontal"
+                    android:background="@drawable/selectors_edit_bottom_corner">
+                <TextView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="1"
+                        android:textSize="20sp"
+                        android:text="设置体育换取金币倍率"
+                        android:textColor="@color/black"
+                        android:gravity="center_vertical"/>
+                <ImageView
+                        android:layout_width="fill_parent"
+                        android:layout_height="fill_parent"
+                        android:layout_weight="5"
+                        android:layout_marginTop="10dp"
+                        android:layout_marginBottom="10dp"
+                        android:layout_gravity="center_vertical"
+                        android:src="@drawable/more"
+                        android:scaleType="fitCenter"/>
+            </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="fill_parent"
                 android:layout_height="80dp"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_corner">
             <LinearLayout
                     android:id="@+id/login"
                     android:layout_width="fill_parent"
@@ -92,6 +182,9 @@
                         android:src="@drawable/more"
                         android:scaleType="fitCenter"/>
             </LinearLayout>
+            <ImageView android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@drawable/img_line"/>
             <LinearLayout
                     android:id="@+id/register"
                     android:layout_width="fill_parent"
@@ -123,7 +216,8 @@
                 android:layout_width="fill_parent"
                 android:layout_height="80dp"
                 android:orientation="vertical"
-                android:layout_marginTop="20dp">
+                android:layout_marginTop="20dp"
+                android:background="@drawable/edit_corner">
             <LinearLayout
                     android:id="@+id/share"
                     android:layout_width="fill_parent"
@@ -149,6 +243,9 @@
                         android:src="@drawable/more"
                         android:scaleType="fitCenter"/>
             </LinearLayout>
+            <ImageView android:layout_width="fill_parent"
+                       android:layout_height="wrap_content"
+                       android:background="@drawable/img_line"/>
             <LinearLayout
                     android:id="@+id/about"
                     android:layout_width="fill_parent"

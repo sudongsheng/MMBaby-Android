@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.activity;
+package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -9,8 +9,8 @@ import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.*;
-import org.linxiangyu.mmbaby.R;
-import org.linxiangyu.mmbaby.database.DatabaseHelper;
+import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.database.DatabaseHelper;
 
 /**
  * Created by sudongsheng on 14-3-18.

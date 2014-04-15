@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.utils;
+package org.mmclub.mmbaby.utils;
 
 public interface AppConstant {
     public final static int PET_DOG=1;

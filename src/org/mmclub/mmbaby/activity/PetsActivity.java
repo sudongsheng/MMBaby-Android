@@ -1,4 +1,4 @@
-package org.linxiangyu.mmbaby.activity;
+package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
 import android.content.Context;
@@ -10,8 +10,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
-import org.linxiangyu.mmbaby.R;
-import org.linxiangyu.mmbaby.utils.HorizontialListView;
+import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.utils.HorizontialListView;
 
 import java.util.ArrayList;
 import java.util.HashMap;

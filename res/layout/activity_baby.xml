@@ -1,43 +1,43 @@
 <?xml version="1.0" encoding="utf-8"?>
+
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
               android:orientation="vertical"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:background="#FFFFFF">
-    <LinearLayout
+              android:background="@drawable/baby_background"
+              android:gravity="bottom">
+
+
+    <RelativeLayout
             android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="30dp">
+        <Button
+                android:id="@+id/petChick"
+                android:layout_width="80dp"
+                android:layout_height="100dp"
+                android:layout_alignParentRight="true"
+                android:layout_marginRight="100dp"
+                android:background="@drawable/selectors_chick_button"/>
         <Button
                 android:id="@+id/petDog"
-                android:layout_width="fill_parent"
-                android:layout_height="fill_parent"
-                android:layout_margin="10dp"
-                android:text="宠物狗"/>
-
-    </LinearLayout>
-    <LinearLayout
-            android:layout_width="fill_parent"
-            android:layout_height="fill_parent"
-            android:orientation="horizontal"
-            android:layout_weight="1">
+                android:layout_width="130dp"
+                android:layout_height="115dp"
+                android:layout_alignParentRight="true"
+                android:layout_below="@id/petChick"
+                android:layout_marginRight="30dp"
+                android:layout_marginTop="30dp"
+                android:background="@drawable/selectors_dog_button"/>
         <Button
-                android:id="@+id/petCat"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:text="宠物猫"/>
-        <Button
-                android:id="@+id/petRabbit"
-                android:layout_width="0dp"
-                android:layout_height="fill_parent"
-                android:layout_weight="1"
-                android:layout_margin="10dp"
-                android:text="宠物兔"/>
+                android:id="@+id/petSunFlower"
+                android:layout_width="100dp"
+                android:layout_height="160dp"
+                android:layout_below="@id/petChick"
+                android:layout_marginTop="10dp"
+                android:layout_marginLeft="30dp"
+                android:background="@drawable/selectors_sunflower_button"/>
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </LinearLayout>
 

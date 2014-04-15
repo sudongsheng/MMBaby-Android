@@ -4,11 +4,8 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:gravity="center_horizontal">
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:text="宠物商店"
-              android:textSize="36sp"/>
+              android:gravity="center_horizontal"
+              android:background="@drawable/market_bg">
     <TextView android:layout_width="wrap_content"
               android:id="@+id/moneyTextView"
               android:layout_height="wrap_content"
@@ -20,7 +17,6 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_margin="20dp"
-            android:divider="#000000"
             android:dividerHeight="15dp"/>
 
 

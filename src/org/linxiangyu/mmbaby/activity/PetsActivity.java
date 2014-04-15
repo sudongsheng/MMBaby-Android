@@ -27,6 +27,7 @@ public class PetsActivity extends Activity {
     private TextView petLeveltv;
     private TextView petNametv;
     private Button marketButton;
+    private Button petBackButton;
     private ProgressBar progressBar;
     private SharedPreferences preferences;
     private int  integral;
@@ -48,11 +49,12 @@ public class PetsActivity extends Activity {
         petLeveltv = (TextView)findViewById(R.id.petLevel);
         petNametv = (TextView)findViewById(R.id.petName);
         marketButton = (Button)findViewById(R.id.marketButton);
+        petBackButton = (Button)findViewById(R.id.petBack);
         progressBar = (ProgressBar)findViewById(R.id.levelProgressBar);
         preferences = PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
         integral = preferences.getInt("intel",0);
 
-        petLeveltv.setText("等级：LV"+ petLevel);
+        petLeveltv.setText("LV"+ petLevel);
         petNametv.setText(petName);
         progressBar.setProgress(integral%1000);
 
@@ -61,6 +63,13 @@ public class PetsActivity extends Activity {
             public void onClick(View view) {
                 Intent intent = new Intent(PetsActivity.this,MarketActivity.class);
                 startActivity(intent);
+            }
+        });
+        petBackButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                PetsActivity.this.finish();
             }
         });
 

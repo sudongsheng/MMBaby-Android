@@ -14,8 +14,8 @@ import org.linxiangyu.mmbaby.utils.AppConstant;
 public class BabyActivity extends Activity {
 
     private Button petDog;
-    private Button petCat;
-    private Button petRabbit;
+    private Button petChick;
+    private Button petSunFlower;
 
 
 
@@ -24,12 +24,12 @@ public class BabyActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_baby);
         petDog = (Button)findViewById(R.id.petDog);
-        petCat = (Button)findViewById(R.id.petCat);
-        petRabbit = (Button)findViewById(R.id.petRabbit);
+        petChick = (Button)findViewById(R.id.petChick);
+        petSunFlower = (Button)findViewById(R.id.petSunFlower);
 
         petDog.setOnClickListener(new PetClickListener("旺财",AppConstant.PET_DOG));
-        petCat.setOnClickListener(new PetClickListener("猫咪",AppConstant.PET_CAT));
-        petRabbit.setOnClickListener(new PetClickListener("兰花",AppConstant.PET_RABBIT));
+        petChick.setOnClickListener(new PetClickListener("鸡仔",AppConstant.PET_CAT));
+        petSunFlower.setOnClickListener(new PetClickListener("小葵",AppConstant.PET_RABBIT));
     }
     public class PetClickListener implements View.OnClickListener {
         private Intent intent;

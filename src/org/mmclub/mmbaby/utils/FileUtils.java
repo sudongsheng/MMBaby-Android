@@ -57,6 +57,7 @@ public class FileUtils {
 
     public Boolean write2SDFromBitmap(String path, String fileName, Bitmap bitmap) {
         if (bitmap != null) {
+            createSDDir(path);
             if (!isFileExist(path, fileName)) {
                 try {
                     File file = createFileInSDCard(path, fileName);

@@ -183,7 +183,8 @@ public class SettingActivity extends Activity {
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent=new Intent(SettingActivity.this,ChooseShareActivity.class);
+                startActivity(intent);
             }
         });
         about.setOnClickListener(new View.OnClickListener() {

@@ -1,47 +1,60 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="wrap_content"
               android:layout_height="wrap_content"
-              android:background="#FFFFFF">
-
+              android:background="@drawable/goods_list_bg"
+              android:orientation="horizontal">
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
         <ImageView
-                   android:layout_marginTop="10dp"
-                   android:layout_marginBottom="10dp"
-                   android:layout_marginLeft="40dp"
-                   android:layout_width="80dp"
-                   android:layout_height="80dp"
-                   android:id="@+id/goodsImage"
-                   android:background="@drawable/ic_launcher"/>
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:id="@+id/goodsImage"
+                android:background="@drawable/ic_launcher"/>
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="2"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/goodsName"
-                  android:layout_toRightOf="@id/goodsImage"
-                  android:layout_marginTop="10dp"
                   android:text="狗粮"/>
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ownedNumber"
-                  android:layout_marginTop="10dp"
-                  android:layout_toRightOf="@id/goodsImage"
-                  android:layout_below="@id/goodsName"
-                  android:text="已拥有:1"/>
+
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/up"
-                  android:layout_toRightOf="@id/goodsImage"
-                  android:layout_below="@id/ownedNumber"
                   android:text="+200经验"
-                  android:layout_marginTop="10dp"/>
+                  />
 
-    <Button
-            android:id="@+id/buy"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentRight="true"
-            android:layout_centerVertical="true"
-            android:layout_marginRight="40dp"
-            android:text="购  买"/>
+        <TextView android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/ownedNumber"
+                  android:text="已拥有:1"/>
+
+            </LinearLayout>
+    <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center_vertical">
+        <Button
+                android:id="@+id/buy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="购  买"/>
+            </LinearLayout>
 
 
-</RelativeLayout>
+
+
+
+</LinearLayout>

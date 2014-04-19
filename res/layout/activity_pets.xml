@@ -2,9 +2,11 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:id="@+id/linearLayout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/main_background">
+              android:background="@drawable/main_background"
+              android:layout_gravity="center_horizontal">
     <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -31,7 +33,7 @@
                       android:layout_width="wrap_content"
                       android:layout_height="wrap_content"
                       android:text="旺财"
-                      android:textSize="40sp"
+                      android:textSize="30sp"
                       android:textColor="@color/black"
                       android:layout_marginLeft="30dp"/>
               <TextView
@@ -41,7 +43,8 @@
                       android:text="LV2"
                       android:textColor="@color/black"
                       android:layout_marginLeft="10dp"
-                      android:background="@drawable/level_bg"/>
+                      android:background="@drawable/level_bg"
+                      android:gravity="center"/>
               </LinearLayout>
     <LinearLayout android:layout_width="match_parent"
                   android:layout_height="wrap_content"
@@ -50,6 +53,7 @@
                   android:layout_marginLeft="30dp"
                   android:layout_marginRight="30dp">
         <TextView
+                android:id="@+id/petType"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="品德"
@@ -65,17 +69,26 @@
                  android:progress="50"
                  android:layout_marginLeft="10dp"/>
     </LinearLayout>
-    <ImageView android:layout_width="250dp"
-              android:layout_height="320dp"
-              android:layout_marginTop="10dp"
-              android:layout_gravity="center_horizontal"
-              android:background="@drawable/sunflower_image"/>
-
+    <ImageView
+            android:id="@+id/petImage"
+            android:layout_width="250dp"
+            android:layout_height="320dp"
+            android:layout_marginTop="10dp"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/sunflower_image"/>
+    <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
     <org.mmclub.mmbaby.utils.HorizontialListView
             android:id="@+id/horizontialListView"
-            android:layout_width="fill_parent"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="10dp"/>
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"/>
+    </LinearLayout>
+
+
 
 
 

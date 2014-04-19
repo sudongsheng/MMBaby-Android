@@ -79,25 +79,30 @@ public class ChooseShareActivity extends Activity {
         });
 
         cursor.moveToFirst();
-        field = cursor.getString(cursor.getColumnIndex("field"));
-        photo = (GridView) findViewById(R.id.share_photo);
-        arrayList = new FileUtils().readFileName("亲子习惯养成/" + field + index_field);
-        myAdapter = new MyAdapter(this,arrayList);
-        photo.setAdapter(myAdapter);
-        photo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                path = arrayList.get(i);
-                Toast.makeText(ChooseShareActivity.this, "图片已选择", Toast.LENGTH_LONG).show();
-            }
-        });
-
+        if (cursor.getCount() == 0) {
+            Toast.makeText(ChooseShareActivity.this, "您还没有新建记录，快快去记录下您宝宝的生活记录吧！", Toast.LENGTH_LONG).show();
+        } else {
+            field = cursor.getString(cursor.getColumnIndex("field"));
+            photo = (GridView) findViewById(R.id.share_photo);
+            arrayList = new FileUtils().readFileName("亲子习惯养成/" + field + index_field);
+//            for (int i = 0; i < arrayList.size(); i++)
+//                Log.i("TAG", arrayList.get(i));
+            myAdapter = new MyAdapter(this, arrayList);
+            photo.setAdapter(myAdapter);
+            photo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    path = arrayList.get(i);
+                    Toast.makeText(ChooseShareActivity.this, "图片已选择", Toast.LENGTH_LONG).show();
+                }
+            });
+        }
         share = (Button) findViewById(R.id.share_submit);
         share.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 if (cursor.getCount() == 0) {
-                    Toast.makeText(ChooseShareActivity.this,"您还没有新建记录，快快去记录下您宝宝的生活记录吧！",Toast.LENGTH_LONG).show();
+                    Toast.makeText(ChooseShareActivity.this, "您还没有新建记录，快快去记录下您宝宝的生活记录吧！", Toast.LENGTH_LONG).show();
                 } else {
                     Share();
                     mController.openShare(ChooseShareActivity.this, false);
@@ -126,9 +131,9 @@ public class ChooseShareActivity extends Activity {
                 index_field--;
                 arrayList.clear();
                 arrayList = new FileUtils().readFileName("亲子习惯养成/" + field + index_field);
-                myAdapter.array=arrayList;
+                myAdapter.array = arrayList;
                 myAdapter.notifyDataSetChanged();
-                index_field=0;
+                index_field = 0;
             }
 
             @Override
@@ -142,14 +147,14 @@ public class ChooseShareActivity extends Activity {
         private ImageView mBaby;
         private ArrayList<String> array;
 
-        public MyAdapter(Context context,ArrayList<String> array) {
+        public MyAdapter(Context context, ArrayList<String> array) {
             this.inflater = LayoutInflater.from(context);
-            this.array=array;
+            this.array = array;
         }
 
         @Override
         public int getCount() {
-            return arrayList.size();
+            return array.size();
         }
 
         @Override
@@ -166,6 +171,7 @@ public class ChooseShareActivity extends Activity {
         public View getView(final int i, View view, ViewGroup viewGroup) {
             view = inflater.inflate(R.layout.view_photos_item, null);
             mBaby = (ImageView) view.findViewById(R.id.mBaby);
+            Log.i("TAG", array.get(i));
             Bitmap bitmap = BitmapFactory.decodeFile(array.get(i));
             final int h = bitmap.getHeight();
             final int w = bitmap.getWidth();
@@ -188,9 +194,9 @@ public class ChooseShareActivity extends Activity {
         // 设置分享内容
         mController.setShareContent(titles.get(index));
         // 设置分享图片，参数2为本地图片的路径(绝对路径)
-        if(arrayList!=null) {
-            if(path==null){
-                path=arrayList.get(0);
+        if (arrayList != null) {
+            if (path == null) {
+                path = arrayList.get(0);
             }
             mController.setShareMedia(new UMImage(ChooseShareActivity.this, BitmapFactory.decodeFile(path)));
         }

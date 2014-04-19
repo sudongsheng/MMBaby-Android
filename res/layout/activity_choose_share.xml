@@ -50,9 +50,12 @@
     </LinearLayout>
     <Spinner android:id="@+id/share_item"
               android:layout_width="fill_parent"
-              android:layout_height="wrap_content"
+              android:layout_height="50dp"
+              android:background="@drawable/edit_corner2"
+              android:paddingLeft="15dp"
               android:layout_marginRight="18dp"
               android:layout_marginLeft="18dp"
+              android:layout_marginTop="20dp"
               android:dividerHeight="2dp"/>
     <GridView
             android:id="@+id/share_photo"

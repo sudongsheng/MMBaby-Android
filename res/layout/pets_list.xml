@@ -3,47 +3,12 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:layout_margin="10dp">
-
-    <ImageView
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
-            android:layout_marginLeft="10dp"
-            android:layout_width="80dp"
-            android:layout_height="120dp"
-            android:id="@+id/goodsImage"
-            android:background="@drawable/ic_launcher"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/goodsName"
-              android:layout_toRightOf="@id/goodsImage"
-              android:layout_marginTop="10dp"
-              android:text="狗粮"/>
-    <TextView android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/ownedNumber"
-              android:layout_marginTop="10dp"
-              android:layout_toRightOf="@id/goodsImage"
-              android:layout_below="@id/goodsName"
-              android:text="已拥有:1"/>
-    <TextView
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:id="@+id/up"
-              android:layout_toRightOf="@id/goodsImage"
-              android:layout_below="@id/ownedNumber"
-              android:text="+200经验"
-              android:layout_marginTop="10dp"/>
-
-    <Button
+                android:layout_margin="15dp">
+      <Button
             android:id="@+id/useButton"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/up"
-            android:layout_toRightOf="@id/goodsImage"
-            android:layout_marginTop="10dp"
-            android:text="使   用"/>
+            android:layout_width="75dp"
+            android:layout_height="75dp"
+            />
 
 
 </RelativeLayout>

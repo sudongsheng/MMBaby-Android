@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -22,17 +24,22 @@ import java.util.Map;
  */
 public class MarketActivity extends Activity {
 
+    protected static final int CHANGE_UI = 1;
+    protected static final int TOAST = 2;
     private List<Map<String, Object>> marketData;
-    public  String goodsName[]=new String[]{"物品0","物品1","物品2","物品3","物品4"};
-    public  int[] ownedNumber = new int[]{0,0,0,1,1};
-    public  int goodsImage[]= new int[]{R.drawable.ic_launcher,R.drawable.ic_launcher,R.drawable.ic_launcher,
-            R.drawable.ic_launcher,R.drawable.ic_launcher};
+    public  String goodsName[]=new String[]{"精品粮","智慧书","大剪刀","篮球"};
+    public  int[] ownedNumber = new int[]{0,0,0,0};
+    public  int goodsImage[]= new int[]{R.drawable.foodstuff_image,R.drawable.book_image,R.drawable.scissors_image,
+            R.drawable.basketball_image};
     private ListView listView;
     private ViewHolder holder;
 
     private TextView moneyTextview;
     private SharedPreferences preferences;
-    int money;
+    private int money;
+    //主线程创建消息处理器
+    private Handler handler;
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -44,11 +51,30 @@ public class MarketActivity extends Activity {
         for (int i = 0;i<goodsName.length;i++){
             ownedNumber[i] = preferences.getInt("ownedNumber"+i,0);
         }
-        marketData = getData();
+        marketData = getData(goodsName,ownedNumber,goodsImage);
         moneyTextview = (TextView)findViewById(R.id.moneyTextView);
         listView = (ListView)findViewById(R.id.listView);
         MyAdapter adapter = new MyAdapter(MarketActivity.this);
         listView.setAdapter(adapter);
+
+        //消息处理器
+        handler = new Handler(){
+            public void handleMessage(android.os.Message msg) {
+                if (msg.what == CHANGE_UI){
+                    for (int i = 0;i<goodsName.length;i++){
+                        ownedNumber[i] = preferences.getInt("ownedNumber"+i,0);
+                    }
+                    marketData = getData(goodsName,ownedNumber,goodsImage);
+                    MyAdapter adapter = new MyAdapter(MarketActivity.this);
+                    listView.setAdapter(adapter);
+
+                }else{
+                    Toast.makeText(MarketActivity.this,"余额不足！！！",0).show();
+                }
+
+            }
+        };
+
 
 
         moneyTextview.setText("金币："+money);
@@ -56,7 +82,7 @@ public class MarketActivity extends Activity {
 
     }
 
-    private List<Map<String, Object>> getData() {
+    private List<Map<String, Object>> getData( String[] goodsName, int[] ownedNumber, int[] goodsImage) {
                 List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i=0;i<goodsName.length;i++){
                     Map<String, Object> map = new HashMap<String, Object>();
@@ -144,12 +170,21 @@ public class MarketActivity extends Activity {
                           @Override
                           public void onClick(View v) {
                               // TODO Auto-generated method stub
-                              ownedNumber[mPosition]++;
+                              money = money - 20;
+                              Message message = new Message();
                               SharedPreferences.Editor editor = preferences.edit();
+                              if (money < 0){
+                                message.what = TOAST;
+
+                              }else {
+                              ownedNumber[mPosition]++;
+                              editor.putInt("money",money);
                               editor.putInt("ownedNumber"+mPosition,ownedNumber[mPosition]);
                               editor.commit();
-                              //Log.d("TAG","ownedNumber"+mPosition+ownedNumber[mPosition]);
-                              //Toast.makeText(MarketActivity.this,""+mPosition,Toast.LENGTH_SHORT).show();
+                              message.what = CHANGE_UI;
+                              }
+                              //message.obj = ownedNumber[mPosition];
+                              handler.sendMessage(message);
                           }
 
                       }

@@ -74,6 +74,8 @@ public class NewRecordActivity extends Activity {
     private int screenWidth;
     private int screenHeight;
 
+    private int rate;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -100,21 +102,23 @@ public class NewRecordActivity extends Activity {
         money = preferences.getInt("money", 0);
         integral = preferences.getInt(record.field + "_integral", 0);
         grade = preferences.getInt(record.field + "_grade", 0);
+        rate = preferences.getInt(record.field + "_rate", 100);
 
         //判断新建记录或者读取记录并把读取的数据显示出来
         position = getIntent().getIntExtra("position", -1);
+        dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
+        sqLiteDatabase = dbHelper.getReadableDatabase();
+        iterator(sqLiteDatabase);
+        cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
         if (position != -1) {
-            dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
             cursor.moveToPosition(position);
             record.time = cursor.getString(cursor.getColumnIndex("time"));
             record.title = cursor.getString(cursor.getColumnIndex("title"));
             record.content = cursor.getString(cursor.getColumnIndex("content"));
             record.rating = cursor.getInt(cursor.getColumnIndex("rating"));
             record.photoNum = cursor.getInt(cursor.getColumnIndex("photoNum"));
-            money_old = record.rating * 100;
-            integral_old = record.rating * 100;
+            money_old = record.rating * rate;
+            integral_old = record.rating * rate;
             grade_old = record.rating;
             record.primary_key = cursor.getInt(cursor.getColumnIndex("primary_key"));
             date.setText(record.time);
@@ -123,14 +127,10 @@ public class NewRecordActivity extends Activity {
             rating.setRating(record.rating);
             linearLayout.setFocusable(true);
             linearLayout.setFocusableInTouchMode(true);
-
             position_flag = position;
         } else {
-            dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
-            sqLiteDatabase = dbHelper.getReadableDatabase();
-            cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
             position_flag = cursor.getCount();
-            Log.i("TAG", "position_flag:" + position_flag);
+ //           Log.i("TAG", "position_flag:" + position_flag);
         }
 
         ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
@@ -145,7 +145,7 @@ public class NewRecordActivity extends Activity {
         rating = (RatingBar) findViewById(R.id.ratingBar);
         back = (ImageView) findViewById(R.id.back);
         photos = (GridView) findViewById(R.id.photoGridView);
-        linearLayout=(LinearLayout)findViewById(R.id.edit_linear);
+        linearLayout = (LinearLayout) findViewById(R.id.edit_linear);
     }
 
     private void setListeners() {
@@ -201,16 +201,16 @@ public class NewRecordActivity extends Activity {
                     if (position == -1) {
                         sqLiteDatabase.insert("record", null, cv);
                         Toast.makeText(NewRecordActivity.this, "新建记录成功", Toast.LENGTH_LONG).show();
-                        money = money + record.rating * 100;
-                        integral = integral + record.rating * 100;
+                        money = money + record.rating * rate;
+                        integral = integral + record.rating * rate;
                         grade = grade + record.rating;
                         editor.putInt("money", money);
                         editor.putInt(record.field + "_integral", integral);
                         editor.putInt(record.field + "_grade", grade);
                     } else {
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
-                        money = money + record.rating * 100 - money_old;
-                        integral = integral + record.rating * 100 - integral_old;
+                        money = money + record.rating * rate - money_old;
+                        integral = integral + record.rating * rate - integral_old;
                         grade = grade + record.rating - grade_old;
                         editor.putInt("money", money);
                         editor.putInt(record.field + "_integral", integral);
@@ -257,16 +257,16 @@ public class NewRecordActivity extends Activity {
         myAdapter.notifyDataSetChanged();
     }
 
-    //    private void iterator(SQLiteDatabase sqLiteDatabase){
-//        String s = new String();
-//        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM record", null);
-//        while (cursor.moveToNext()) {
-//            for (int i = 0; i < cursor.getCount(); i++)
-//                s = s + cursor.getString(i) + "   ";
-//            s=s+"\n";
-//        }
-//        Log.i("task", s);
-//    }
+    private void iterator(SQLiteDatabase sqLiteDatabase) {
+        String s = new String();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM record", null);
+        while (cursor.moveToNext()) {
+            for (int i = 0; i < cursor.getCount(); i++)
+                s = s + cursor.getString(i) + "   ";
+            s = s + "\n";
+        }
+        Log.i("record", s);
+    }
 
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
@@ -391,7 +391,7 @@ public class NewRecordActivity extends Activity {
                         Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
                         ImageView img = new ImageView(NewRecordActivity.this);
                         Matrix matrix = new Matrix();
-                        Log.i("TAG","screenWidth:"+screenWidth+"screenHeight:"+screenHeight);
+                        Log.i("TAG", "screenWidth:" + screenWidth + "screenHeight:" + screenHeight);
                         if (h > w) {
                             matrix.postScale(screenWidth / 7f / w * 6f, screenHeight / 4f / h * 3f);
                         } else {

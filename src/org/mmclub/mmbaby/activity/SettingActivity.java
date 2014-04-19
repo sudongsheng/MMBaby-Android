@@ -7,7 +7,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -23,9 +22,7 @@ public class SettingActivity extends Activity {
 
     private ImageButton back;
     private LinearLayout setting_password;
-    private LinearLayout set_morality;
-    private LinearLayout set_intelligence;
-    private LinearLayout set_physical;
+    private LinearLayout setting_rate;
     private LinearLayout login;
     private LinearLayout register;
     private LinearLayout share;
@@ -33,8 +30,12 @@ public class SettingActivity extends Activity {
     private CheckBox checkBox;
 
     private SharedPreferences preferences;
-    private boolean isFirstTime;
+    private boolean isPwdExist;
     private boolean isCancel = false;
+
+    private int morality_rate = 100;
+    private int intelligence_rate = 100;
+    private int physical_rate = 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +43,7 @@ public class SettingActivity extends Activity {
         setContentView(R.layout.activity_setting);
         findViewByIds();
         preferences = PreferenceManager.getDefaultSharedPreferences(SettingActivity.this);
-        isFirstTime = preferences.getBoolean("isFirstTime", true);
+        isPwdExist = preferences.getBoolean("isPwdExist", false);
         setListeners();
         ViewGroup v = (ViewGroup) findViewById(R.id.setting_activity);
         FontManager.changeFonts(v, this, AppConstant.Mama);
@@ -51,9 +52,7 @@ public class SettingActivity extends Activity {
     private void findViewByIds() {
         back = (ImageButton) findViewById(R.id.back_setting);
         setting_password = (LinearLayout) findViewById(R.id.setting_password);
-        set_morality = (LinearLayout) findViewById(R.id.set_morality);
-        set_intelligence = (LinearLayout) findViewById(R.id.set_intelligence);
-        set_physical = (LinearLayout) findViewById(R.id.set_physical);
+        setting_rate = (LinearLayout) findViewById(R.id.setting_rate);
         login = (LinearLayout) findViewById(R.id.login);
         register = (LinearLayout) findViewById(R.id.register);
         share = (LinearLayout) findViewById(R.id.share);
@@ -64,14 +63,14 @@ public class SettingActivity extends Activity {
         back.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Intent intent=new Intent(SettingActivity.this,MainActivity.class);
+                Intent intent = new Intent(SettingActivity.this, MainActivity.class);
                 startActivity(intent);
             }
         });
         setting_password.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isFirstTime) {
+                if (isPwdExist) {
                     View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_set_password, null);
                     final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
                     dialog.show();
@@ -91,9 +90,9 @@ public class SettingActivity extends Activity {
                         public void onClick(View view) {
                             if (old_pwd.getText().toString().equals(preferences.getString("password", null))) {
                                 if (isCancel) {
-                                    isFirstTime=true;
+                                    isPwdExist = false;
                                     SharedPreferences.Editor editor = preferences.edit();
-                                    editor.putBoolean("isFirstTime",true);
+                                    editor.putBoolean("isPwdExist", false);
                                     editor.commit();
                                     dialog.dismiss();
                                     Toast.makeText(SettingActivity.this, "密码设定取消成功", Toast.LENGTH_LONG).show();
@@ -118,7 +117,7 @@ public class SettingActivity extends Activity {
                         }
                     });
                 } else {
-                    View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_first_time_password, null);
+                    View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_enter_password, null);
                     final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
                     dialog.show();
                     final EditText editText = (EditText) v.findViewById(R.id.pwd);
@@ -129,9 +128,9 @@ public class SettingActivity extends Activity {
                             if (!editText.getText().toString().equals("")) {
                                 SharedPreferences.Editor editor = preferences.edit();
                                 editor.putString("password", editText.getText().toString());
-                                editor.putBoolean("isFirstTime", false);
+                                editor.putBoolean("isPwdExist", true);
                                 editor.commit();
-                                isFirstTime = false;
+                                isPwdExist = false;
                                 dialog.dismiss();
                                 Toast.makeText(SettingActivity.this, "密码设置成功", Toast.LENGTH_LONG).show();
                             } else {
@@ -142,22 +141,30 @@ public class SettingActivity extends Activity {
                 }
             }
         });
-        set_morality.setOnClickListener(new View.OnClickListener() {
+        setting_rate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
-            }
-        });
-        set_intelligence.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
-            }
-        });
-        set_physical.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-
+                if (isPwdExist) {
+                    View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_enter_password, null);
+                    final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
+                    dialog.show();
+                    final EditText editText = (EditText) v.findViewById(R.id.pwd);
+                    Button btn = (Button) v.findViewById(R.id.sure);
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            if (editText.getText().toString().equals(preferences.getString("password", null))) {
+                                dialog.dismiss();
+                                setRateDialog();
+                            } else {
+                                Toast.makeText(SettingActivity.this, "密码错误", Toast.LENGTH_LONG).show();
+                                editText.setText("");
+                            }
+                        }
+                    });
+                } else {
+                    setRateDialog();
+                }
             }
         });
         login.setOnClickListener(new View.OnClickListener() {
@@ -190,9 +197,71 @@ public class SettingActivity extends Activity {
         });
     }
 
+    private void setRateDialog() {
+        View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_set_rate, null);
+        final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
+        dialog.show();
+        Spinner set_morality = (Spinner) v.findViewById(R.id.set_morality);
+        Spinner set_intelligence = (Spinner) v.findViewById(R.id.set_intelligence);
+        Spinner set_physical = (Spinner) v.findViewById(R.id.set_physical);
+        Button btn = (Button) v.findViewById(R.id.yes_rate);
+        setSpinnerAdapter(set_morality, AppConstant.MORALITY);
+        setSpinnerAdapter(set_intelligence, AppConstant.INTELLIGENCE);
+        setSpinnerAdapter(set_physical, AppConstant.PHYSICAL);
+        btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                SharedPreferences.Editor editor = preferences.edit();
+                editor.putInt("morality_rate", morality_rate);
+                editor.putInt("intelligence_rate", intelligence_rate);
+                editor.putInt("physical_rate", physical_rate);
+                editor.commit();
+                dialog.dismiss();
+                Toast.makeText(SettingActivity.this, "设置成功", Toast.LENGTH_LONG).show();
+            }
+        });
+    }
+
+    private void setSpinnerAdapter(Spinner spinner, final int identify) {
+        String spinner_text[] = new String[6];
+        spinner_text[0] = 50 + "";
+        for (int i = 1; i < 6; i++) {
+            spinner_text[i] = i * 100 + "";
+        }
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(SettingActivity.this, android.R.layout.simple_spinner_item, spinner_text);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        spinner.setAdapter(adapter);
+        spinner.setSelection(1);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                SetNum(identify, i == 0 ? 50 : i * 100);
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+                SetNum(identify, 100);
+            }
+        });
+    }
+
+    private void SetNum(int identify, int i) {
+        switch (identify) {
+            case AppConstant.MORALITY:
+                morality_rate = i;
+                break;
+            case AppConstant.INTELLIGENCE:
+                intelligence_rate = i;
+                break;
+            case AppConstant.PHYSICAL:
+                physical_rate = i;
+                break;
+        }
+    }
+
     @Override
     public void onBackPressed() {
-        Intent intent=new Intent(SettingActivity.this,MainActivity.class);
+        Intent intent = new Intent(SettingActivity.this, MainActivity.class);
         startActivity(intent);
     }
 }

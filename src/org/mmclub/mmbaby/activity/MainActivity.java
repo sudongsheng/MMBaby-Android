@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
@@ -23,7 +22,7 @@ public class MainActivity extends Activity {
     private ImageButton setting;
 
     private SharedPreferences preferences;
-    private boolean isFirstTime;
+    private boolean isPwdExist;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -31,7 +30,7 @@ public class MainActivity extends Activity {
         setContentView(R.layout.activity_main);
 
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
-        isFirstTime = preferences.getBoolean("isFirstTime", true);
+        isPwdExist = preferences.getBoolean("isPwdExist", false);
 
         mama = (ImageButton) findViewById(R.id.mama);
         baby = (ImageButton) findViewById(R.id.baby);
@@ -40,8 +39,8 @@ public class MainActivity extends Activity {
         mama.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!isFirstTime) {
-                    View v = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_first_time_password, null);
+                if (isPwdExist) {
+                    View v = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_enter_password, null);
                     final Dialog dialog = new AlertDialog.Builder(MainActivity.this).setView(v).create();
                     dialog.show();
                     final EditText editText = (EditText) v.findViewById(R.id.pwd);

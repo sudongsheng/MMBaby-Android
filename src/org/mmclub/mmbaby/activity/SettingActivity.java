@@ -177,7 +177,8 @@ public class SettingActivity extends Activity {
         register.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                Intent intent = new Intent(SettingActivity.this, RegisterActivity.class);
+                startActivity(intent);
             }
         });
         share.setOnClickListener(new View.OnClickListener() {

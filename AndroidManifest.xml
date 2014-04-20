@@ -16,6 +16,7 @@
         <activity android:name=".activity.BabyActivity"/>
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.WebviewActivity"/>
+        <activity android:name=".activity.RegisterActivity"/>
         <activity android:name=".activity.LoginActivity"/>
         <activity android:name=".activity.NewRecordActivity"
                   android:configChanges="orientation|keyboardHidden"

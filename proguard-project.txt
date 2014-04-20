@@ -18,6 +18,8 @@
 #-keepclassmembers class fqcn.of.javascript.interface.for.webview {
 #   public *;
 #}
+
+
 #-dontshrink
 #-dontoptimize
 #-dontwarn com.google.android.maps.**
@@ -58,3 +60,33 @@
 #-keep public class [your_pkg].R$*{
 #    public static final int *;
 #}
+
+
+#-dontwarn com.jcraft.jzlib.**
+#-keep class com.jcraft.jzlib.**  { *;}
+
+#-dontwarn sun.misc.**
+#-keep class sun.misc.** { *;}
+
+#-dontwarn sun.security.**
+#-keep class sun.security.** { *; }
+
+#-dontwarn com.google.**
+#-keep class com.google.** { *;}
+
+#-dontwarn com.avos.**
+#-keep class com.avos.** { *;}
+
+
+
+-dontwarn org.apache.**
+-keep class org.apache.** { *;}
+
+-dontwarn org.jivesoftware.smack.**
+-keep class org.jivesoftware.smack.** { *;}
+
+-dontwarn com.loopj.**
+-keep class com.loopj.** { *;}
+
+-dontwarn org.xbill.**
+-keep class org.xbill.** { *;}

@@ -10,16 +10,16 @@
             android:layout_margin="80dp"
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_weight="3"
             android:src="@drawable/head_photo"
             android:scaleType="centerInside"/>
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
-            android:layout_weight="1"
+            android:layout_weight="2"
             android:orientation="vertical">
         <EditText
-                android:id="@+id/login_user"
+                android:id="@+id/register_user"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="15dp"
@@ -27,31 +27,39 @@
                 android:hint="用户名（手机/邮箱）"
                 android:singleLine="true"/>
         <EditText
-                android:id="@+id/login_pwd"
+                android:id="@+id/register_pwd"
                 android:layout_height="40dp"
                 android:layout_width="fill_parent"
-                android:background="@drawable/edit_bottom_corner"
+                android:background="@drawable/edit_center_corner"
                 android:hint="密码"
                 android:password="true"
                 android:singleLine="true"
                 android:paddingLeft="15dp"/>
-        <LinearLayout android:layout_width="fill_parent"
-                      android:layout_height="40dp"
-                      android:gravity="center">
-            <CheckBox android:id="@+id/login_check"
-                    android:layout_width="wrap_content"
-                      android:layout_height="wrap_content"
-                      android:text="   是否记住用户名和密码"/>
-        </LinearLayout>
-
-        <Button
-                android:id="@+id/login"
-                android:layout_width="fill_parent"
-                android:layout_marginTop="5dp"
+        <EditText
+                android:id="@+id/register_pwd_again"
                 android:layout_height="40dp"
+                android:layout_width="fill_parent"
+                android:background="@drawable/edit_center_corner"
+                android:hint="重复密码"
+                android:password="true"
+                android:singleLine="true"
+                android:paddingLeft="15dp"/>
+        <EditText
+                android:id="@+id/register_email"
+                android:layout_height="40dp"
+                android:layout_width="fill_parent"
+                android:background="@drawable/edit_bottom_corner"
+                android:hint="邮箱地址（可选）"
+                android:singleLine="true"
+                android:paddingLeft="15dp"/>
+        <Button
+                android:id="@+id/register"
+                android:layout_width="fill_parent"
+                android:layout_height="40dp"
+                android:layout_marginTop="30dp"
                 android:textColor="@color/orange"
                 android:textSize="20sp"
-                android:text="登     录"
+                android:text="注     册"
                 android:background="@drawable/selectors_login_button"/>
     </LinearLayout>
 </LinearLayout>

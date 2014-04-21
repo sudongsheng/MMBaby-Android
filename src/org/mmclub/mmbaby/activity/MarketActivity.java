@@ -67,6 +67,8 @@ public class MarketActivity extends Activity {
                     marketData = getData(goodsName,ownedNumber,goodsImage);
                     MyAdapter adapter = new MyAdapter(MarketActivity.this);
                     listView.setAdapter(adapter);
+                    money=preferences.getInt("money",0);
+                    moneyTextview.setText("金币："+money);
 
                 }else{
                     Toast.makeText(MarketActivity.this,"余额不足！！！",0).show();

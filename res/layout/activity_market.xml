@@ -23,8 +23,9 @@
                   android:id="@+id/moneyTextView"
                   android:layout_height="wrap_content"
                   android:text="拥有金币：1000"
-                  android:layout_marginLeft="100dp"
-                  android:layout_marginTop="40dp"/>
+                  android:layout_marginLeft="250dp"
+                  android:layout_marginTop="40dp"
+                  android:textColor="@color/black"/>
     <ListView
             android:id="@+id/listView"
             android:layout_width="fill_parent"

@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,13 +39,12 @@ public class PetsActivity extends Activity {
     private SharedPreferences preferences;
     private HorizontialListView horizontialListView;
     private List<Map<String, Object>> petsData;
-    public  String goodsName[]=new String[]{"物品0","物品1","物品2","物品3","物品4"};
     public  int[] ownedNumber = new int[]{0,0,0,0,0};
     public  int buttonImage[]= new int[]{R.drawable.sunlight_button,R.drawable.water_button,
             R.drawable.scissors_button,R.drawable.shovel_button};
     private Pets petsDog;
     private Handler handler;
-    private String morality = "morality";
+    private static String morality = "morality";
     private int integral;
 
 
@@ -56,21 +56,20 @@ public class PetsActivity extends Activity {
         petName = getIntent().getStringExtra("petsName");
         initView();
 
+        //获取对应积分
         preferences = PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
-        integral = preferences.getInt( morality + "_integral",0);
-
+        integral = preferences.getInt(morality + "_integral",0);
+        Log.d("TAG","integral="+integral);
+        //实例化pet类的对象
         petsDog = new Pets();
         petsDog.levelUp(integral);
+        //Log.d("TAG","Current="+petsDog.getCurrentIntegral());
+        //Log.d("TAG","Need="+petsDog.getNeedIntegral());
 
-        initPets(petName,petsDog.getPetsLevel(),R.drawable.sunflower_image,
-                "品德",petsDog.getNeedIntegral(),petsDog.getCurrentIntegral());
+        initPets(petName, petsDog.getPetsLevel(), R.drawable.sunflower_image,
+                "品德", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
 
-        /*petLeveltv.setText("LV"+ petsDog.getPetsLevel());
-        petNametv.setText(petName);
-        petImageiv.setBackgroundResource(R.drawable.sunflower_image);
-        progressBar.setProgress(petsDog.getCurrentIntegral());
-        progressBar.setMax(petsDog.getNeedIntegral());*/
-
+        //给两个button设置监听，执行相应操作
         marketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -86,8 +85,8 @@ public class PetsActivity extends Activity {
             }
         });
 
-        preferences= PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
-        for (int i = 0;i<goodsName.length;i++){
+       //获取已经存好的拥有的道具数量，初始化horizontialListView
+        for (int i = 0;i<4;i++){
             ownedNumber[i] = preferences.getInt("ownedNumber"+i,0);
         }
         petsData = getData(buttonImage);
@@ -95,16 +94,33 @@ public class PetsActivity extends Activity {
         MyAdapter adapter = new MyAdapter(PetsActivity.this);
         horizontialListView.setAdapter(adapter);
 
+        //接受消息，执行操作
         handler = new Handler(){
             public void handleMessage(android.os.Message msg){
                 if (msg.what == 1){
                     Toast.makeText(PetsActivity.this,"该道具已用完！！！",0).show();
+                }else {
+                    integral = preferences.getInt(morality + "_integral",0);
+                    petsDog.levelUp(integral);
+                    progressBar.setMax(petsDog.getNeedIntegral());
+                    progressBar.setProgress(petsDog.getCurrentIntegral());
                 }
             }
         };
 
 
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        preferences= PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
+        for (int i = 0;i<4;i++){
+            ownedNumber[i] = preferences.getInt("ownedNumber"+i,0);
+        }
+
+    }
+
+    //获得view控件显示
     private void initView(){
         petLeveltv = (TextView)findViewById(R.id.petLevel);
         petNametv = (TextView)findViewById(R.id.petName);
@@ -114,17 +130,20 @@ public class PetsActivity extends Activity {
         petImageiv = (ImageView)findViewById(R.id.petImage);
         progressBar = (ProgressBar)findViewById(R.id.levelProgressBar);
     }
+    //初始化view
     private void initPets(String petName,int petLevel,int petImageId,String petType,int needIntegral,int currentIntegral){
         petLeveltv.setText("LV"+ petLevel);
         petNametv.setText(petName);
         petTypetv.setText(petType);
         petImageiv.setBackgroundResource(petImageId);
-        progressBar.setProgress(currentIntegral);
         progressBar.setMax(needIntegral);
+        progressBar.setProgress(currentIntegral);
+
 
 
     }
 
+    //生成所需的数据
     private List<Map<String, Object>> getData(int[] buttonImage) {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i=0;i<4;i++){
@@ -137,12 +156,17 @@ public class PetsActivity extends Activity {
 
         return list;
     }
+
+    //定义一个ViewHolder类
     public final class ViewHolder{
         //public ImageView goodsImage;
         //public TextView goodsName;
         //public TextView ownedNumber;
         public Button useButton;
     }
+
+
+    //自定义andapter获取数据
     public class MyAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
@@ -202,6 +226,8 @@ public class PetsActivity extends Activity {
         }
 
     }
+
+    //设置按钮的监听，执行相应的操作
     private class MyListener implements View.OnClickListener {
         int mPosition;
         public MyListener(int inPosition){
@@ -216,10 +242,12 @@ public class PetsActivity extends Activity {
             if (ownedNumber[mPosition]<0){
                 message.what = 1;
             }else {
-            integral = integral + 500;
-            editor.putInt(morality + "_integral", integral);
-            editor.putInt("ownedNumber"+mPosition,ownedNumber[mPosition]);
-            editor.commit();
+                integral = integral + 500;
+                editor.putInt(morality + "_integral", integral);
+                editor.putInt("ownedNumber"+mPosition,ownedNumber[mPosition]);
+                editor.commit();
+                message.what = 2;
+
             //Log.d("TAG","ownedNumber"+mPosition+ownedNumber[mPosition]);
             //Toast.makeText(MarketActivity.this,""+mPosition,Toast.LENGTH_SHORT).show();
             }

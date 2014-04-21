@@ -19,7 +19,7 @@
             android:layout_weight="1"
             android:orientation="vertical">
         <EditText
-                android:id="@+id/username"
+                android:id="@+id/login_user"
                 android:layout_width="fill_parent"
                 android:layout_height="40dp"
                 android:paddingLeft="15dp"
@@ -27,7 +27,7 @@
                 android:hint="用户名（手机/邮箱）"
                 android:singleLine="true"/>
         <EditText
-                android:id="@+id/password"
+                android:id="@+id/login_pwd"
                 android:layout_height="40dp"
                 android:layout_width="fill_parent"
                 android:background="@drawable/edit_bottom_corner"
@@ -35,11 +35,20 @@
                 android:password="true"
                 android:singleLine="true"
                 android:paddingLeft="15dp"/>
+        <LinearLayout android:layout_width="fill_parent"
+                      android:layout_height="40dp"
+                      android:gravity="center">
+            <CheckBox android:id="@+id/login_check"
+                    android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="   是否记住用户名和密码"/>
+        </LinearLayout>
+
         <Button
-                android:id="@+id/login_schedule"
+                android:id="@+id/login"
                 android:layout_width="fill_parent"
+                android:layout_marginTop="5dp"
                 android:layout_height="40dp"
-                android:layout_marginTop="30dp"
                 android:textColor="@color/orange"
                 android:textSize="20sp"
                 android:text="登     录"

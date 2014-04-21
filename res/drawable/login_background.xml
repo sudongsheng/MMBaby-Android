@@ -6,7 +6,7 @@
     <gradient
             android:startColor="@color/light_orange"
             android:endColor="@color/light_orange"
-            android:centerColor="@color/orange"
+            android:centerColor="@color/deep_orange"
             android:gradientRadius="2000"
             android:type="radial"
             android:angle="45"/>

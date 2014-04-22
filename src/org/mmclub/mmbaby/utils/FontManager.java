@@ -26,9 +26,9 @@ public class FontManager {
                 ((Button) v).setTypeface(tf);
             } else if (v instanceof EditText) {
                 ((EditText) v).setTypeface(tf);
-            } else if (v instanceof ViewGroup) {
+            } /*else if (v instanceof ViewGroup) {
                 changeFonts((ViewGroup) v, act,flag);
-            }
+            }*/
         }
     }
 }

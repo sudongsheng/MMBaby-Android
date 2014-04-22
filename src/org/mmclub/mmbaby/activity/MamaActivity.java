@@ -6,17 +6,16 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.*;
 import android.widget.*;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.database.DatabaseHelper;
 import org.mmclub.mmbaby.utils.AppConstant;
 import org.mmclub.mmbaby.utils.FontManager;
+import org.mmclub.mmbaby.utils.MemoryTimeTest;
 
 /**
  * Created by sudongsheng on 14-3-17.
@@ -62,16 +61,17 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
         dbHelper = new DatabaseHelper(MamaActivity.this, "MMBaby");
         sqLiteDatabase = dbHelper.getReadableDatabase();
         cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{mField}, null, null, "time");
-
         findViewByIds();
         setListeners();
-
+        MemoryTimeTest.start();
         adapter = new MyAdapter(this, cursor);
         historyItem.setAdapter(adapter);
+        MemoryTimeTest.end();
 
+        MemoryTimeTest.start();
         ViewGroup v = (ViewGroup) findViewById(R.id.mama_activity);
         FontManager.changeFonts(v, MamaActivity.this, AppConstant.Mama);
-
+        MemoryTimeTest.end();
         preferences = PreferenceManager.getDefaultSharedPreferences(MamaActivity.this);
         setGradeText(preferences.getInt("morality_grade", 0));
 

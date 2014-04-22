@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.utils.MemoryTimeTest;
 
 /**
  * Created by sudongsheng on 14-3-17.
@@ -28,7 +29,6 @@ public class MainActivity extends Activity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
         preferences = PreferenceManager.getDefaultSharedPreferences(MainActivity.this);
         isPwdExist = preferences.getBoolean("isPwdExist", false);
 

@@ -5,7 +5,7 @@
               android:id="@+id/linearLayout"
               android:layout_width="match_parent"
               android:layout_height="match_parent"
-              android:background="@drawable/main_background"
+              android:background="@drawable/morality_background"
               android:layout_gravity="center_horizontal">
     <RelativeLayout
             android:layout_width="match_parent"
@@ -60,14 +60,15 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
 
-             <ProgressBar
+             <org.mmclub.mmbaby.utils.TextProgressBar
                  android:id="@+id/levelProgressBar"
                  style="?android:attr/progressBarStyleHorizontal"
                  android:layout_width="fill_parent"
                  android:layout_height="wrap_content"
                  android:max="100"
                  android:progress="50"
-                 android:layout_marginLeft="10dp"/>
+                 android:layout_marginLeft="10dp"
+                 />
     </LinearLayout>
     <ImageView
             android:id="@+id/petImage"

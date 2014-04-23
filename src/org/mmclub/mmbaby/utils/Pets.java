@@ -8,17 +8,20 @@ public class Pets {
     private String petsName;
     private int petsLevel = 0;
     private int petsImage;
-    private int needIntegral = 1000;
+    private int firstNeedIntegral = 1000;
     private int currentIntegral;
+    private int needIntegral;
 
     public void levelUp (int integral){
-        while (integral>=needIntegral){
-            integral = integral - needIntegral;
+        while (integral>=firstNeedIntegral){
             petsLevel++;
-            needIntegral = needIntegral*2;
+            integral = integral - firstNeedIntegral;
+            firstNeedIntegral = firstNeedIntegral*2;
         }
         currentIntegral = integral;
-        }
+        needIntegral=firstNeedIntegral;
+    }
+
     public int getPetsLevel(){
         return petsLevel;
     }

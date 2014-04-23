@@ -2,6 +2,7 @@
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:orientation="vertical"
+              android:id="@+id/market_linearLayout"
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:gravity="center_horizontal"
@@ -16,20 +17,21 @@
                   android:layout_height="0dp"
                   android:layout_weight="5"
                   android:orientation="vertical"
-                  android:layout_marginLeft="10dp"
-                  android:layout_marginRight="10dp"
+                  android:layout_marginLeft="5dp"
+                  android:layout_marginRight="5dp"
                   android:background="@drawable/market_list_bg">
         <TextView android:layout_width="wrap_content"
                   android:id="@+id/moneyTextView"
                   android:layout_height="wrap_content"
                   android:text="拥有金币：1000"
-                  android:layout_marginLeft="100dp"
-                  android:layout_marginTop="40dp"/>
+                  android:layout_marginLeft="250dp"
+                  android:layout_marginTop="40dp"
+                  android:textColor="@color/black"/>
     <ListView
             android:id="@+id/listView"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
-            android:layout_margin="15dp"
+            android:layout_margin="25dp"
             android:dividerHeight="5dp"
             android:divider="@drawable/list_view_bg"/>
     </LinearLayout>

@@ -27,16 +27,17 @@ public class BabyActivity extends Activity {
         petChick = (Button)findViewById(R.id.petChick);
         petSunFlower = (Button)findViewById(R.id.petSunFlower);
 
-        petDog.setOnClickListener(new PetClickListener("旺财",AppConstant.PET_DOG));
-        petChick.setOnClickListener(new PetClickListener("鸡仔",AppConstant.PET_CAT));
-        petSunFlower.setOnClickListener(new PetClickListener("小葵",AppConstant.PET_RABBIT));
+        petDog.setOnClickListener(new PetClickListener("旺财",3,"intelligence"));
+        petChick.setOnClickListener(new PetClickListener("鸡仔",2,"physical"));
+        petSunFlower.setOnClickListener(new PetClickListener("小葵",1,"morality"));
     }
     public class PetClickListener implements View.OnClickListener {
         private Intent intent;
-        public PetClickListener(String petsName, int level){
+        public PetClickListener(String petsName, int petId,String integral_type){
             intent =new Intent(BabyActivity.this,PetsActivity.class);
-            intent.putExtra("level",level);
+            intent.putExtra("petId",petId);
             intent.putExtra("petsName",petsName);
+            intent.putExtra("integral_type",integral_type);
         }
         @Override
         public void onClick(View view) {

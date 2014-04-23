@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/market_list_lineaeLayout"
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:background="@drawable/goods_list_bg"
@@ -26,18 +27,20 @@
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/goodsName"
-                  android:text="狗粮"/>
+                  android:text="狗粮"
+                  android:textColor="@color/black"/>
 
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/up"
                   android:text="+200经验"
-                  />
+                  android:textColor="@color/black"/>
 
         <TextView android:layout_width="fill_parent"
                   android:layout_height="wrap_content"
                   android:id="@+id/ownedNumber"
-                  android:text="已拥有:1"/>
+                  android:text="已拥有:1"
+                  android:textColor="@color/black"/>
 
             </LinearLayout>
     <LinearLayout

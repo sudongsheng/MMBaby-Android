@@ -8,14 +8,15 @@ import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.database.BabyData;
 import org.mmclub.mmbaby.database.Record;
-import org.mmclub.mmbaby.utils.HorizontialListView;
-import org.mmclub.mmbaby.utils.Pets;
+import org.mmclub.mmbaby.utils.*;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -28,24 +29,23 @@ import java.util.Map;
 public class PetsActivity extends Activity {
 
     private String petName;
+    private LinearLayout linearLayout;
     private TextView petLeveltv;
     private TextView petNametv;
     private TextView petTypetv;
     private Button marketButton;
     private Button petBackButton;
     private ImageView petImageiv;
-    private ProgressBar progressBar;
+    private TextProgressBar progressBar;
     private SharedPreferences preferences;
-    private HorizontialListView horizontialListView;
+    private GridView gridView;
     private List<Map<String, Object>> petsData;
-    public  String goodsName[]=new String[]{"物品0","物品1","物品2","物品3","物品4"};
     public  int[] ownedNumber = new int[]{0,0,0,0,0};
-    public  int buttonImage[]= new int[]{R.drawable.sunlight_button,R.drawable.water_button,
-            R.drawable.scissors_button,R.drawable.shovel_button};
     private Pets petsDog;
     private Handler handler;
-    private String morality = "morality";
     private int integral;
+    private int petId;
+    private String integral_type;
 
 
 
@@ -54,27 +54,48 @@ public class PetsActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pets);
         petName = getIntent().getStringExtra("petsName");
+        petId = getIntent().getIntExtra("petId", 0);
+        integral_type = getIntent().getStringExtra("integral_type");
+
+        ViewGroup v = (ViewGroup) findViewById(R.id.linearLayout);
+        FontManager.changeFonts(v, PetsActivity.this, AppConstant.Baby);
+        //初始化view控件
         initView();
-
+        //获取对应积分
         preferences = PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
-        integral = preferences.getInt( morality + "_integral",0);
-
+        //实例化pet类的对象
         petsDog = new Pets();
-        petsDog.levelUp(integral);
+        integral = preferences.getInt(integral_type+"_integral",0);
+        switch (petId){
+            case 1:
+                petsDog.levelUp(integral);
+                initPets(R.drawable.morality_background,petName, petsDog.getPetsLevel(), R.drawable.sunflower_image,
+                        "品德", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
+                petsData = getData(BabyData.morality_buttonImage);
+                break;
+            case 2:
+                petsDog.levelUp(integral);
+                initPets(R.drawable.physical_bg,petName, petsDog.getPetsLevel(), R.drawable.chick_image,
+                        "体育", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
+                petsData = getData(BabyData.physical_buttonImage);
+                break;
+            case 3:
+                petsDog.levelUp(integral);
+                initPets(R.drawable.intelligence_bg,petName, petsDog.getPetsLevel(), R.drawable.dog_image,
+                        "智力", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
+                petsData = getData(BabyData.intelligence_buttonImage);
+                break;
 
-        initPets(petName,petsDog.getPetsLevel(),R.drawable.sunflower_image,
-                "品德",petsDog.getNeedIntegral(),petsDog.getCurrentIntegral());
 
-        /*petLeveltv.setText("LV"+ petsDog.getPetsLevel());
-        petNametv.setText(petName);
-        petImageiv.setBackgroundResource(R.drawable.sunflower_image);
-        progressBar.setProgress(petsDog.getCurrentIntegral());
-        progressBar.setMax(petsDog.getNeedIntegral());*/
+        }
 
+        //给两个button设置监听，执行相应操作
         marketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(PetsActivity.this,MarketActivity.class);
+                intent.putExtra("petId",petId);
+                intent.putExtra("petsName",petName);
                 startActivity(intent);
             }
         });
@@ -86,45 +107,72 @@ public class PetsActivity extends Activity {
             }
         });
 
-        preferences= PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
-        for (int i = 0;i<goodsName.length;i++){
-            ownedNumber[i] = preferences.getInt("ownedNumber"+i,0);
+       //获取已经存好的拥有的道具数量，初始化horizontialListView
+        for (int i = 0;i<4;i++){
+            ownedNumber[i] = preferences.getInt(petName+"ownedNumber"+i,0);
         }
-        petsData = getData(buttonImage);
-        horizontialListView = (HorizontialListView)findViewById(R.id.horizontialListView);
-        MyAdapter adapter = new MyAdapter(PetsActivity.this);
-        horizontialListView.setAdapter(adapter);
 
+        MyAdapter adapter = new MyAdapter(PetsActivity.this);
+        gridView.setAdapter(adapter);
+
+        //接受消息，执行操作
         handler = new Handler(){
             public void handleMessage(android.os.Message msg){
                 if (msg.what == 1){
                     Toast.makeText(PetsActivity.this,"该道具已用完！！！",0).show();
+                }else {
+
+                    integral = preferences.getInt(integral_type+"_integral",0);
+                    Log.e("TAG","integral="+integral);
+                    petsDog = new Pets();
+                    petsDog.levelUp(integral);
+                    petLeveltv.setText("LV"+ petsDog.getPetsLevel());
+                    progressBar.setMax(petsDog.getNeedIntegral());
+                    progressBar.setProgress(petsDog.getCurrentIntegral());
                 }
             }
         };
 
 
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        //preferences= PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
+        for (int i = 0;i<4;i++){
+            ownedNumber[i] = preferences.getInt(petName+"ownedNumber"+i,0);
+        }
+
+    }
+
+    //获得view控件显示
     private void initView(){
+        linearLayout = (LinearLayout)findViewById(R.id.linearLayout);
         petLeveltv = (TextView)findViewById(R.id.petLevel);
         petNametv = (TextView)findViewById(R.id.petName);
         petTypetv = (TextView)findViewById(R.id.petType);
         marketButton = (Button)findViewById(R.id.marketButton);
         petBackButton = (Button)findViewById(R.id.petBack);
         petImageiv = (ImageView)findViewById(R.id.petImage);
-        progressBar = (ProgressBar)findViewById(R.id.levelProgressBar);
+        progressBar = (TextProgressBar)findViewById(R.id.levelProgressBar);
+        gridView = (GridView)findViewById(R.id.gridView);
     }
-    private void initPets(String petName,int petLevel,int petImageId,String petType,int needIntegral,int currentIntegral){
+    //初始化view
+    private void initPets(int petBackground,String petName,int petLevel,int petImageId,
+                          String petType,int needIntegral,int currentIntegral){
+        linearLayout.setBackgroundResource(petBackground);
         petLeveltv.setText("LV"+ petLevel);
         petNametv.setText(petName);
         petTypetv.setText(petType);
         petImageiv.setBackgroundResource(petImageId);
-        progressBar.setProgress(currentIntegral);
         progressBar.setMax(needIntegral);
+        progressBar.setProgress(currentIntegral);
+
 
 
     }
 
+    //生成所需的数据
     private List<Map<String, Object>> getData(int[] buttonImage) {
         List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i=0;i<4;i++){
@@ -137,12 +185,17 @@ public class PetsActivity extends Activity {
 
         return list;
     }
+
+    //定义一个ViewHolder类
     public final class ViewHolder{
         //public ImageView goodsImage;
         //public TextView goodsName;
         //public TextView ownedNumber;
         public Button useButton;
     }
+
+
+    //自定义andapter获取数据
     public class MyAdapter extends BaseAdapter {
 
         private LayoutInflater mInflater;
@@ -171,7 +224,7 @@ public class PetsActivity extends Activity {
 
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
-            MyListener myListener = new MyListener(position);
+            MyListener myListener = new MyListener(position,getIntent().getStringExtra("petsName"));
             ViewHolder holder;
             if (convertView == null) {
 
@@ -202,10 +255,14 @@ public class PetsActivity extends Activity {
         }
 
     }
+
+    //设置按钮的监听，执行相应的操作
     private class MyListener implements View.OnClickListener {
         int mPosition;
-        public MyListener(int inPosition){
+        String mPetName;
+        public MyListener(int inPosition,String petName){
             mPosition= inPosition;
+            mPetName= petName;
         }
         @Override
         public void onClick(View v) {
@@ -216,10 +273,12 @@ public class PetsActivity extends Activity {
             if (ownedNumber[mPosition]<0){
                 message.what = 1;
             }else {
-            integral = integral + 500;
-            editor.putInt(morality + "_integral", integral);
-            editor.putInt("ownedNumber"+mPosition,ownedNumber[mPosition]);
-            editor.commit();
+                integral = integral + 200;
+                editor.putInt(integral_type+"_integral", integral);
+                editor.putInt(mPetName+"ownedNumber"+mPosition,ownedNumber[mPosition]);
+                editor.commit();
+                message.what = 2;
+
             //Log.d("TAG","ownedNumber"+mPosition+ownedNumber[mPosition]);
             //Toast.makeText(MarketActivity.this,""+mPosition,Toast.LENGTH_SHORT).show();
             }

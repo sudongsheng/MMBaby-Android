@@ -38,7 +38,7 @@ public class PetsActivity extends Activity {
     private ImageView petImageiv;
     private TextProgressBar progressBar;
     private SharedPreferences preferences;
-    private HorizontialListView horizontialListView;
+    private GridView gridView;
     private List<Map<String, Object>> petsData;
     public  int[] ownedNumber = new int[]{0,0,0,0,0};
     private Pets petsDog;
@@ -113,7 +113,7 @@ public class PetsActivity extends Activity {
         }
 
         MyAdapter adapter = new MyAdapter(PetsActivity.this);
-        horizontialListView.setAdapter(adapter);
+        gridView.setAdapter(adapter);
 
         //接受消息，执行操作
         handler = new Handler(){
@@ -155,7 +155,7 @@ public class PetsActivity extends Activity {
         petBackButton = (Button)findViewById(R.id.petBack);
         petImageiv = (ImageView)findViewById(R.id.petImage);
         progressBar = (TextProgressBar)findViewById(R.id.levelProgressBar);
-        horizontialListView = (HorizontialListView)findViewById(R.id.horizontialListView);
+        gridView = (GridView)findViewById(R.id.gridView);
     }
     //初始化view
     private void initPets(int petBackground,String petName,int petLevel,int petImageId,

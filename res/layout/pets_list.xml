@@ -7,8 +7,6 @@
       <Button
             android:id="@+id/useButton"
             android:layout_width="75dp"
-            android:layout_height="75dp"
-            />
-
+            android:layout_height="75dp"/>
 
 </RelativeLayout>

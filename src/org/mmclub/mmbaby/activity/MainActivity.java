@@ -39,27 +39,35 @@ public class MainActivity extends Activity {
         mama.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (isPwdExist) {
-                    View v = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_enter_password, null);
-                    final Dialog dialog = new AlertDialog.Builder(MainActivity.this).setView(v).create();
-                    dialog.show();
-                    final EditText editText = (EditText) v.findViewById(R.id.pwd);
-                    Button btn = (Button) v.findViewById(R.id.sure);
-                    btn.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View view) {
-                            if (editText.getText().toString().equals(preferences.getString("password", null))) {
-                                Intent intent = new Intent(MainActivity.this, MamaActivity.class);
-                                startActivity(intent);
-                            } else {
-                                Toast.makeText(MainActivity.this, "密码错误", Toast.LENGTH_LONG).show();
-                                editText.setText("");
-                            }
-                        }
-                    });
-                } else {
-                    Intent intent = new Intent(MainActivity.this, MamaActivity.class);
+                if (preferences.getBoolean("toGuide", true)) {
+                    SharedPreferences.Editor editor=preferences.edit();
+                    editor.putBoolean("toGuide",false);
+                    editor.commit();
+                    Intent intent=new Intent(MainActivity.this,MamaGuideActivity.class);
                     startActivity(intent);
+                } else {
+                    if (isPwdExist) {
+                        View v = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_enter_password, null);
+                        final Dialog dialog = new AlertDialog.Builder(MainActivity.this).setView(v).create();
+                        dialog.show();
+                        final EditText editText = (EditText) v.findViewById(R.id.pwd);
+                        Button btn = (Button) v.findViewById(R.id.sure);
+                        btn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View view) {
+                                if (editText.getText().toString().equals(preferences.getString("password", null))) {
+                                    Intent intent = new Intent(MainActivity.this, MamaActivity.class);
+                                    startActivity(intent);
+                                } else {
+                                    Toast.makeText(MainActivity.this, "密码错误", Toast.LENGTH_LONG).show();
+                                    editText.setText("");
+                                }
+                            }
+                        });
+                    } else {
+                        Intent intent = new Intent(MainActivity.this, MamaActivity.class);
+                        startActivity(intent);
+                    }
                 }
             }
         });

@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -31,7 +32,6 @@ public class SettingActivity extends Activity {
 
     private SharedPreferences preferences;
     private boolean isPwdExist;
-    private boolean isCancel = false;
 
     private int morality_rate = 100;
     private int intelligence_rate = 100;
@@ -78,10 +78,13 @@ public class SettingActivity extends Activity {
                     final EditText new_pwd = (EditText) v.findViewById(R.id.new_pwd);
                     final EditText re_pwd = (EditText) v.findViewById(R.id.re_pwd);
                     checkBox = (CheckBox) v.findViewById(R.id.cancel);
+                    checkBox.setChecked(preferences.getBoolean("isCancel",false));
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
                         public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                            isCancel = b;
+                            SharedPreferences.Editor editor = preferences.edit();
+                            editor.putBoolean("isCancel",b);
+                            editor.commit();
                         }
                     });
                     Button btn = (Button) v.findViewById(R.id.yes);
@@ -89,7 +92,7 @@ public class SettingActivity extends Activity {
                         @Override
                         public void onClick(View view) {
                             if (old_pwd.getText().toString().equals(preferences.getString("password", null))) {
-                                if (isCancel) {
+                                if (checkBox.isChecked()) {
                                     isPwdExist = false;
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putBoolean("isPwdExist", false);
@@ -130,7 +133,7 @@ public class SettingActivity extends Activity {
                                 editor.putString("password", editText.getText().toString());
                                 editor.putBoolean("isPwdExist", true);
                                 editor.commit();
-                                isPwdExist = false;
+                                isPwdExist = true;
                                 dialog.dismiss();
                                 Toast.makeText(SettingActivity.this, "密码设置成功", Toast.LENGTH_LONG).show();
                             } else {

@@ -28,7 +28,6 @@ import java.util.Map;
  */
 public class PetsActivity extends Activity {
 
-    private String petName;
     private LinearLayout linearLayout;
     private TextView petLeveltv;
     private TextView petNametv;
@@ -36,18 +35,18 @@ public class PetsActivity extends Activity {
     private Button marketButton;
     private Button petBackButton;
     private ImageView petImageiv;
+
+    private String petName;
     private TextProgressBar progressBar;
     private SharedPreferences preferences;
     private GridView gridView;
-    private List<Map<String, Object>> petsData;
+    private List<Map<String, Integer>> petsData;
     public  int[] ownedNumber = new int[]{0,0,0,0,0};
-    private Pets petsDog;
+    private Pets pets;
     private Handler handler;
     private int integral;
     private int petId;
     private String integral_type;
-
-
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -59,34 +58,30 @@ public class PetsActivity extends Activity {
 
         ViewGroup v = (ViewGroup) findViewById(R.id.linearLayout);
         FontManager.changeFonts(v, PetsActivity.this, AppConstant.Baby);
-        //初始化view控件
+
         initView();
         //获取对应积分
         preferences = PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
         //实例化pet类的对象
-        petsDog = new Pets();
+        pets = new Pets();
         integral = preferences.getInt(integral_type+"_integral",0);
+        pets.levelUp(integral);
         switch (petId){
-            case 1:
-                petsDog.levelUp(integral);
-                initPets(R.drawable.morality_background,petName, petsDog.getPetsLevel(), R.drawable.sunflower_image,
-                        "品德", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
+            case AppConstant.PET_DOG:
+                initPets(R.drawable.morality_bg,petName, pets.getPetsLevel(), R.drawable.sunflower_image,
+                        "品德", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.morality_buttonImage);
                 break;
-            case 2:
-                petsDog.levelUp(integral);
-                initPets(R.drawable.physical_bg,petName, petsDog.getPetsLevel(), R.drawable.chick_image,
-                        "体育", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
+            case AppConstant.PET_CHICK:
+                initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(), R.drawable.chick_image,
+                        "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.physical_buttonImage);
                 break;
-            case 3:
-                petsDog.levelUp(integral);
-                initPets(R.drawable.intelligence_bg,petName, petsDog.getPetsLevel(), R.drawable.dog_image,
-                        "智力", petsDog.getNeedIntegral(), petsDog.getCurrentIntegral());
+            case AppConstant.PET_PLANT:
+                initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(), R.drawable.dog_image,
+                        "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.intelligence_buttonImage);
                 break;
-
-
         }
 
         //给两个button设置监听，执行相应操作
@@ -107,7 +102,7 @@ public class PetsActivity extends Activity {
             }
         });
 
-       //获取已经存好的拥有的道具数量，初始化horizontialListView
+        //获取已经存好的拥有的道具数量，初始化horizontialListView
         for (int i = 0;i<4;i++){
             ownedNumber[i] = preferences.getInt(petName+"ownedNumber"+i,0);
         }
@@ -121,14 +116,13 @@ public class PetsActivity extends Activity {
                 if (msg.what == 1){
                     Toast.makeText(PetsActivity.this,"该道具已用完！！！",0).show();
                 }else {
-
                     integral = preferences.getInt(integral_type+"_integral",0);
                     Log.e("TAG","integral="+integral);
-                    petsDog = new Pets();
-                    petsDog.levelUp(integral);
-                    petLeveltv.setText("LV"+ petsDog.getPetsLevel());
-                    progressBar.setMax(petsDog.getNeedIntegral());
-                    progressBar.setProgress(petsDog.getCurrentIntegral());
+                    pets = new Pets();
+                    pets.levelUp(integral);
+                    petLeveltv.setText("LV"+ pets.getPetsLevel());
+                    progressBar.setMax(pets.getNeedIntegral());
+                    progressBar.setProgress(pets.getCurrentIntegral());
                 }
             }
         };
@@ -167,22 +161,18 @@ public class PetsActivity extends Activity {
         petImageiv.setBackgroundResource(petImageId);
         progressBar.setMax(needIntegral);
         progressBar.setProgress(currentIntegral);
-
-
-
     }
 
     //生成所需的数据
-    private List<Map<String, Object>> getData(int[] buttonImage) {
-        List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
+    private List<Map<String, Integer>> getData(int[] buttonImage) {
+        List<Map<String, Integer>> list = new ArrayList<Map<String, Integer>>();
         for(int i=0;i<4;i++){
-            Map<String, Object> map = new HashMap<String, Object>();
+            Map<String, Integer> map = new HashMap<String, Integer>();
             //map.put("goodsName", goodsName[i]);
             //map.put("ownedNumber", ownedNumber[i]);
             map.put("buttonImage", buttonImage[i]);
             list.add(map);
         }
-
         return list;
     }
 
@@ -200,25 +190,21 @@ public class PetsActivity extends Activity {
 
         private LayoutInflater mInflater;
 
-
         public MyAdapter(Context context){
             this.mInflater = LayoutInflater.from(context);
         }
         @Override
         public int getCount() {
-            // TODO Auto-generated method stub
             return petsData.size();
         }
 
         @Override
         public Object getItem(int arg0) {
-            // TODO Auto-generated method stub
             return null;
         }
 
         @Override
         public long getItemId(int arg0) {
-            // TODO Auto-generated method stub
             return 0;
         }
 
@@ -243,10 +229,10 @@ public class PetsActivity extends Activity {
             }
 
 
-            //holder.goodsImage.setBackgroundResource((Integer)petsData.get(position).get("goodsImage"));
+            //holder.goodsImage.setBackgroundResource(petsData.get(position).get("goodsImage"));
             //holder.goodsName.setText((String)petsData.get(position).get("goodsName"));
             //holder.ownedNumber.setText("已拥有："+petsData.get(position).get("ownedNumber"));
-            holder.useButton.setBackgroundResource((Integer)petsData.get(position).get("buttonImage"));
+            holder.useButton.setBackgroundResource(petsData.get(position).get("buttonImage"));
             holder.useButton.setTag(position);
             holder.useButton.setOnClickListener(myListener);
 
@@ -266,7 +252,6 @@ public class PetsActivity extends Activity {
         }
         @Override
         public void onClick(View v) {
-            // TODO Auto-generated method stub
             Message message = new Message();
             SharedPreferences.Editor editor = preferences.edit();
             ownedNumber[mPosition]--;
@@ -284,9 +269,5 @@ public class PetsActivity extends Activity {
             }
             handler.sendMessage(message);
         }
-
     }
-
-
-
 }

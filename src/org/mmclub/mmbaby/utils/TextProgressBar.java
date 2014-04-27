@@ -64,6 +64,5 @@ public class TextProgressBar extends ProgressBar {
     private void setText(int progress) {
         String s = progress+"/"+this.getMax();
         this.text = s;
-
     }
 }

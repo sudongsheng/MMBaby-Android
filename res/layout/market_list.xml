@@ -5,25 +5,52 @@
               android:layout_width="wrap_content"
               android:layout_height="wrap_content"
               android:background="@drawable/goods_list_bg"
-              android:orientation="horizontal">
+              android:orientation="vertical">
+    <LinearLayout android:layout_width="match_parent"
+                  android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:layout_margin="10dp">
     <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
             android:layout_weight="1"
             android:orientation="vertical"
-            android:gravity="center_vertical">
-        <ImageView
-                android:layout_width="fill_parent"
+            android:gravity="right">
+        <TextView
+                android:id="@+id/needMoney"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/goodsImage"
-                android:background="@drawable/ic_launcher"/>
+                android:text="80"
+                android:layout_marginRight="10dp"
+                android:textColor="@color/black"
+                android:drawableLeft="@drawable/money_bg"/>
     </LinearLayout>
+
     <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="2"
-            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4"
+            android:orientation="horizontal"
             android:gravity="center_vertical">
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical"
+                android:gravity="center_vertical">
+            <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/goodsImage"
+                    android:scaleType="fitCenter"
+                    />
+        </LinearLayout>
+
+        <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:orientation="vertical">
         <TextView android:layout_width="wrap_content"
                   android:layout_height="wrap_content"
                   android:id="@+id/goodsName"
@@ -36,28 +63,34 @@
                   android:text="+200经验"
                   android:textColor="@color/black"/>
 
-        <TextView android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ownedNumber"
-                  android:text="已拥有:1"
-                  android:textColor="@color/black"/>
 
-            </LinearLayout>
-    <LinearLayout
-            android:layout_width="0dp"
-            android:layout_height="fill_parent"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="center_vertical">
         <Button
                 android:id="@+id/buy"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="购  买"/>
-            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+    <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:orientation="vertical">
+        <TextView android:layout_width="fill_parent"
+                  android:layout_height="wrap_content"
+                  android:id="@+id/ownedNumber"
+                  android:text="已拥有:1"
+                  android:textColor="@color/black"
+                  android:layout_marginLeft="10dp"/>
+
+    </LinearLayout>
 
 
 
+
+
+    </LinearLayout>
 
 
 </LinearLayout>

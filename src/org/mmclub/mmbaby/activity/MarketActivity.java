@@ -31,7 +31,7 @@ public class MarketActivity extends Activity {
     protected static final int TOAST = 2;
     private List<Map<String, Object>> marketData;
     public  int[] ownedNumber = new int[]{0,0,0,0};
-    private ListView listView;
+    private GridView goodsGridView;
     private ViewHolder holder;
 
     private TextView moneyTextview;
@@ -50,7 +50,7 @@ public class MarketActivity extends Activity {
         FontManager.changeFonts(v, MarketActivity.this, AppConstant.Baby);
 
         moneyTextview = (TextView)findViewById(R.id.moneyTextView);
-        listView = (ListView)findViewById(R.id.listView);
+        goodsGridView = (GridView)findViewById(R.id.goodsGridView);
         preferences= PreferenceManager.getDefaultSharedPreferences(MarketActivity.this);
         money=preferences.getInt("money",0);
         moneyTextview.setText("金币："+money);
@@ -79,7 +79,7 @@ public class MarketActivity extends Activity {
 
 
         MyAdapter adapter = new MyAdapter(MarketActivity.this);
-        listView.setAdapter(adapter);
+        goodsGridView.setAdapter(adapter);
 
 
         //消息处理器
@@ -110,7 +110,7 @@ public class MarketActivity extends Activity {
 
 
                     MyAdapter adapter = new MyAdapter(MarketActivity.this);
-                    listView.setAdapter(adapter);
+                    goodsGridView.setAdapter(adapter);
 
 
 
@@ -197,7 +197,7 @@ public class MarketActivity extends Activity {
             }
 
 
-            holder.goodsImage.setBackgroundResource((Integer)marketData.get(position).get("goodsImage"));
+            holder.goodsImage.setImageResource((Integer)marketData.get(position).get("goodsImage"));
             holder.goodsName.setText((String)marketData.get(position).get("goodsName"));
             holder.ownedNumber.setText("已拥有："+marketData.get(position).get("ownedNumber"));
 

@@ -13,6 +13,7 @@
             </intent-filter>
         </activity>
         <activity android:name=".activity.MamaActivity"/>
+        <activity android:name=".activity.MamaGuideActivity"/>
         <activity android:name=".activity.BabyActivity"/>
         <activity android:name=".activity.SettingActivity"/>
         <activity android:name=".activity.WebviewActivity"/>

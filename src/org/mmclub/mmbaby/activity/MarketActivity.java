@@ -3,6 +3,7 @@ package org.mmclub.mmbaby.activity;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -39,6 +40,8 @@ public class MarketActivity extends Activity {
     private int money;
     private int petId;
     private String petName;
+    private Typeface tf;
+
     //主线程创建消息处理器
     private Handler handler;
 
@@ -46,14 +49,14 @@ public class MarketActivity extends Activity {
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_market);
-        ViewGroup v = (ViewGroup) findViewById(R.id.market_linearLayout);
-        FontManager.changeFonts(v, MarketActivity.this, AppConstant.Baby);
+        tf = Typeface.createFromAsset(MarketActivity.this.getAssets(), "fonts/baby.ttf");
 
         moneyTextview = (TextView)findViewById(R.id.moneyTextView);
         goodsGridView = (GridView)findViewById(R.id.goodsGridView);
         preferences= PreferenceManager.getDefaultSharedPreferences(MarketActivity.this);
         money=preferences.getInt("money",0);
         moneyTextview.setText("金币："+money);
+        moneyTextview.setTypeface(tf);
         petId = getIntent().getIntExtra("petId",0);
         petName = getIntent().getStringExtra("petsName");
 
@@ -62,17 +65,20 @@ public class MarketActivity extends Activity {
         }
 
         switch (petId){
-            case 1:
+            case AppConstant.PET_PLANT:
                 marketData = getData(BabyData.morality_goodsName,
-                        ownedNumber,BabyData.morality_goodsImage);
+                        ownedNumber,BabyData.morality_goodsImage,
+                        BabyData.morality_needMoney,BabyData.morality_up);
                 break;
-            case 2:
+            case AppConstant.PET_CHICK:
                 marketData = getData(BabyData.physical_goodsName,
-                       ownedNumber,BabyData.physical_goodsImage);
+                        ownedNumber,BabyData.physical_goodsImage,
+                        BabyData.physical_needMoney,BabyData.physical_up);
                 break;
-            case 3:
+            case AppConstant.PET_DOG:
                 marketData = getData(BabyData.intelligence_goodsName,
-                        ownedNumber,BabyData.intelligence_goodsImage);
+                        ownedNumber,BabyData.intelligence_goodsImage,
+                        BabyData.intelligence_needMoney,BabyData.intelligence_up);
                 break;
         }
 
@@ -93,17 +99,20 @@ public class MarketActivity extends Activity {
                         ownedNumber[i] = preferences.getInt(petName+"ownedNumber"+i,0);
                     }
                     switch (petId){
-                        case 1:
+                        case AppConstant.PET_PLANT:
                             marketData = getData(BabyData.morality_goodsName,
-                                    ownedNumber,BabyData.morality_goodsImage);
+                                    ownedNumber,BabyData.morality_goodsImage,
+                                    BabyData.morality_needMoney,BabyData.morality_up);
                             break;
-                        case 2:
+                        case AppConstant.PET_CHICK:
                             marketData = getData(BabyData.physical_goodsName,
-                                    ownedNumber,BabyData.physical_goodsImage);
+                                    ownedNumber,BabyData.physical_goodsImage,
+                                    BabyData.physical_needMoney,BabyData.physical_up);
                             break;
-                        case 3:
+                        case AppConstant.PET_DOG:
                             marketData = getData(BabyData.intelligence_goodsName,
-                                    ownedNumber,BabyData.intelligence_goodsImage);
+                                    ownedNumber,BabyData.intelligence_goodsImage,
+                                    BabyData.intelligence_needMoney,BabyData.intelligence_up);
                             break;
                     }
 
@@ -115,7 +124,7 @@ public class MarketActivity extends Activity {
 
 
                 }else{
-                    Toast.makeText(MarketActivity.this,"余额不足！！！",0).show();
+                    Toast.makeText(MarketActivity.this,"没有金币啦，好好表现，让妈妈奖励吧。。。",0).show();
                 }
 
             }
@@ -128,13 +137,17 @@ public class MarketActivity extends Activity {
 
     }
 
-    private List<Map<String, Object>> getData( String[] goodsName, int[] ownedNumber, int[] goodsImage) {
+    private List<Map<String, Object>> getData( String[] goodsName, int[] ownedNumber, int[] goodsImage,
+                                               int[] needMoney, int[] up) {
                 List<Map<String, Object>> list = new ArrayList<Map<String, Object>>();
         for(int i=0;i<goodsName.length;i++){
                     Map<String, Object> map = new HashMap<String, Object>();
                     map.put("goodsName", goodsName[i]);
                     map.put("ownedNumber", ownedNumber[i]);
                     map.put("goodsImage", goodsImage[i]);
+                    map.put("needMoney",needMoney[i]);
+                    map.put("up",up[i]);
+
                     list.add(map);
             }
 
@@ -145,6 +158,8 @@ public class MarketActivity extends Activity {
         public ImageView goodsImage;
         public TextView goodsName;
         public TextView ownedNumber;
+        public TextView needMoney;
+        public TextView up;
         public Button buy;
     }
 
@@ -181,13 +196,13 @@ public class MarketActivity extends Activity {
             if (convertView == null) {
 
                 holder=new ViewHolder();
-                //ViewGroup vlist = (ViewGroup)findViewById(R.id.market_list_lineaeLayout);
-                //FontManager.changeFonts(vlist,MarketActivity.this,AppConstant.Baby);
 
                 convertView = mInflater.inflate(R.layout.market_list, null);
                 holder.goodsImage = (ImageView)convertView.findViewById(R.id.goodsImage);
                 holder.goodsName = (TextView)convertView.findViewById(R.id.goodsName);
                 holder.ownedNumber = (TextView)convertView.findViewById(R.id.ownedNumber);
+                holder.needMoney = (TextView)convertView.findViewById(R.id.needMoney);
+                holder.up = (TextView)convertView.findViewById(R.id.up);
                 holder.buy = (Button)convertView.findViewById(R.id.buy);
                 convertView.setTag(holder);
 
@@ -197,11 +212,18 @@ public class MarketActivity extends Activity {
             }
 
 
-            holder.goodsImage.setImageResource((Integer)marketData.get(position).get("goodsImage"));
-            holder.goodsName.setText((String)marketData.get(position).get("goodsName"));
+            holder.goodsImage.setImageResource((Integer) marketData.get(position).get("goodsImage"));
+            holder.goodsName.setText((String) marketData.get(position).get("goodsName"));
+            holder.goodsName.setTypeface(tf);
             holder.ownedNumber.setText("已拥有："+marketData.get(position).get("ownedNumber"));
+            holder.ownedNumber.setTypeface(tf);
+            holder.needMoney.setText("  "+marketData.get(position).get("needMoney"));
+            holder.needMoney.setTypeface(tf);
+            holder.up.setText("经验+"+marketData.get(position).get("up"));
+            holder.up.setTypeface(tf);
 
             holder.buy.setTag(position);
+            holder.buy.setTypeface(tf);
             holder.buy.setOnClickListener(myListener);
 
 
@@ -220,7 +242,18 @@ public class MarketActivity extends Activity {
                           @Override
                           public void onClick(View v) {
                               // TODO Auto-generated method stub
-                              money = money - 20;
+                              switch (petId){
+                                  case AppConstant.PET_PLANT:
+                                      money = money - BabyData.morality_needMoney[mPosition];
+                                      break;
+                                  case AppConstant.PET_CHICK:
+                                      money = money - BabyData.physical_needMoney[mPosition];
+                                      break;
+                                  case AppConstant.PET_DOG:
+                                      money = money - BabyData.intelligence_needMoney[mPosition];
+                                      break;
+                              }
+
                               Message message = new Message();
                               SharedPreferences.Editor editor = preferences.edit();
                               if (money < 0){

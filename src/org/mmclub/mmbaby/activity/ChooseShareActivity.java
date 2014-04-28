@@ -42,6 +42,7 @@ public class ChooseShareActivity extends Activity {
     private ArrayList<String> titles = new ArrayList<String>();
 
     private Spinner title;
+    private int indexFromIntent=-1;
     private int index = 0;
     private int index_field = 0;
     private String field;
@@ -64,9 +65,13 @@ public class ChooseShareActivity extends Activity {
         sqLiteDatabase = dbHelper.getReadableDatabase();
         cursor = sqLiteDatabase.query("record", null, null, null, null, null, "time");
         while (cursor.moveToNext()) {
+        //    Log.i("TAG",getIntent().getStringExtra("title")+"=="+cursor.getString(cursor.getColumnIndex("title")));
+            if(cursor.getString(cursor.getColumnIndex("title")).equals(getIntent().getStringExtra("title"))){
+                indexFromIntent=cursor.getPosition();
+      //          Log.i("TAG",indexFromIntent+"");
+            }
             titles.add(cursor.getString(cursor.getColumnIndex("title")));
         }
-
         title = (Spinner) findViewById(R.id.share_item);
         setSpinnerAdapter(title);
 
@@ -115,7 +120,12 @@ public class ChooseShareActivity extends Activity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChooseShareActivity.this, android.R.layout.simple_spinner_item, titles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        spinner.setSelection(0);
+        if(indexFromIntent==-1) {
+            spinner.setSelection(0);
+        }else {
+            spinner.setSelection(indexFromIntent);
+            Toast.makeText(ChooseShareActivity.this,"请选择一张图片分享",Toast.LENGTH_SHORT).show();
+        }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
@@ -194,14 +204,15 @@ public class ChooseShareActivity extends Activity {
         // 设置分享内容
         mController.setShareContent(titles.get(index));
         // 设置分享图片，参数2为本地图片的路径(绝对路径)
-        if (arrayList != null) {
+        Log.i("TAG",arrayList.size()+"");
+        if (arrayList.size()!=0) {
             if (path == null) {
                 path = arrayList.get(0);
             }
             mController.setShareMedia(new UMImage(ChooseShareActivity.this, BitmapFactory.decodeFile(path)));
         }
         mController.setAppWebSite(SHARE_MEDIA.RENREN, "http://www.umeng.com/social");
-        mController.getConfig().removePlatform(SHARE_MEDIA.SMS);
+        //mController.getConfig().removePlatform(SHARE_MEDIA.SMS);
         mController.getConfig().supportQQPlatform(ChooseShareActivity.this, "101066698", "http://www.umeng.com/social");
         mController.getConfig().setSsoHandler(new QZoneSsoHandler(ChooseShareActivity.this, "101066698"));
         //注意一定保证在新浪微博上填写应用签名

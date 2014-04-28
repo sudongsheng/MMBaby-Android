@@ -23,9 +23,7 @@ import android.widget.*;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.database.DatabaseHelper;
 import org.mmclub.mmbaby.database.Record;
-import org.mmclub.mmbaby.utils.AppConstant;
-import org.mmclub.mmbaby.utils.FileUtils;
-import org.mmclub.mmbaby.utils.FontManager;
+import org.mmclub.mmbaby.utils.*;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
@@ -72,7 +70,6 @@ public class NewRecordActivity extends Activity {
     private int position_flag;
 
     private int screenWidth;
-    private int screenHeight;
 
     private int rate;
 
@@ -87,7 +84,6 @@ public class NewRecordActivity extends Activity {
 
     private void init() {
         screenWidth = getWindowManager().getDefaultDisplay().getWidth();
-        screenHeight = getWindowManager().getDefaultDisplay().getHeight();
 
         findViewByIds();
 
@@ -108,7 +104,6 @@ public class NewRecordActivity extends Activity {
         position = getIntent().getIntExtra("position", -1);
         dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
         sqLiteDatabase = dbHelper.getReadableDatabase();
-        iterator(sqLiteDatabase);
         cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
         if (position != -1) {
             cursor.moveToPosition(position);
@@ -130,7 +125,7 @@ public class NewRecordActivity extends Activity {
             position_flag = position;
         } else {
             position_flag = cursor.getCount();
- //           Log.i("TAG", "position_flag:" + position_flag);
+            //           Log.i("TAG", "position_flag:" + position_flag);
         }
 
         ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
@@ -218,9 +213,23 @@ public class NewRecordActivity extends Activity {
                     }
                     editor.commit();
 
-                    Intent intent = new Intent(NewRecordActivity.this, MamaActivity.class);
-                    startActivity(intent);
-                    NewRecordActivity.this.finish();
+                    new AlertDialog.Builder(NewRecordActivity.this,R.style.pickDialog).setTitle("新建记录成功").setMessage("请选择是否分享？")
+                            .setPositiveButton("是",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(NewRecordActivity.this, ChooseShareActivity.class);
+                                    intent.putExtra("title",title.getText().toString());
+                                    startActivity(intent);
+                                    NewRecordActivity.this.finish();
+                                }
+                            }).setNegativeButton("否",new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    Intent intent = new Intent(NewRecordActivity.this, MamaActivity.class);
+                                    startActivity(intent);
+                                    NewRecordActivity.this.finish();
+                        }
+                    }).create().show();
                 }
             }
         });
@@ -257,17 +266,6 @@ public class NewRecordActivity extends Activity {
         myAdapter.notifyDataSetChanged();
     }
 
-    private void iterator(SQLiteDatabase sqLiteDatabase) {
-        String s = new String();
-        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM record", null);
-        while (cursor.moveToNext()) {
-            for (int i = 0; i < cursor.getCount(); i++)
-                s = s + cursor.getString(i) + "   ";
-            s = s + "\n";
-        }
-        Log.i("record", s);
-    }
-
     public void startPhotoZoom(Uri uri) {
         Intent intent = new Intent("com.android.camera.action.CROP");
         intent.setDataAndType(uri, "image/*");
@@ -292,7 +290,7 @@ public class NewRecordActivity extends Activity {
         public MyAdapter(Context context) {
             this.inflater = LayoutInflater.from(context);
             count = record.photoNum;
-            Log.i("TAG", "count:" + count);
+            //          Log.i("TAG", "count:" + count);
         }
 
         @Override
@@ -374,7 +372,7 @@ public class NewRecordActivity extends Activity {
                 Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
                 final int h = bitmap.getHeight();
                 final int w = bitmap.getWidth();
-                Log.i("TAG", "w:" + w + "h:" + h);
+                // Log.i("TAG", "w:" + w + "h:" + h);
                 Matrix matrix = new Matrix();
                 if (h > w) {
                     matrix.postScale(240f / w, 320f / h);
@@ -389,17 +387,17 @@ public class NewRecordActivity extends Activity {
                     @Override
                     public void onClick(View view) {
                         Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
-                        ImageView img = new ImageView(NewRecordActivity.this);
+                        ImageScan img = new ImageScan(NewRecordActivity.this, (int) (screenWidth / 7f * 6f), (int) (h > w ? screenWidth / 7f / w * 6f * h : screenWidth / 7f / h * 6f * w));
                         Matrix matrix = new Matrix();
-                        Log.i("TAG", "screenWidth:" + screenWidth + "screenHeight:" + screenHeight);
                         if (h > w) {
-                            matrix.postScale(screenWidth / 7f / w * 6f, screenHeight / 4f / h * 3f);
+                            matrix.postScale(screenWidth / 7f / w * 6f, screenWidth / 7f / w * 6f);
                         } else {
-                            matrix.postScale(screenWidth / 7f / h * 6f, screenHeight / 4f / w * 3f);
+                            matrix.postScale(screenWidth / 7f / h * 6f, screenWidth / 7f / h * 6f);
                             matrix.postRotate(90);
                         }
                         Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
                         bitmap.recycle();
+                        Toast.makeText(NewRecordActivity.this, "双指拖动可缩放图片~", Toast.LENGTH_SHORT).show();
                         img.setImageBitmap(resizeBmp);
                         new AlertDialog.Builder(NewRecordActivity.this).setView(img).create().show();
                     }

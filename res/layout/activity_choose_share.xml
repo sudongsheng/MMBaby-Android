@@ -51,7 +51,7 @@
     <Spinner android:id="@+id/share_item"
               android:layout_width="fill_parent"
               android:layout_height="50dp"
-              android:background="@drawable/edit_corner2"
+              android:background="@drawable/choose"
               android:paddingLeft="15dp"
               android:layout_marginRight="18dp"
               android:layout_marginLeft="18dp"

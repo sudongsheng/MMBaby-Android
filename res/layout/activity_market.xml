@@ -9,9 +9,9 @@
               android:background="@drawable/market_bg">
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="0dp"
+
             android:layout_weight="3">
             </LinearLayout>
-
 
     <LinearLayout android:layout_width="fill_parent"
                   android:layout_height="0dp"
@@ -24,6 +24,7 @@
                   android:layout_marginLeft="250dp"
                   android:layout_marginTop="40dp"
                   android:textColor="@color/black"/>
+
     <GridView
             android:id="@+id/goodsGridView"
             android:layout_width="fill_parent"
@@ -33,6 +34,7 @@
             android:layout_margin="10dp"
             android:gravity="center_horizontal"
             android:stretchMode="columnWidth"/>
+
     </LinearLayout>
 
     <LinearLayout android:layout_width="fill_parent"

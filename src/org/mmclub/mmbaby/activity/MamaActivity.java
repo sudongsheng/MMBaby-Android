@@ -6,7 +6,9 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.database.sqlite.SQLiteOpenHelper;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -16,7 +18,11 @@ import android.widget.*;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.database.DatabaseHelper;
 import org.mmclub.mmbaby.utils.AppConstant;
+import org.mmclub.mmbaby.utils.FileUtils;
 import org.mmclub.mmbaby.utils.FontManager;
+import org.mmclub.mmbaby.utils.MemoryTimeTest;
+
+import java.util.ArrayList;
 
 /**
  * Created by sudongsheng on 14-3-17.
@@ -62,16 +68,16 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
         dbHelper = new DatabaseHelper(MamaActivity.this, "MMBaby");
         sqLiteDatabase = dbHelper.getReadableDatabase();
         cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{mField}, null, null, "time");
-
+//        iterator(sqLiteDatabase);
         findViewByIds();
         setListeners();
-
         adapter = new MyAdapter(this, cursor);
         historyItem.setAdapter(adapter);
 
+//        MemoryTimeTest.start();
         ViewGroup v = (ViewGroup) findViewById(R.id.mama_activity);
         FontManager.changeFonts(v, MamaActivity.this, AppConstant.Mama);
-
+//        MemoryTimeTest.end();
         preferences = PreferenceManager.getDefaultSharedPreferences(MamaActivity.this);
         setGradeText(preferences.getInt("morality_grade", 0));
 
@@ -85,7 +91,7 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 Intent intent = new Intent(MamaActivity.this, NewRecordActivity.class);
                 intent.putExtra("Field", mField);
-                intent.putExtra("position", i);
+                intent.putExtra("position", adapter.c.getCount()-i-1);
                 startActivity(intent);
             }
         });
@@ -216,6 +222,24 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
         return false;
     }
 
+    private void iterator(SQLiteDatabase sqLiteDatabase) {
+        String s = new String();
+        Cursor cursor = sqLiteDatabase.rawQuery("SELECT * FROM record", null);
+        while (cursor.moveToNext()) {
+            for (int i = 0; i < cursor.getCount(); i++)
+                s = s + cursor.getString(i) + "   ";
+            s = s + "\n";
+        }
+        Log.i("record", s);
+    }
+
+    class ViewHolder{
+        TextView title;
+        TextView time;
+        ImageView[] photo=new ImageView[6];
+        LinearLayout photo_linear;
+    }
+
     private class MyAdapter extends BaseAdapter {
         private LayoutInflater inflater;
         private Cursor c;
@@ -232,15 +256,40 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
 
         @Override
         public View getView(final int i, View view, ViewGroup viewGroup) {
-            view = inflater.inflate(R.layout.view_history_item, null);
-            TextView title = (TextView) view.findViewById(R.id.history_item_title);
-            TextView time = (TextView) view.findViewById(R.id.history_item_time);
-            c.moveToPosition(i);
-            time.setText(c.getString(c.getColumnIndex("time")).substring(5));
-            title.setText(c.getString(c.getColumnIndex("title")));
+            ViewHolder holder;
+//            if(view==null) {
+                holder=new ViewHolder();
+                view = inflater.inflate(R.layout.view_history_item, null);
+                holder.title = (TextView) view.findViewById(R.id.history_item_title);
+                holder.time = (TextView) view.findViewById(R.id.history_item_time);
+                holder.photo[0]=(ImageView)view.findViewById(R.id.photo0);
+                holder.photo[1]=(ImageView)view.findViewById(R.id.photo1);
+                holder.photo[2]=(ImageView)view.findViewById(R.id.photo2);
+                holder.photo[3]=(ImageView)view.findViewById(R.id.photo3);
+                holder.photo[4]=(ImageView)view.findViewById(R.id.photo4);
+                holder.photo[5]=(ImageView)view.findViewById(R.id.photo5);
+                holder.photo_linear=(LinearLayout)view.findViewById(R.id.photo_linear);
+//                view.setTag(holder);
+//            }else {
+//                holder=(ViewHolder)view.getTag();
+//            }
+            c.moveToPosition(c.getCount()-i-1);
+            holder.time.setText(c.getString(c.getColumnIndex("time")).substring(5));
+            holder.title.setText(c.getString(c.getColumnIndex("title")));
             Typeface tf = Typeface.createFromAsset(MamaActivity.this.getAssets(), "fonts/mama.ttf");
-            time.setTypeface(tf);
-            title.setTypeface(tf);
+            holder.time.setTypeface(tf);
+            holder.title.setTypeface(tf);
+            Log.i("TAG","亲子习惯养成/" + mField + (c.getCount()-i-1));
+            ArrayList<String> arrayList = new FileUtils().readFileName("亲子习惯养成/" + mField + (c.getCount()-i-1));
+            for(int j=0;j<arrayList.size();j++){
+       //         Log.i("TAG", arrayList.get(j));
+                Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(j));
+                holder.photo[j].setImageBitmap(bitmap);
+            }
+            if(arrayList.size()==0){
+                holder.photo_linear.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
+                holder.photo_linear.setVisibility(View.INVISIBLE);
+            }
             return view;
         }
 

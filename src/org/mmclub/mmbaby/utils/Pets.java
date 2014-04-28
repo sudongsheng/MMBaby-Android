@@ -12,26 +12,28 @@ public class Pets {
     private int currentIntegral;
     private int needIntegral;
 
-    public void levelUp (int integral){
-        while (integral>=firstNeedIntegral){
+    public void levelUp(int integral) {
+        while (integral >= firstNeedIntegral) {
             petsLevel++;
             integral = integral - firstNeedIntegral;
-            firstNeedIntegral = firstNeedIntegral*2;
+            firstNeedIntegral = firstNeedIntegral * 2;
         }
         currentIntegral = integral;
-        needIntegral=firstNeedIntegral;
+        needIntegral = firstNeedIntegral;
     }
     public int imageUp(int petsLevel){
         return petsImage;
     }
 
-    public int getPetsLevel(){
+    public int getPetsLevel() {
         return petsLevel;
     }
-    public int getNeedIntegral(){
+
+    public int getNeedIntegral() {
         return needIntegral;
     }
-    public int getCurrentIntegral(){
+
+    public int getCurrentIntegral() {
         return currentIntegral;
     }
 

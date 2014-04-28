@@ -9,13 +9,6 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import org.mmclub.mmbaby.R;
 
-/**
- * 载入一个网页的Activity
- * <p/>
- * 目前作用是为手机报具体内容提供服务
- *
- * @author <a href="mailto:lxyweb@gmail.com">Lin xiangyu</a>
- */
 public class WebviewActivity extends Activity {
 
     public static final String EXTRA_TITLE = "title";

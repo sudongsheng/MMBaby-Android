@@ -75,8 +75,8 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
         historyItem.setAdapter(adapter);
 
 //        MemoryTimeTest.start();
-        ViewGroup v = (ViewGroup) findViewById(R.id.mama_activity);
-        FontManager.changeFonts(v, MamaActivity.this, AppConstant.Mama);
+//        ViewGroup v = (ViewGroup) findViewById(R.id.mama_activity);
+//        FontManager.changeFonts(v, MamaActivity.this, AppConstant.Mama);
 //        MemoryTimeTest.end();
         preferences = PreferenceManager.getDefaultSharedPreferences(MamaActivity.this);
         setGradeText(preferences.getInt("morality_grade", 0));
@@ -281,12 +281,12 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
             holder.title.setTypeface(tf);
             Log.i("TAG","亲子习惯养成/" + mField + (c.getCount()-i-1));
             ArrayList<String> arrayList = new FileUtils().readFileName("亲子习惯养成/" + mField + (c.getCount()-i-1));
-            for(int j=0;j<arrayList.size();j++){
+            for(int j=0;j<c.getInt(c.getColumnIndex("photoNum"));j++){
        //         Log.i("TAG", arrayList.get(j));
                 Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(j));
                 holder.photo[j].setImageBitmap(bitmap);
             }
-            if(arrayList.size()==0){
+            if(c.getInt(c.getColumnIndex("photoNum"))==0){
                 holder.photo_linear.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));
                 holder.photo_linear.setVisibility(View.INVISIBLE);
             }

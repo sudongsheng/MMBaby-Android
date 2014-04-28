@@ -22,9 +22,7 @@ import com.umeng.socialize.controller.UMServiceFactory;
 import com.umeng.socialize.controller.UMSocialService;
 import com.umeng.socialize.controller.listener.SocializeListeners;
 import com.umeng.socialize.media.UMImage;
-import com.umeng.socialize.sso.QZoneSsoHandler;
-import com.umeng.socialize.sso.TencentWBSsoHandler;
-import com.umeng.socialize.sso.UMSsoHandler;
+import com.umeng.socialize.sso.*;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.database.DatabaseHelper;
 import org.mmclub.mmbaby.utils.FileUtils;
@@ -42,7 +40,7 @@ public class ChooseShareActivity extends Activity {
     private ArrayList<String> titles = new ArrayList<String>();
 
     private Spinner title;
-    private int indexFromIntent=-1;
+    private int indexFromIntent = -1;
     private int index = 0;
     private int index_field = 0;
     private String field;
@@ -65,10 +63,10 @@ public class ChooseShareActivity extends Activity {
         sqLiteDatabase = dbHelper.getReadableDatabase();
         cursor = sqLiteDatabase.query("record", null, null, null, null, null, "time");
         while (cursor.moveToNext()) {
-        //    Log.i("TAG",getIntent().getStringExtra("title")+"=="+cursor.getString(cursor.getColumnIndex("title")));
-            if(cursor.getString(cursor.getColumnIndex("title")).equals(getIntent().getStringExtra("title"))){
-                indexFromIntent=cursor.getPosition();
-      //          Log.i("TAG",indexFromIntent+"");
+            //    Log.i("TAG",getIntent().getStringExtra("title")+"=="+cursor.getString(cursor.getColumnIndex("title")));
+            if (cursor.getString(cursor.getColumnIndex("title")).equals(getIntent().getStringExtra("title"))) {
+                indexFromIntent = cursor.getPosition();
+                //          Log.i("TAG",indexFromIntent+"");
             }
             titles.add(cursor.getString(cursor.getColumnIndex("title")));
         }
@@ -120,11 +118,11 @@ public class ChooseShareActivity extends Activity {
         final ArrayAdapter<String> adapter = new ArrayAdapter<String>(ChooseShareActivity.this, android.R.layout.simple_spinner_item, titles);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner.setAdapter(adapter);
-        if(indexFromIntent==-1) {
+        if (indexFromIntent == -1) {
             spinner.setSelection(0);
-        }else {
+        } else {
             spinner.setSelection(indexFromIntent);
-            Toast.makeText(ChooseShareActivity.this,"请选择一张图片分享",Toast.LENGTH_SHORT).show();
+            Toast.makeText(ChooseShareActivity.this, "请选择一张图片分享", Toast.LENGTH_SHORT).show();
         }
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -204,8 +202,8 @@ public class ChooseShareActivity extends Activity {
         // 设置分享内容
         mController.setShareContent(titles.get(index));
         // 设置分享图片，参数2为本地图片的路径(绝对路径)
-        Log.i("TAG",arrayList.size()+"");
-        if (arrayList.size()!=0) {
+        Log.i("TAG", arrayList.size() + "");
+        if (arrayList.size() != 0) {
             if (path == null) {
                 path = arrayList.get(0);
             }
@@ -217,10 +215,18 @@ public class ChooseShareActivity extends Activity {
         mController.getConfig().setSsoHandler(new QZoneSsoHandler(ChooseShareActivity.this, "101066698"));
         //注意一定保证在新浪微博上填写应用签名
         //将SDK目录下的src覆盖到项目工程根目录下，确保已添加'com/sina/sso/RemoteSSO.aidl'.
-        //mController.getConfig().setSsoHandler(new SinaSsoHandler());
+        mController.getConfig().setSsoHandler(new SinaSsoHandler());
 
         //设置腾讯微博SSO handler
         mController.getConfig().setSsoHandler(new TencentWBSsoHandler());
+
+        //微信
+        String appID = "wxd1185f9d12c4307a";
+        String contentUrl = "http://www.umeng.com/social";
+        UMWXHandler wxHandler = mController.getConfig().supportWXPlatform(ChooseShareActivity.this,appID, contentUrl);
+        wxHandler.setWXTitle(titles.get(index));
+        UMWXHandler circleHandler = mController.getConfig().supportWXCirclePlatform(ChooseShareActivity.this, appID, contentUrl);
+        circleHandler.setCircleTitle(titles.get(index));
     }
 
     @Override

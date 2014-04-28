@@ -128,8 +128,8 @@ public class NewRecordActivity extends Activity {
             //           Log.i("TAG", "position_flag:" + position_flag);
         }
 
-        ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
-        FontManager.changeFonts(v, NewRecordActivity.this, AppConstant.Mama);
+//        ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
+//        FontManager.changeFonts(v, NewRecordActivity.this, AppConstant.Mama);
     }
 
     private void findViewByIds() {

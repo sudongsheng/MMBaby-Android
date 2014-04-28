@@ -167,6 +167,7 @@
               android:layout_marginLeft="18dp"
               android:divider="@null"
               android:dividerHeight="2dp"
+              android:cacheColorHint="#00000000"
               android:scrollbars="none"
               android:layout_weight="1.2"/>
 </LinearLayout>

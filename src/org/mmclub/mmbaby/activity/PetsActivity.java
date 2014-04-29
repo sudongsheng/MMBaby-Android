@@ -270,4 +270,5 @@ public class PetsActivity extends Activity {
             handler.sendMessage(message);
         }
     }
+
 }

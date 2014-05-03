@@ -1,7 +1,26 @@
 <selector xmlns:android="http://schemas.android.com/apk/res/android">
-    <item android:state_pressed="true"
-          android:drawable="@color/orange" /> <!-- pressed -->
-    <item android:state_focused="true"
-          android:drawable="@color/orange" /> <!-- focused -->
-    <item android:drawable="@color/deep_orange" /> <!-- default -->
+    <item android:state_pressed="true">
+        <shape>
+            <solid android:color="@color/orange"/>
+            <corners
+                    android:bottomRightRadius="10dip"
+                    android:bottomLeftRadius="10dip"/>
+        </shape>
+    </item>
+    <item android:state_focused="true">
+        <shape>
+            <solid android:color="@color/orange"/>
+            <corners
+                    android:bottomRightRadius="10dip"
+                    android:bottomLeftRadius="10dip"/>
+        </shape>
+    </item>
+    <item>
+        <shape>
+            <solid android:color="@color/deep_orange"/>
+            <corners
+                    android:bottomRightRadius="10dip"
+                    android:bottomLeftRadius="10dip"/>
+        </shape>
+    </item>
 </selector>

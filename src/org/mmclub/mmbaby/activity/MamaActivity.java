@@ -8,9 +8,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.Message;
 import android.preference.PreferenceManager;
 import android.util.Log;
 import android.view.*;
@@ -23,6 +24,7 @@ import org.mmclub.mmbaby.utils.FontManager;
 import org.mmclub.mmbaby.utils.MemoryTimeTest;
 
 import java.util.ArrayList;
+import java.util.logging.LogRecord;
 
 /**
  * Created by sudongsheng on 14-3-17.
@@ -33,9 +35,6 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
     private ListView historyItem;
     private RadioGroup field;
     private ImageView divide;
-    private RadioButton morality;
-    private RadioButton intelligence;
-    private RadioButton physical;
     private TextView status;
     private TextView grade_num1;
     private TextView grade_num2;
@@ -62,17 +61,42 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_mama);
         init();
+        new Update().start();
     }
-
+    class Update extends Thread{
+        @Override
+        public void run() {
+            handler.sendEmptyMessage(0);
+        }
+    }
+    Handler handler = new Handler() {
+        public void handleMessage(Message msg) {
+            historyItem = (ListView) findViewById(R.id.history_item);
+            dbHelper = new DatabaseHelper(MamaActivity.this, "MMBaby");
+            sqLiteDatabase = dbHelper.getReadableDatabase();
+            cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{mField}, null, null, "time");
+            adapter = new MyAdapter(MamaActivity.this, cursor);
+            historyItem.setAdapter(adapter);
+            historyItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                    Intent intent = new Intent(MamaActivity.this, NewRecordActivity.class);
+                    intent.putExtra("Field", mField);
+                    intent.putExtra("position", adapter.c.getCount()-i-1);
+                    startActivity(intent);
+                }
+            });
+            historyItem.setOnTouchListener(MamaActivity.this);
+        }
+    };
     private void init() {
-        dbHelper = new DatabaseHelper(MamaActivity.this, "MMBaby");
-        sqLiteDatabase = dbHelper.getReadableDatabase();
-        cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{mField}, null, null, "time");
-//        iterator(sqLiteDatabase);
+//        dbHelper = new DatabaseHelper(MamaActivity.this, "MMBaby");
+//        sqLiteDatabase = dbHelper.getReadableDatabase();
+//        cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{mField}, null, null, "time");
         findViewByIds();
         setListeners();
-        adapter = new MyAdapter(this, cursor);
-        historyItem.setAdapter(adapter);
+//        adapter = new MyAdapter(this, cursor);
+//        historyItem.setAdapter(adapter);
 
 //        MemoryTimeTest.start();
 //        ViewGroup v = (ViewGroup) findViewById(R.id.mama_activity);
@@ -86,16 +110,6 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
     }
 
     private void setListeners() {
-        historyItem.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
-                Intent intent = new Intent(MamaActivity.this, NewRecordActivity.class);
-                intent.putExtra("Field", mField);
-                intent.putExtra("position", adapter.c.getCount()-i-1);
-                startActivity(intent);
-            }
-        });
-        historyItem.setOnTouchListener(this);
         newTask.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -147,11 +161,8 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
 
     private void findViewByIds() {
         newTask = (Button) findViewById(R.id.new_task);
-        historyItem = (ListView) findViewById(R.id.history_item);
+//        historyItem = (ListView) findViewById(R.id.history_item);
         field = (RadioGroup) findViewById(R.id.field);
-        morality = (RadioButton) findViewById(R.id.morality);
-        intelligence = (RadioButton) findViewById(R.id.intelligence);
-        physical = (RadioButton) findViewById(R.id.physical);
         divide = (ImageView) findViewById(R.id.divide);
         status = (TextView) findViewById(R.id.state_tex);
         grade_num1 = (TextView) findViewById(R.id.grade_num1);

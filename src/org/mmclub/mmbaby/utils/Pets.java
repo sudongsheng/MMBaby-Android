@@ -21,6 +21,9 @@ public class Pets {
         currentIntegral = integral;
         needIntegral = firstNeedIntegral;
     }
+    public int imageUp(int petsLevel){
+        return petsImage;
+    }
 
     public int getPetsLevel() {
         return petsLevel;

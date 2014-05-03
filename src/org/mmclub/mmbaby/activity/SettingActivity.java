@@ -14,6 +14,7 @@ import android.view.ViewGroup;
 import android.widget.*;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.utils.AppConstant;
+import org.mmclub.mmbaby.utils.CustomDialog;
 import org.mmclub.mmbaby.utils.FontManager;
 
 /**
@@ -71,13 +72,12 @@ public class SettingActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (isPwdExist) {
-                    View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_set_password, null);
-                    final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
-                    dialog.show();
-                    final EditText old_pwd = (EditText) v.findViewById(R.id.old_pwd);
-                    final EditText new_pwd = (EditText) v.findViewById(R.id.new_pwd);
-                    final EditText re_pwd = (EditText) v.findViewById(R.id.re_pwd);
-                    checkBox = (CheckBox) v.findViewById(R.id.cancel);
+                    final CustomDialog customDialog = new CustomDialog(SettingActivity.this,R.layout.view_set_password, R.style.settingDialog);
+                    customDialog.show();
+                    final EditText old_pwd = (EditText) customDialog.findViewById(R.id.old_pwd);
+                    final EditText new_pwd = (EditText) customDialog.findViewById(R.id.new_pwd);
+                    final EditText re_pwd = (EditText) customDialog.findViewById(R.id.re_pwd);
+                    checkBox = (CheckBox) customDialog.findViewById(R.id.cancel);
                     checkBox.setChecked(preferences.getBoolean("isCancel",false));
                     checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -87,7 +87,7 @@ public class SettingActivity extends Activity {
                             editor.commit();
                         }
                     });
-                    Button btn = (Button) v.findViewById(R.id.yes);
+                    Button btn = (Button) customDialog.findViewById(R.id.yes);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -97,7 +97,7 @@ public class SettingActivity extends Activity {
                                     SharedPreferences.Editor editor = preferences.edit();
                                     editor.putBoolean("isPwdExist", false);
                                     editor.commit();
-                                    dialog.dismiss();
+                                    customDialog.dismiss();
                                     Toast.makeText(SettingActivity.this, "密码设定取消成功", Toast.LENGTH_LONG).show();
                                 } else {
                                     if (new_pwd.getText().toString().equals(re_pwd.getText().toString())) {
@@ -106,7 +106,7 @@ public class SettingActivity extends Activity {
                                             editor.putString("password", new_pwd.getText().toString());
                                             editor.commit();
                                             Toast.makeText(SettingActivity.this, "密码设置成功", Toast.LENGTH_LONG).show();
-                                            dialog.dismiss();
+                                            customDialog.dismiss();
                                         } else {
                                             Toast.makeText(SettingActivity.this, "新密码不能为空", Toast.LENGTH_LONG).show();
                                         }
@@ -120,11 +120,10 @@ public class SettingActivity extends Activity {
                         }
                     });
                 } else {
-                    View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_enter_password, null);
-                    final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
+                    final CustomDialog dialog = new CustomDialog(SettingActivity.this,R.layout.view_enter_password, R.style.settingDialog);
                     dialog.show();
-                    final EditText editText = (EditText) v.findViewById(R.id.pwd);
-                    Button btn = (Button) v.findViewById(R.id.sure);
+                    final EditText editText = (EditText) dialog.findViewById(R.id.pwd);
+                    Button btn = (Button) dialog.findViewById(R.id.sure);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -148,11 +147,10 @@ public class SettingActivity extends Activity {
             @Override
             public void onClick(View view) {
                 if (isPwdExist) {
-                    View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_enter_password, null);
-                    final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
+                    final CustomDialog dialog = new CustomDialog(SettingActivity.this,R.layout.view_enter_password, R.style.settingDialog);
                     dialog.show();
-                    final EditText editText = (EditText) v.findViewById(R.id.pwd);
-                    Button btn = (Button) v.findViewById(R.id.sure);
+                    final EditText editText = (EditText) dialog.findViewById(R.id.pwd);
+                    Button btn = (Button) dialog.findViewById(R.id.sure);
                     btn.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
@@ -203,13 +201,12 @@ public class SettingActivity extends Activity {
     }
 
     private void setRateDialog() {
-        View v = LayoutInflater.from(SettingActivity.this).inflate(R.layout.view_set_rate, null);
-        final Dialog dialog = new AlertDialog.Builder(SettingActivity.this).setView(v).create();
+        final CustomDialog dialog = new CustomDialog(SettingActivity.this,R.layout.view_set_rate, R.style.settingDialog);
         dialog.show();
-        Spinner set_morality = (Spinner) v.findViewById(R.id.set_morality);
-        Spinner set_intelligence = (Spinner) v.findViewById(R.id.set_intelligence);
-        Spinner set_physical = (Spinner) v.findViewById(R.id.set_physical);
-        Button btn = (Button) v.findViewById(R.id.yes_rate);
+        Spinner set_morality = (Spinner) dialog.findViewById(R.id.set_morality);
+        Spinner set_intelligence = (Spinner) dialog.findViewById(R.id.set_intelligence);
+        Spinner set_physical = (Spinner) dialog.findViewById(R.id.set_physical);
+        Button btn = (Button) dialog.findViewById(R.id.yes_rate);
         setSpinnerAdapter(set_morality, AppConstant.MORALITY);
         setSpinnerAdapter(set_intelligence, AppConstant.INTELLIGENCE);
         setSpinnerAdapter(set_physical, AppConstant.PHYSICAL);

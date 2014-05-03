@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.*;
 import org.mmclub.mmbaby.R;
+import org.mmclub.mmbaby.utils.CustomDialog;
 import org.mmclub.mmbaby.utils.MemoryTimeTest;
 
 /**
@@ -47,11 +48,10 @@ public class MainActivity extends Activity {
                     startActivity(intent);
                 } else {
                     if (isPwdExist) {
-                        View v = LayoutInflater.from(MainActivity.this).inflate(R.layout.view_enter_password, null);
-                        final Dialog dialog = new AlertDialog.Builder(MainActivity.this).setView(v).create();
-                        dialog.show();
-                        final EditText editText = (EditText) v.findViewById(R.id.pwd);
-                        Button btn = (Button) v.findViewById(R.id.sure);
+                        CustomDialog customDialog = new CustomDialog(MainActivity.this,R.layout.view_enter_password, R.style.settingDialog);
+                        customDialog.show();
+                        final EditText editText = (EditText) customDialog.findViewById(R.id.pwd);
+                        Button btn = (Button) customDialog.findViewById(R.id.sure);
                         btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View view) {

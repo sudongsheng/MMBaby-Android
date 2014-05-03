@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:id="@+id/photo_linear"
+              android:layout_width="fill_parent"
+              android:layout_height="60dp"
+              android:orientation="horizontal"
+              android:layout_marginTop="5dp"
+              android:background="@drawable/edit_corner">
+    <ImageView
+            android:id="@+id/photo0"
+            android:layout_width="37dp"
+            android:layout_height="50dp"
+            android:scaleType="fitStart"
+            android:layout_margin="5dp"/>
+    <ImageView
+            android:id="@+id/photo1"
+            android:layout_width="37dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitStart"/>
+    <ImageView
+            android:id="@+id/photo2"
+            android:layout_width="37dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitStart"/>
+    <ImageView
+            android:id="@+id/photo3"
+            android:layout_width="37dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitStart"/>
+    <ImageView
+            android:id="@+id/photo4"
+            android:layout_width="37dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitStart"/>
+    <ImageView
+            android:id="@+id/photo5"
+            android:layout_width="37dp"
+            android:layout_height="50dp"
+            android:layout_margin="5dp"
+            android:scaleType="fitStart"/>
+</LinearLayout>
+

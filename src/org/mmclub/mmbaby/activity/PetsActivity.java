@@ -8,6 +8,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.graphics.drawable.AnimationDrawable;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -138,6 +139,10 @@ public class PetsActivity extends Activity {
                             initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(), R.drawable.dog_image,
                                     "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
+                            //测试动画效果
+                            /*petImageiv.setBackgroundResource(R.drawable.dog_up_anim);
+                            AnimationDrawable animationDrawable = (AnimationDrawable)petImageiv.getBackground();
+                            animationDrawable.start();*/
                             break;
                     }
                     MyAdapter adapter = new MyAdapter(PetsActivity.this);
@@ -173,6 +178,7 @@ public class PetsActivity extends Activity {
                 initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(), R.drawable.dog_image,
                         "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
+
                 break;
         }
 

@@ -112,6 +112,8 @@ public class MarketActivity extends Activity {
                                     BabyData.intelligence_needMoney, BabyData.intelligence_up);
                             break;
                     }
+                    MyAdapter adapter = new MyAdapter(MarketActivity.this);
+                    goodsGridView.setAdapter(adapter);
 
                 } else {
                     Toast.makeText(MarketActivity.this, "没有金币啦，好好表现，让妈妈奖励吧。。。", 0).show();
@@ -226,7 +228,17 @@ public class MarketActivity extends Activity {
         @Override
         public void onClick(View v) {
             // TODO Auto-generated method stub
-            money = money - 20;
+            switch (petId){
+                case AppConstant.PET_PLANT:
+                    money = money - BabyData.morality_needMoney[mPosition];
+                    break;
+                case AppConstant.PET_CHICK:
+                    money = money - BabyData.physical_needMoney[mPosition];
+                    break;
+                case AppConstant.PET_DOG:
+                    money = money - BabyData.intelligence_needMoney[mPosition];
+                    break;
+            }
             Message message = new Message();
             SharedPreferences.Editor editor = preferences.edit();
             if (money < 0) {

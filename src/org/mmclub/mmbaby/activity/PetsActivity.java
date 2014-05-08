@@ -68,7 +68,7 @@ public class PetsActivity extends Activity {
         //获取对应积分
         preferences = PreferenceManager.getDefaultSharedPreferences(PetsActivity.this);
         //实例化pet类的对象
-        //获取已经存好的拥有的道具数量，初始化horizontialListView
+        //获取已经存好的拥有的道具数量
         for (int i = 0;i<4;i++){
             ownedNumber[i] = preferences.getInt(petName+"ownedNumber"+i,0);
         }
@@ -100,25 +100,23 @@ public class PetsActivity extends Activity {
         handler = new Handler(){
             public void handleMessage(android.os.Message msg){
                 if (msg.what == 1){
-                    AlertDialog.Builder builder = new AlertDialog.Builder(PetsActivity.this);
-                    builder.setMessage("已经用完了，要去购买一些吗？");
-                    builder.setTitle("提示");
-                    builder.setPositiveButton("购买",new DialogInterface.OnClickListener() {
+                    final CustomDialog dialog = new CustomDialog(PetsActivity.this,R.layout.view_dialog,R.style.settingDialog);
+                    dialog.show();
+                    TextView dialogText = (TextView)dialog.findViewById(R.id.dialogText);
+                    dialogText.setText("已经没有啦，去商店买一些吧！");
+                    dialogText.setTypeface(tf);
+                    Button knowButton = (Button)dialog.findViewById(R.id.dialogButton);
+                    knowButton.setOnClickListener(new View.OnClickListener() {
                         @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
+                        public void onClick(View view) {
                             Intent intent = new Intent(PetsActivity.this,MarketActivity.class);
                             intent.putExtra("petId",petId);
                             intent.putExtra("petsName",petName);
                             startActivity(intent);
+                            dialog.dismiss();
                         }
                     });
-                    builder.setNegativeButton("取消",new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            dialogInterface.dismiss();
-                        }
-                    });
-                    builder.create().show();
+
                 }else {
                     integral = preferences.getInt(integral_type+"_integral",0);
                     pets = new Pets();
@@ -131,18 +129,19 @@ public class PetsActivity extends Activity {
                             petsData = getData(BabyData.morality_buttonImage,ownedNumber);
                             break;
                         case AppConstant.PET_CHICK:
-                            initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(), R.drawable.chick_image,
+                            initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(),R.drawable.chick_image,
                                     "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.physical_buttonImage,ownedNumber);
                             break;
                         case AppConstant.PET_DOG:
-                            initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(), R.drawable.dog_image,
+                            initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(),BabyData.dog_image[pets.getPetsLevel()-1],
                                     "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
                             //测试动画效果
-                            /*petImageiv.setBackgroundResource(R.drawable.dog_up_anim);
+                            petImageiv.setBackgroundResource(R.drawable.dog_up_anim);
                             AnimationDrawable animationDrawable = (AnimationDrawable)petImageiv.getBackground();
-                            animationDrawable.start();*/
+                            animationDrawable.start();
+                            //animationDrawable.stop();
                             break;
                     }
                     MyAdapter adapter = new MyAdapter(PetsActivity.this);
@@ -175,7 +174,7 @@ public class PetsActivity extends Activity {
                 petsData = getData(BabyData.physical_buttonImage,ownedNumber);
                 break;
             case AppConstant.PET_DOG:
-                initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(), R.drawable.dog_image,
+                initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(), BabyData.dog_image[pets.getPetsLevel()],
                         "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
 
@@ -209,7 +208,7 @@ public class PetsActivity extends Activity {
         petNametv.setTypeface(tf);
         petTypetv.setText(petType);
         petTypetv.setTypeface(tf);
-        petImageiv.setImageResource(petImageId);
+        petImageiv.setBackgroundResource(petImageId);
         progressBar.setMax(needIntegral);
         progressBar.setProgress(currentIntegral);
     }

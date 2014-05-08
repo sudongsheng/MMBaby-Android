@@ -57,18 +57,21 @@
                   android:text="狗粮"
                   android:textColor="@color/black"/>
 
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/up"
-                  android:text="+200经验"
-                  android:textColor="@color/black"/>
+        <TextView
+                android:layout_marginTop="5dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/up"
+                android:text="+200经验"
+                android:textColor="@color/black"/>
 
 
         <Button
+                android:layout_marginTop="5dp"
                 android:id="@+id/buy"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="购  买"/>
+                android:layout_width="70dp"
+                android:layout_height="30dp"
+                android:background="@drawable/buy_button"/>
         </LinearLayout>
 
     </LinearLayout>

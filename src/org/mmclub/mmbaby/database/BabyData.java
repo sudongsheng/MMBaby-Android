@@ -14,7 +14,7 @@ public interface BabyData {
             R.drawable.scissors_button,R.drawable.shovel_button};
     public final static int[] morality_needMoney = new int[]{20,30,20,10};
     public final static int[] morality_up = new int[]{300,200,200,200};
-    public final static int[] dog_image = new int[]{R.drawable.dog_image_0,R.drawable.dog_image_1,R.drawable.dog_image_2};
+    public final static int[] dog_image = new int[]{R.drawable.dog_image_0,R.drawable.dog_image_1,R.drawable.dog_image_2,R.drawable.dog_image_2};
 
 
     //体育方面的内容physical

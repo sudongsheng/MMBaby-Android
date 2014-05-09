@@ -9,6 +9,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -54,6 +56,9 @@ public class PetsActivity extends Activity {
     private String integral_type;
     private Typeface tf;
 
+    SoundPool soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,5);
+    HashMap<Integer,Integer> soundMap = new HashMap<Integer, Integer>();
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
@@ -62,6 +67,8 @@ public class PetsActivity extends Activity {
         petId = getIntent().getIntExtra("petId", 0);
         integral_type = getIntent().getStringExtra("integral_type");
         tf = Typeface.createFromAsset(PetsActivity.this.getAssets(), "fonts/baby.ttf");
+        soundMap.put(1,soundPool.load(this,R.raw.dialog_show,1));
+        soundMap.put(2,soundPool.load(this,R.raw.button_clicked,1));
 
 
         initView();
@@ -78,6 +85,7 @@ public class PetsActivity extends Activity {
         marketButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundPool.play(soundMap.get(2),1,1,0,0,1);
                 Intent intent = new Intent(PetsActivity.this,MarketActivity.class);
                 intent.putExtra("petId",petId);
                 intent.putExtra("petsName",petName);
@@ -87,6 +95,7 @@ public class PetsActivity extends Activity {
         petBackButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundPool.play(soundMap.get(2),1,1,0,0,1);
                 onBackPressed();
                 PetsActivity.this.finish();
             }
@@ -100,6 +109,7 @@ public class PetsActivity extends Activity {
         handler = new Handler(){
             public void handleMessage(android.os.Message msg){
                 if (msg.what == 1){
+                    soundPool.play(soundMap.get(1),1,1,0,0,1);
                     final CustomDialog dialog = new CustomDialog(PetsActivity.this,R.layout.view_dialog,R.style.settingDialog);
                     dialog.show();
                     TextView dialogText = (TextView)dialog.findViewById(R.id.dialogText);
@@ -113,6 +123,7 @@ public class PetsActivity extends Activity {
                             intent.putExtra("petId",petId);
                             intent.putExtra("petsName",petName);
                             startActivity(intent);
+                            soundPool.play(soundMap.get(2),1,1,0,0,1);
                             dialog.dismiss();
                         }
                     });
@@ -134,7 +145,7 @@ public class PetsActivity extends Activity {
                             petsData = getData(BabyData.physical_buttonImage,ownedNumber);
                             break;
                         case AppConstant.PET_DOG:
-                            initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(),BabyData.dog_image[pets.getPetsLevel()-1],
+                            initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(),BabyData.dog_image[pets.getPetsLevel()],
                                     "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
                             //测试动画效果

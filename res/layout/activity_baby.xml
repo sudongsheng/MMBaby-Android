@@ -9,6 +9,13 @@
             android:background="@drawable/baby_background"
             android:alpha="0.8"
             android:gravity="bottom"/>
+    <Button
+            android:id="@+id/babyBack"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:background="@drawable/selectors_petback_button"
+            android:layout_marginLeft="10dp"
+            android:layout_marginTop="10dp"/>
 
     <LinearLayout
             android:layout_width="match_parent"

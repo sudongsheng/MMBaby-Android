@@ -7,10 +7,17 @@
               android:layout_height="fill_parent"
               android:gravity="center_horizontal"
               android:background="@drawable/market_bg">
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="0dp"
-
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
             android:layout_weight="3">
+        <Button
+                android:id="@+id/marketBack"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:background="@drawable/selectors_petback_button"
+                android:layout_marginLeft="10dp"
+                android:layout_marginTop="10dp"/>
             </LinearLayout>
 
     <LinearLayout android:layout_width="fill_parent"

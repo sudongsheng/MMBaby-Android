@@ -16,6 +16,7 @@ import android.widget.*;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.database.BabyData;
 import org.mmclub.mmbaby.utils.AppConstant;
+import org.mmclub.mmbaby.utils.CustomDialog;
 import org.mmclub.mmbaby.utils.FontManager;
 
 import java.util.ArrayList;
@@ -41,6 +42,7 @@ public class MarketActivity extends Activity {
     private int petId;
     private String petName;
     private Typeface tf;
+    private Button marketBack;
 
     //主线程创建消息处理器
     private Handler handler;
@@ -51,6 +53,7 @@ public class MarketActivity extends Activity {
         setContentView(R.layout.activity_market);
         tf = Typeface.createFromAsset(MarketActivity.this.getAssets(), "fonts/baby.ttf");
 
+        marketBack = (Button)findViewById(R.id.marketBack);
         moneyTextview = (TextView) findViewById(R.id.moneyTextView);
         goodsGridView = (GridView) findViewById(R.id.goodsGridView);
         preferences = PreferenceManager.getDefaultSharedPreferences(MarketActivity.this);
@@ -59,6 +62,14 @@ public class MarketActivity extends Activity {
         moneyTextview.setTypeface(tf);
         petId = getIntent().getIntExtra("petId", 0);
         petName = getIntent().getStringExtra("petsName");
+
+        marketBack.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackPressed();
+                MarketActivity.this.finish();
+            }
+        });
 
         for (int i = 0; i < 4; i++) {
             ownedNumber[i] = preferences.getInt(petName + "ownedNumber" + i, 0);
@@ -112,9 +123,22 @@ public class MarketActivity extends Activity {
                                     BabyData.intelligence_needMoney, BabyData.intelligence_up);
                             break;
                     }
+                    MyAdapter adapter = new MyAdapter(MarketActivity.this);
+                    goodsGridView.setAdapter(adapter);
 
                 } else {
-                    Toast.makeText(MarketActivity.this, "没有金币啦，好好表现，让妈妈奖励吧。。。", 0).show();
+                    final CustomDialog dialog = new CustomDialog(MarketActivity.this,R.layout.view_dialog,R.style.settingDialog);
+                    dialog.show();
+                    TextView dialogText = (TextView)dialog.findViewById(R.id.dialogText);
+                    dialogText.setText("没有金币啦，好好表现，让妈妈奖励吧！！");
+                    dialogText.setTypeface(tf);
+                    Button knowButton = (Button)dialog.findViewById(R.id.dialogButton);
+                    knowButton.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            dialog.dismiss();
+                        }
+                    });
                 }
             }
         };
@@ -226,7 +250,17 @@ public class MarketActivity extends Activity {
         @Override
         public void onClick(View v) {
             // TODO Auto-generated method stub
-            money = money - 20;
+            switch (petId){
+                case AppConstant.PET_PLANT:
+                    money = money - BabyData.morality_needMoney[mPosition];
+                    break;
+                case AppConstant.PET_CHICK:
+                    money = money - BabyData.physical_needMoney[mPosition];
+                    break;
+                case AppConstant.PET_DOG:
+                    money = money - BabyData.intelligence_needMoney[mPosition];
+                    break;
+            }
             Message message = new Message();
             SharedPreferences.Editor editor = preferences.edit();
             if (money < 0) {

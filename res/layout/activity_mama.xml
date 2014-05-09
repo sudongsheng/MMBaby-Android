@@ -6,6 +6,7 @@
               android:layout_height="fill_parent"
               android:background="@color/mama_background">
     <include  layout="@layout/include_radiogroup"/>
+    <ImageView android:id="@+id/divide" android:layout_width="fill_parent" android:layout_height="5dp" android:background="@color/orange"/>
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"

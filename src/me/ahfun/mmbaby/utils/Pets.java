@@ -18,8 +18,15 @@ public class Pets {
             integral = integral - firstNeedIntegral;
             firstNeedIntegral = firstNeedIntegral * 2;
         }
-        currentIntegral = integral;
-        needIntegral = firstNeedIntegral;
+        if (petsLevel<3){
+            currentIntegral = integral;
+            needIntegral = firstNeedIntegral;
+        }else {
+            petsLevel = 2;
+            currentIntegral = 4000;
+            needIntegral=4000;
+        }
+
     }
     public int imageUp(int petsLevel){
         return petsImage;

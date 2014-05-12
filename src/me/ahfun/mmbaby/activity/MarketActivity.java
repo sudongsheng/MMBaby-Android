@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.graphics.Typeface;
+import android.media.AudioManager;
+import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -33,6 +35,8 @@ public class MarketActivity extends Activity {
     protected static final int TOAST = 2;
     private List<Map<String, Object>> marketData;
     public int[] ownedNumber = new int[]{0, 0, 0, 0};
+    private int[] goodListBg = new int[]{R.drawable.goods_list_bg0,R.drawable.goods_list_bg1,
+            R.drawable.goods_list_bg2,R.drawable.goods_list_bg3};
     private GridView goodsGridView;
     private ViewHolder holder;
 
@@ -43,6 +47,9 @@ public class MarketActivity extends Activity {
     private String petName;
     private Typeface tf;
     private Button marketBack;
+
+    SoundPool soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,5);
+    HashMap<Integer,Integer> soundMap = new HashMap<Integer, Integer>();
 
     //主线程创建消息处理器
     private Handler handler;
@@ -63,9 +70,15 @@ public class MarketActivity extends Activity {
         petId = getIntent().getIntExtra("petId", 0);
         petName = getIntent().getStringExtra("petsName");
 
+        soundMap.put(1,soundPool.load(this,R.raw.dialog_show,1));
+        soundMap.put(2,soundPool.load(this,R.raw.button_clicked,1));
+        soundMap.put(3,soundPool.load(this,R.raw.buy_clicked,1));
+        soundMap.put(4,soundPool.load(this,R.raw.know_clicked,1));
+
         marketBack.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                soundPool.play(soundMap.get(2),1,1,0,0,1);
                 onBackPressed();
                 MarketActivity.this.finish();
             }
@@ -127,6 +140,7 @@ public class MarketActivity extends Activity {
                     goodsGridView.setAdapter(adapter);
 
                 } else {
+                    soundPool.play(soundMap.get(1),1,1,0,0,1);
                     final CustomDialog dialog = new CustomDialog(MarketActivity.this,R.layout.view_dialog,R.style.settingDialog);
                     dialog.show();
                     TextView dialogText = (TextView)dialog.findViewById(R.id.dialogText);
@@ -136,6 +150,7 @@ public class MarketActivity extends Activity {
                     knowButton.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View view) {
+                            soundPool.play(soundMap.get(4),1,1,0,0,1);
                             dialog.dismiss();
                         }
                     });
@@ -154,11 +169,14 @@ public class MarketActivity extends Activity {
             map.put("goodsImage", goodsImage[i]);
             map.put("needMoney", needMoney[i]);
             map.put("up", up[i]);
+            map.put("goodsListBg",goodListBg[i]);
 
             list.add(map);
         }
         return list;
     }
+
+
 
     public final class ViewHolder {
         public ImageView goodsImage;
@@ -167,7 +185,9 @@ public class MarketActivity extends Activity {
         public TextView needMoney;
         public TextView up;
         public Button buy;
+        public LinearLayout linearLayout;
     }
+
 
 
     public class MyAdapter extends BaseAdapter {
@@ -211,6 +231,7 @@ public class MarketActivity extends Activity {
                 holder.needMoney = (TextView) convertView.findViewById(R.id.needMoney);
                 holder.up = (TextView) convertView.findViewById(R.id.up);
                 holder.buy = (Button) convertView.findViewById(R.id.buy);
+                holder.linearLayout = (LinearLayout)convertView.findViewById(R.id.market_list_lineaeLayout);
                 convertView.setTag(holder);
 
             } else {
@@ -218,6 +239,7 @@ public class MarketActivity extends Activity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            holder.linearLayout.setBackgroundResource((Integer) marketData.get(position).get("goodsListBg"));
             holder.goodsImage.setImageResource((Integer) marketData.get(position).get("goodsImage"));
             holder.goodsName.setText((String) marketData.get(position).get("goodsName"));
             holder.goodsName.setTypeface(tf);
@@ -273,6 +295,7 @@ public class MarketActivity extends Activity {
                 editor.commit();
                 message.what = CHANGE_UI;
             }
+            soundPool.play(soundMap.get(3),1,1,0,0,1);
             message.obj = mPosition;
             handler.sendMessage(message);
         }

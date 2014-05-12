@@ -14,8 +14,8 @@ public interface BabyData {
             R.drawable.scissors_button,R.drawable.shovel_button};
     public final static int[] morality_needMoney = new int[]{20,30,20,10};
     public final static int[] morality_up = new int[]{300,200,200,200};
-    public final static int[] dog_image = new int[]{R.drawable.dog_image_0,R.drawable.dog_image_1,R.drawable.dog_image_2};
-
+    public final static int[] sunflower_image = new int[]{R.drawable.sunflower_image_0,
+            R.drawable.sunflower_image_1,R.drawable.sunflower_image_2};
 
     //体育方面的内容physical
     public final static String[] physical_goodsName=new String[]{"精品粮","谷物","篮球","溜冰鞋"};
@@ -25,6 +25,8 @@ public interface BabyData {
             R.drawable.basketball_button,R.drawable.roller_skates_button};
     public final static int[] physical_needMoney = new int[]{10,20,30,15};
     public final static int[] physical_up = new int[]{200,200,200,200};
+    public final static int[] chick_image = new int[]{R.drawable.chick_image_0,R.drawable.chick_image_1,R.drawable.chick_image_2};
+
 
     //智力方面的内容intelligence
     public final static String[] intelligence_goodsName=new String[]{"精品粮","骨头","智慧书","魔方"};
@@ -34,4 +36,6 @@ public interface BabyData {
             R.drawable.book_button,R.drawable.magic_square_button};
     public final static int[] intelligence_needMoney = new int[]{10,15,25,20};
     public final static int[] intelligence_up = new int[]{200,200,200,200};
+    public final static int[] dog_image = new int[]{R.drawable.dog_image_0,
+            R.drawable.dog_image_1,R.drawable.dog_image_2,R.drawable.dog_image_2};
 }

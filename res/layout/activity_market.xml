@@ -37,7 +37,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:numColumns="2"
-            android:columnWidth="10dp"
+            android:columnWidth="5dp"
             android:layout_margin="10dp"
             android:gravity="center_horizontal"
             android:stretchMode="columnWidth"/>

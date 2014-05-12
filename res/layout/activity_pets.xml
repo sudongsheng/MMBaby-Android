@@ -62,7 +62,7 @@
                 android:textColor="@color/black"
                 android:textSize="20sp"/>
 
-        <org.mmclub.mmbaby.utils.TextProgressBar
+        <me.ahfun.mmbaby.utils.TextProgressBar
                 android:id="@+id/levelProgressBar"
                 style="?android:attr/progressBarStyleHorizontal"
                 android:layout_width="fill_parent"

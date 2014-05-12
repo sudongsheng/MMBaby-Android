@@ -19,7 +19,6 @@ import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.database.BabyData;
 import org.mmclub.mmbaby.utils.AppConstant;
 import org.mmclub.mmbaby.utils.CustomDialog;
-import org.mmclub.mmbaby.utils.FontManager;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -35,6 +34,8 @@ public class MarketActivity extends Activity {
     protected static final int TOAST = 2;
     private List<Map<String, Object>> marketData;
     public int[] ownedNumber = new int[]{0, 0, 0, 0};
+    private int[] goodListBg = new int[]{R.drawable.goods_list_bg0,R.drawable.goods_list_bg1,
+            R.drawable.goods_list_bg2,R.drawable.goods_list_bg3};
     private GridView goodsGridView;
     private ViewHolder holder;
 
@@ -167,11 +168,14 @@ public class MarketActivity extends Activity {
             map.put("goodsImage", goodsImage[i]);
             map.put("needMoney", needMoney[i]);
             map.put("up", up[i]);
+            map.put("goodsListBg",goodListBg[i]);
 
             list.add(map);
         }
         return list;
     }
+
+
 
     public final class ViewHolder {
         public ImageView goodsImage;
@@ -180,7 +184,9 @@ public class MarketActivity extends Activity {
         public TextView needMoney;
         public TextView up;
         public Button buy;
+        public LinearLayout linearLayout;
     }
+
 
 
     public class MyAdapter extends BaseAdapter {
@@ -224,6 +230,7 @@ public class MarketActivity extends Activity {
                 holder.needMoney = (TextView) convertView.findViewById(R.id.needMoney);
                 holder.up = (TextView) convertView.findViewById(R.id.up);
                 holder.buy = (Button) convertView.findViewById(R.id.buy);
+                holder.linearLayout = (LinearLayout)convertView.findViewById(R.id.market_list_lineaeLayout);
                 convertView.setTag(holder);
 
             } else {
@@ -231,6 +238,7 @@ public class MarketActivity extends Activity {
                 holder = (ViewHolder) convertView.getTag();
             }
 
+            holder.linearLayout.setBackgroundResource((Integer) marketData.get(position).get("goodsListBg"));
             holder.goodsImage.setImageResource((Integer) marketData.get(position).get("goodsImage"));
             holder.goodsName.setText((String) marketData.get(position).get("goodsName"));
             holder.goodsName.setTypeface(tf);

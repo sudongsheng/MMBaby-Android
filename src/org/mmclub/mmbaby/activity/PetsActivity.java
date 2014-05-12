@@ -7,8 +7,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
@@ -59,10 +62,29 @@ public class PetsActivity extends Activity {
     SoundPool soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,5);
     HashMap<Integer,Integer> soundMap = new HashMap<Integer, Integer>();
 
+//    @Override
+//    public void onStop(){
+//        super.onStop();
+//        recycleBitmap(linearLayout);
+//        recycleBitmap(petImageiv);
+//        Log.i("TAG","onStop");
+//
+//    }
+//    private void recycleBitmap(View v){
+//        if(v != null)
+//        {
+//           v.setBackground(null);
+//
+//        }
+//    }
+//
+
     @Override
     public void onCreate(Bundle savedInstanceState){
         super.onCreate(savedInstanceState);
+        MemoryTimeTest.start();
         setContentView(R.layout.activity_pets);
+        MemoryTimeTest.end();
         petName = getIntent().getStringExtra("petsName");
         petId = getIntent().getIntExtra("petId", 0);
         integral_type = getIntent().getStringExtra("integral_type");
@@ -135,12 +157,12 @@ public class PetsActivity extends Activity {
 
                     switch (petId){
                         case AppConstant.PET_PLANT:
-                            initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), R.drawable.sunflower_image,
+                            initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), BabyData.sunflower_image[pets.getPetsLevel()],
                                     "品德", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.morality_buttonImage,ownedNumber);
                             break;
                         case AppConstant.PET_CHICK:
-                            initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(),R.drawable.chick_image,
+                            initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(),BabyData.chick_image[pets.getPetsLevel()],
                                     "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.physical_buttonImage,ownedNumber);
                             break;
@@ -175,12 +197,12 @@ public class PetsActivity extends Activity {
         pets.levelUp(integral);
         switch (petId){
             case AppConstant.PET_PLANT:
-                initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), R.drawable.sunflower_image,
+                initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), BabyData.sunflower_image[pets.getPetsLevel()],
                         "品德", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.morality_buttonImage,ownedNumber);
                 break;
             case AppConstant.PET_CHICK:
-                initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(), R.drawable.chick_image,
+                initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(), BabyData.chick_image[pets.getPetsLevel()],
                         "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.physical_buttonImage,ownedNumber);
                 break;

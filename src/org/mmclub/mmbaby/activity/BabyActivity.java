@@ -2,11 +2,18 @@ package org.mmclub.mmbaby.activity;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.TextView;
 import org.mmclub.mmbaby.R;
 import org.mmclub.mmbaby.utils.AppConstant;
 
@@ -21,6 +28,7 @@ public class BabyActivity extends Activity {
     private Button petChick;
     private Button petSunFlower;
     private Button babyBack;
+    private TextView babyBg;
     SoundPool soundPool;
     HashMap<Integer,Integer> soundMap=new HashMap<Integer, Integer>();
 
@@ -33,6 +41,7 @@ public class BabyActivity extends Activity {
         petChick = (Button) findViewById(R.id.petChick);
         petSunFlower = (Button) findViewById(R.id.petSunFlower);
         babyBack = (Button)findViewById(R.id.babyBack);
+        babyBg = (TextView)findViewById(R.id.babyBg);
         soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,5);
 
         soundMap.put(AppConstant.PET_PLANT,soundPool.load(BabyActivity.this,R.raw.sunlight,1));
@@ -53,6 +62,34 @@ public class BabyActivity extends Activity {
             }
         });
     }
+    @Override
+    public void onStart(){
+        super.onStart();
+        petDog = (Button) findViewById(R.id.petDog);
+        petChick = (Button) findViewById(R.id.petChick);
+        petSunFlower = (Button) findViewById(R.id.petSunFlower);
+        babyBack = (Button)findViewById(R.id.babyBack);
+        babyBg = (TextView)findViewById(R.id.babyBg);
+
+    }
+//    @Override
+//    public void onStop(){
+//        super.onStop();
+//        recycleBitmap(petDog);
+//        recycleBitmap(petChick);
+//        recycleBitmap(petSunFlower);
+//        recycleBitmap(babyBack);
+//        recycleBitmap(babyBg);
+//        Log.i("TAG","onStop");
+//
+//    }
+//    private void recycleBitmap(View v){
+//        if(v != null)
+//        {
+//           v.setBackground(null);
+//
+//        }
+//    }
 
     public class PetClickListener implements View.OnClickListener {
         private int petId;

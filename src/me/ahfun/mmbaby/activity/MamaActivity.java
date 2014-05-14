@@ -8,6 +8,7 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.graphics.Typeface;
 import android.os.Bundle;
 import android.os.Handler;
@@ -28,7 +29,7 @@ import java.util.logging.LogRecord;
  */
 public class MamaActivity extends Activity implements View.OnTouchListener{
 
-    private Button newTask;
+    private LinearLayout newTask;
     private ListView historyItem;
     private RadioGroup field;
     private ImageView divide;
@@ -154,7 +155,7 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
     }
 
     private void findViewByIds() {
-        newTask = (Button) findViewById(R.id.new_task);
+        newTask = (LinearLayout) findViewById(R.id.new_task);
 //        historyItem = (ListView) findViewById(R.id.history_item);
         field = (RadioGroup) findViewById(R.id.field);
         divide = (ImageView) findViewById(R.id.divide);
@@ -289,7 +290,18 @@ public class MamaActivity extends Activity implements View.OnTouchListener{
             for(int j=0;j<c.getInt(c.getColumnIndex("photoNum"));j++){
        //         Log.i("TAG", arrayList.get(j));
                 Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(j));
-                holder.photo[j].setImageBitmap(bitmap);
+                final int h = bitmap.getHeight();
+                final int w = bitmap.getWidth();
+                Matrix matrix = new Matrix();
+                if (w > h) {
+                    matrix.postRotate(90);
+                    Bitmap resizeBmp = Bitmap.createBitmap(bitmap, 0, 0, w, h, matrix, true);
+                    bitmap.recycle();
+                    holder.photo[j].setImageBitmap(resizeBmp);
+                }else {
+                    holder.photo[j].setImageBitmap(bitmap);
+                }
+
             }
             if(c.getInt(c.getColumnIndex("photoNum"))==0){
                 holder.photo_linear.setLayoutParams(new LinearLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT,0));

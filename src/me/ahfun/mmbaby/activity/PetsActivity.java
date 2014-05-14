@@ -1,31 +1,23 @@
 package me.ahfun.mmbaby.activity;
 
 import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.graphics.Typeface;
 import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.BitmapDrawable;
-import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.preference.PreferenceManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.*;
 import me.ahfun.mmbaby.R;
 import me.ahfun.mmbaby.database.BabyData;
-import me.ahfun.mmbaby.database.Record;
 import me.ahfun.mmbaby.utils.*;
 
 import java.util.ArrayList;
@@ -154,27 +146,35 @@ public class PetsActivity extends Activity {
                     integral = preferences.getInt(integral_type+"_integral",0);
                     pets = new Pets();
                     pets.levelUp(integral);
+                    AnimationDrawable animationDrawable;
 
                     switch (petId){
                         case AppConstant.PET_PLANT:
                             initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), BabyData.sunflower_image[pets.getPetsLevel()],
                                     "品德", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.morality_buttonImage,ownedNumber);
+                            //测试动画效果
+                            petImageiv.setBackgroundResource(BabyData.morality_animation[pets.getPetsLevel()][(Integer)msg.obj]);
+                            animationDrawable = (AnimationDrawable)petImageiv.getBackground();
+                            animationDrawable.start();
                             break;
                         case AppConstant.PET_CHICK:
                             initPets(R.drawable.physical_bg,petName, pets.getPetsLevel(),BabyData.chick_image[pets.getPetsLevel()],
                                     "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.physical_buttonImage,ownedNumber);
+                            //测试动画效果
+                            petImageiv.setBackgroundResource(BabyData.physical_animation0[pets.getPetsLevel()][(Integer)msg.obj]);
+                            animationDrawable = (AnimationDrawable)petImageiv.getBackground();
+                            animationDrawable.start();
                             break;
                         case AppConstant.PET_DOG:
                             initPets(R.drawable.intelligence_bg,petName, pets.getPetsLevel(),BabyData.dog_image[pets.getPetsLevel()],
                                     "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
                             //测试动画效果
-                            petImageiv.setBackgroundResource(R.drawable.dog_up_anim);
-                            AnimationDrawable animationDrawable = (AnimationDrawable)petImageiv.getBackground();
+                            petImageiv.setBackgroundResource(R.drawable.dog_up_anim1);
+                            animationDrawable = (AnimationDrawable)petImageiv.getBackground();
                             animationDrawable.start();
-                            //animationDrawable.stop();
                             break;
                     }
                     MyAdapter adapter = new MyAdapter(PetsActivity.this);
@@ -353,6 +353,7 @@ public class PetsActivity extends Activity {
                 editor.putInt(mPetName+"ownedNumber"+mPosition,ownedNumber[mPosition]);
                 editor.commit();
                 message.what = 2;
+                message.obj = mPosition;
             }
             handler.sendMessage(message);
         }

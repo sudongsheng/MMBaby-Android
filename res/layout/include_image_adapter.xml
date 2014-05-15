@@ -8,38 +8,44 @@
               android:background="@drawable/edit_corner">
     <ImageView
             android:id="@+id/photo0"
-            android:layout_width="37dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:scaleType="fitStart"
             android:layout_margin="5dp"/>
     <ImageView
             android:id="@+id/photo1"
-            android:layout_width="37dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
             android:layout_margin="5dp"
+            android:layout_weight="1"
             android:scaleType="fitStart"/>
     <ImageView
             android:id="@+id/photo2"
-            android:layout_width="37dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:layout_margin="5dp"
             android:scaleType="fitStart"/>
     <ImageView
             android:id="@+id/photo3"
-            android:layout_width="37dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:layout_margin="5dp"
             android:scaleType="fitStart"/>
     <ImageView
             android:id="@+id/photo4"
-            android:layout_width="37dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:layout_margin="5dp"
             android:scaleType="fitStart"/>
     <ImageView
             android:id="@+id/photo5"
-            android:layout_width="37dp"
+            android:layout_width="fill_parent"
             android:layout_height="50dp"
+            android:layout_weight="1"
             android:layout_margin="5dp"
             android:scaleType="fitStart"/>
 </LinearLayout>

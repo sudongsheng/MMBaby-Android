@@ -5,15 +5,18 @@
               android:layout_width="fill_parent"
               android:layout_height="fill_parent"
               android:background="@color/mama_background">
-    <include  layout="@layout/include_radiogroup"/>
-    <ImageView android:id="@+id/divide" android:layout_width="fill_parent" android:layout_height="5dp" android:background="@color/orange"/>
+    <include layout="@layout/include_radiogroup"/>
+    <ImageView android:id="@+id/divide"
+               android:layout_width="fill_parent"
+               android:layout_height="5dp"
+               android:background="@color/orange"/>
     <LinearLayout
             android:layout_width="fill_parent"
             android:layout_height="fill_parent"
             android:layout_marginTop="10dp"
             android:layout_marginRight="18dp"
             android:layout_marginLeft="18dp"
-            android:layout_weight="2"
+            android:layout_weight="5"
             android:orientation="horizontal">
         <LinearLayout
                 android:layout_width="fill_parent"
@@ -84,41 +87,48 @@
                         android:background="@drawable/edit_corner2"/>
             </LinearLayout>
         </LinearLayout>
-        <Button android:id="@+id/new_task"
+        <LinearLayout android:id="@+id/new_task"
                 android:layout_width="fill_parent"
                 android:layout_height="fill_parent"
-                android:background="@drawable/selectors_new_record"
-                android:drawableTop="@drawable/new_record_img"
-                android:paddingTop="20dp"
-                android:layout_weight="4"
                 android:layout_marginLeft="5dp"
-                android:text="新建记录"
-                android:textSize="18sp"
-                android:textColor="@color/white"
-                android:layout_gravity="center"/>
+                android:gravity="center"
+                android:background="@drawable/selectors_new_record"
+                android:layout_weight="4">
+            <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:drawableTop="@drawable/new_record_img"
+                    android:drawablePadding="8dp"
+                    android:text="新建记录"
+                    android:textSize="18sp"
+                    android:textColor="@color/white"/>
+        </LinearLayout>
+
     </LinearLayout>
-    <TextView
-            android:layout_width="fill_parent"
-            android:layout_height="50dp"
-            android:text="历 史 记 录"
-            android:textSize="25sp"
-            android:layout_marginBottom="5dp"
-            android:layout_marginRight="18dp"
-            android:layout_marginLeft="18dp"
-            android:layout_marginTop="5dp"
-            android:textColor="@color/white"
-            android:gravity="center"
-            android:background="@drawable/edit_corner2"/>
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:layout_weight="2"
+                  android:layout_marginRight="18dp"
+                  android:layout_marginLeft="18dp"
+                  android:orientation="vertical">
+        <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="50dp"
+                android:text="历 史 记 录"
+                android:textSize="25sp"
+                android:layout_marginBottom="5dp"
+                android:layout_marginTop="5dp"
+                android:textColor="@color/white"
+                android:gravity="center"
+                android:background="@drawable/edit_corner2"/>
 
-    <ListView android:id="@+id/history_item"
-              android:layout_width="fill_parent"
-              android:layout_height="fill_parent"
-              android:layout_marginRight="18dp"
-              android:layout_marginLeft="18dp"
-              android:divider="@null"
-              android:dividerHeight="2dp"
-              android:cacheColorHint="#00000000"
-              android:scrollbars="none"
-              android:layout_weight="1"/>
+        <ListView android:id="@+id/history_item"
+                  android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+
+                  android:divider="@null"
+                  android:dividerHeight="2dp"
+                  android:cacheColorHint="#00000000"
+                  android:scrollbars="none"/>
+    </LinearLayout>
 </LinearLayout>
-

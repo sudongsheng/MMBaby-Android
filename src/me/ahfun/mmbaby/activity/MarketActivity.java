@@ -287,7 +287,17 @@ public class MarketActivity extends Activity {
             SharedPreferences.Editor editor = preferences.edit();
             if (money < 0) {
                 message.what = TOAST;
-
+                switch (petId){
+                    case AppConstant.PET_PLANT:
+                        money = money + BabyData.morality_needMoney[mPosition];
+                        break;
+                    case AppConstant.PET_CHICK:
+                        money = money + BabyData.physical_needMoney[mPosition];
+                        break;
+                    case AppConstant.PET_DOG:
+                        money = money + BabyData.intelligence_needMoney[mPosition];
+                        break;
+                }
             } else {
                 ownedNumber[mPosition]++;
                 editor.putInt("money", money);

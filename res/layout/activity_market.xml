@@ -9,8 +9,8 @@
               android:background="@drawable/market_bg">
     <LinearLayout
             android:layout_width="fill_parent"
-            android:layout_height="0dp"
-            android:layout_weight="3">
+            android:layout_height="wrap_content"
+            >
         <Button
                 android:id="@+id/marketBack"
                 android:layout_width="50dp"
@@ -20,24 +20,19 @@
                 android:layout_marginTop="10dp"/>
             </LinearLayout>
 
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="0dp"
-                  android:layout_weight="12"
-                  android:orientation="vertical">
-        <LinearLayout
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
+    <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical"
+            android:gravity="center">
 
            <TextView
                   android:layout_width="wrap_content"
                   android:id="@+id/moneyTextView"
                   android:layout_height="wrap_content"
                   android:text="拥有金币：1000"
-                  android:layout_marginLeft="250dp"
-                  android:layout_marginTop="40dp"
                   android:textColor="@color/black"/>
-       </LinearLayout>
 
     <GridView
             android:id="@+id/goodsGridView"
@@ -50,10 +45,6 @@
             android:stretchMode="columnWidth"/>
 
     </LinearLayout>
-
-    <LinearLayout android:layout_width="fill_parent"
-                  android:layout_height="0dp"
-                  android:layout_weight="2"/>
 
 
 </LinearLayout>

@@ -39,7 +39,7 @@ public class PetsActivity extends Activity {
     private ImageView petImageiv;
 
     private String petName;
-    private TextProgressBar progressBar;
+    private ProgressBar progressBar;
     private SharedPreferences preferences;
     private GridView gridView;
     private List<Map<String, Integer>> petsData;
@@ -54,22 +54,6 @@ public class PetsActivity extends Activity {
     SoundPool soundPool = new SoundPool(10, AudioManager.STREAM_SYSTEM,5);
     HashMap<Integer,Integer> soundMap = new HashMap<Integer, Integer>();
 
-//    @Override
-//    public void onStop(){
-//        super.onStop();
-//        recycleBitmap(linearLayout);
-//        recycleBitmap(petImageiv);
-//        Log.i("TAG","onStop");
-//
-//    }
-//    private void recycleBitmap(View v){
-//        if(v != null)
-//        {
-//           v.setBackground(null);
-//
-//        }
-//    }
-//
 
     @Override
     public void onCreate(Bundle savedInstanceState){
@@ -172,7 +156,7 @@ public class PetsActivity extends Activity {
                                     "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                             petsData = getData(BabyData.intelligence_buttonImage,ownedNumber);
                             //测试动画效果
-                            petImageiv.setBackgroundResource(R.drawable.dog_up_anim1);
+                            petImageiv.setBackgroundResource(BabyData.intelligence_animation[pets.getPetsLevel()][(Integer)msg.obj]);
                             animationDrawable = (AnimationDrawable)petImageiv.getBackground();
                             animationDrawable.start();
                             break;
@@ -228,7 +212,7 @@ public class PetsActivity extends Activity {
         marketButton = (Button)findViewById(R.id.marketButton);
         petBackButton = (Button)findViewById(R.id.petBack);
         petImageiv = (ImageView)findViewById(R.id.petImage);
-        progressBar = (TextProgressBar)findViewById(R.id.levelProgressBar);
+        progressBar = (ProgressBar)findViewById(R.id.levelProgressBar);
         gridView = (GridView)findViewById(R.id.gridView);
     }
     //初始化view

@@ -90,6 +90,7 @@ public class NewRecordActivity extends Activity {
         record.field = getIntent().getStringExtra("Field");
         record.rating = (int) rating.getRating();
         record.photoNum = 0;
+        record.isCheck=AppConstant.FALSE;
 
         setListeners();
 
@@ -187,6 +188,7 @@ public class NewRecordActivity extends Activity {
                     cv.put("content", content.getText().toString());
                     cv.put("rating", record.rating);
                     cv.put("photoNum", record.photoNum);
+                    cv.put("isCheck",record.isCheck);
                     DatabaseHelper dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
 
@@ -364,6 +366,10 @@ public class NewRecordActivity extends Activity {
                     record.photoNum = arrayList.size();
                     myAdapter.count = record.photoNum;
                     myAdapter.notifyDataSetChanged();
+                    for(int j=0;j<arrayList.size();j++){
+                        File file1 = new File(arrayList.get(j));
+                        file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + position_flag + "/" + j + ".jpg"));
+                    }
                 }
                 Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
                 final int h = bitmap.getHeight();

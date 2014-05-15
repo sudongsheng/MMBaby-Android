@@ -14,4 +14,5 @@ public class Record {
     public String field;
     public int photoNum;
     public int rating;
+    public int isCheck;
 }

@@ -11,4 +11,7 @@ public interface AppConstant {
 
     public final static int Mama=0;
     public final static int Baby=1;
+
+    public final static int FALSE=0;
+    public final static int TRUE=1;
 }

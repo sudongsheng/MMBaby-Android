@@ -90,14 +90,14 @@ public class NewRecordActivity extends Activity {
         record.field = getIntent().getStringExtra("Field");
         record.rating = (int) rating.getRating();
         record.photoNum = 0;
-        record.isCheck=AppConstant.FALSE;
+        record.isCheck = AppConstant.FALSE;
 
         setListeners();
 
-        money = (Integer)SharedPreferencesUtils.getParam(NewRecordActivity.this,"money", 0);
-        integral = (Integer)SharedPreferencesUtils.getParam(NewRecordActivity.this,record.field + "_integral", 0);
-        grade = (Integer)SharedPreferencesUtils.getParam(NewRecordActivity.this,record.field + "_grade", 0);
-        rate = (Integer)SharedPreferencesUtils.getParam(NewRecordActivity.this,record.field + "_rate", 100);
+        money = (Integer) SharedPreferencesUtils.getParam(NewRecordActivity.this, "money", 0);
+        integral = (Integer) SharedPreferencesUtils.getParam(NewRecordActivity.this, record.field + "_integral", 0);
+        grade = (Integer) SharedPreferencesUtils.getParam(NewRecordActivity.this, record.field + "_grade", 0);
+        rate = (Integer) SharedPreferencesUtils.getParam(NewRecordActivity.this, record.field + "_rate", 100);
 
         //判断新建记录或者读取记录并把读取的数据显示出来
         position = getIntent().getIntExtra("position", -1);
@@ -188,7 +188,7 @@ public class NewRecordActivity extends Activity {
                     cv.put("content", content.getText().toString());
                     cv.put("rating", record.rating);
                     cv.put("photoNum", record.photoNum);
-                    cv.put("isCheck",record.isCheck);
+                    cv.put("isCheck", record.isCheck);
                     DatabaseHelper dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
 
@@ -198,36 +198,40 @@ public class NewRecordActivity extends Activity {
                         money = money + record.rating * rate;
                         integral = integral + record.rating * rate;
                         grade = grade + record.rating;
-                        SharedPreferencesUtils.setParam(NewRecordActivity.this,"money", money);
-                        SharedPreferencesUtils.setParam(NewRecordActivity.this,record.field + "_integral", integral);
-                        SharedPreferencesUtils.setParam(NewRecordActivity.this,record.field + "_grade", grade);
+                        SharedPreferencesUtils.setParam(NewRecordActivity.this, "money", money);
+                        SharedPreferencesUtils.setParam(NewRecordActivity.this, record.field + "_integral", integral);
+                        SharedPreferencesUtils.setParam(NewRecordActivity.this, record.field + "_grade", grade);
                     } else {
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
                         money = money + record.rating * rate - money_old;
                         integral = integral + record.rating * rate - integral_old;
                         grade = grade + record.rating - grade_old;
-                        SharedPreferencesUtils.setParam(NewRecordActivity.this,"money", money);
-                        SharedPreferencesUtils.setParam(NewRecordActivity.this,record.field + "_integral", integral);
-                        SharedPreferencesUtils.setParam(NewRecordActivity.this,record.field + "_grade", grade);
+                        SharedPreferencesUtils.setParam(NewRecordActivity.this, "money", money);
+                        SharedPreferencesUtils.setParam(NewRecordActivity.this, record.field + "_integral", integral);
+                        SharedPreferencesUtils.setParam(NewRecordActivity.this, record.field + "_grade", grade);
                     }
-
-                    new AlertDialog.Builder(NewRecordActivity.this,R.style.pickDialog).setTitle("新建记录成功").setMessage("请选择是否分享？")
-                            .setPositiveButton("是",new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(NewRecordActivity.this, ChooseShareActivity.class);
-                                    intent.putExtra("title",title.getText().toString());
-                                    startActivity(intent);
-                                    NewRecordActivity.this.finish();
-                                }
-                            }).setNegativeButton("否",new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialogInterface, int i) {
-                                    Intent intent = new Intent(NewRecordActivity.this, MamaActivity.class);
-                                    startActivity(intent);
-                                    NewRecordActivity.this.finish();
+                    CustomDialog customDialog = new CustomDialog(NewRecordActivity.this, R.layout.view_dialog_new_record, R.style.settingDialog);
+                    customDialog.show();
+                    customDialog.setCanceledOnTouchOutside(false);
+                    Button yes = (Button) customDialog.findViewById(R.id.dialog_new_record_yes);
+                    Button not = (Button) customDialog.findViewById(R.id.dialog_new_record_not);
+                    yes.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(NewRecordActivity.this, ChooseShareActivity.class);
+                            intent.putExtra("title", title.getText().toString());
+                            startActivity(intent);
+                            NewRecordActivity.this.finish();
                         }
-                    }).create().show();
+                    });
+                    not.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View view) {
+                            Intent intent = new Intent(NewRecordActivity.this, MamaActivity.class);
+                            startActivity(intent);
+                            NewRecordActivity.this.finish();
+                        }
+                    });
                 }
             }
         });
@@ -366,7 +370,7 @@ public class NewRecordActivity extends Activity {
                     record.photoNum = arrayList.size();
                     myAdapter.count = record.photoNum;
                     myAdapter.notifyDataSetChanged();
-                    for(int j=0;j<arrayList.size();j++){
+                    for (int j = 0; j < arrayList.size(); j++) {
                         File file1 = new File(arrayList.get(j));
                         file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + position_flag + "/" + j + ".jpg"));
                     }

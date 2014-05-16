@@ -17,9 +17,9 @@ public interface BabyData {
     public final static int[] sunflower_image = new int[]{R.drawable.sunflower_image_0,
             R.drawable.sunflower_image_1,R.drawable.sunflower_image_2};
     public final static int[][] morality_animation = new int[][]{
-            {R.drawable.sunlight_anima0,R.drawable.water_anima0,R.drawable.scissor_anima0,R.drawable.shovel_anima0},
-            {R.drawable.sunlight_anima1,R.drawable.water_anima1,R.drawable.scissor_anima1,R.drawable.shovel_anima1},
-            {R.drawable.sunlight_anima2,R.drawable.water_anima2,R.drawable.scissor_anima2,R.drawable.shovel_anima2}
+            {R.anim.sunlight_anima0,R.anim.water_anima0,R.anim.scissor_anima0,R.anim.shovel_anima0},
+            {R.anim.sunlight_anima1,R.anim.water_anima1,R.anim.scissor_anima1,R.anim.shovel_anima1},
+            {R.anim.sunlight_anima2,R.anim.water_anima2,R.anim.scissor_anima2,R.anim.shovel_anima2}
     };
 
 
@@ -34,9 +34,9 @@ public interface BabyData {
     public final static int[] chick_image = new int[]{R.drawable.chick_image_0,R.drawable.chick_image_1,
             R.drawable.chick_image_2};
     public final static int[][] physical_animation0 = new int[][]{
-        {R.drawable.chick_grain_anima0,R.drawable.wheat_anima0,R.drawable.basketball_anima0,R.drawable.skate_anima0},
-        {R.drawable.chick_grain_anima1,R.drawable.wheat_anima1,R.drawable.basketball_anima1,R.drawable.skate_anima1},
-        {R.drawable.chick_grain_anima2,R.drawable.wheat_anima2,R.drawable.basketball_anima2,R.drawable.skate_anima2}};
+        {R.anim.chick_grain_anima0,R.anim.wheat_anima0,R.anim.basketball_anima0,R.anim.skate_anima0},
+        {R.anim.chick_grain_anima1,R.anim.wheat_anima1,R.anim.basketball_anima1,R.anim.skate_anima1},
+        {R.anim.chick_grain_anima2,R.anim.wheat_anima2,R.anim.basketball_anima2,R.anim.skate_anima2}};
 
 
 
@@ -51,7 +51,7 @@ public interface BabyData {
     public final static int[] dog_image = new int[]{R.drawable.dog_image_0,
             R.drawable.dog_image_1,R.drawable.dog_image_2,R.drawable.dog_image_2};
     public final static int[][] intelligence_animation = new int[][]{
-            {R.drawable.food_anima0,R.drawable.bone_anima0,R.drawable.book_anima0,R.drawable.cube_anima0},
-            {R.drawable.food_anima1,R.drawable.bone_anima1,R.drawable.book_anima1,R.drawable.cube_anima1},
-            {R.drawable.food_anima2,R.drawable.bone_anima2,R.drawable.book_anima2,R.drawable.cube_anima2}};
+            {R.anim.food_anima0,R.anim.bone_anima0,R.anim.book_anima0,R.anim.cube_anima0},
+            {R.anim.food_anima1,R.anim.bone_anima1,R.anim.book_anima1,R.anim.cube_anima1},
+            {R.anim.food_anima2,R.anim.bone_anima2,R.anim.book_anima2,R.anim.cube_anima2}};
 }

@@ -1,36 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
               android:id="@+id/market_list_lineaeLayout"
-              android:layout_width="wrap_content"
-              android:layout_height="wrap_content"
-              android:background="@drawable/goods_list_bg0"
+              android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
               android:orientation="vertical">
-    <LinearLayout android:layout_width="match_parent"
-                  android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:layout_margin="15dp">
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical"
-            android:gravity="right">
+    <LinearLayout android:layout_width="fill_parent"
+                  android:layout_height="fill_parent"
+                  android:gravity="right"
+                  android:layout_marginRight="5dp"
+                  android:layout_marginTop="5dp"
+                  android:layout_weight="5"
+                  android:background="@drawable/market_shadow_right">
         <TextView
                 android:id="@+id/needMoney"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="80"
-                android:layout_marginRight="10dp"
+                android:layout_marginRight="20dp"
                 android:textColor="@color/black"
                 android:drawableLeft="@drawable/money_bg"/>
     </LinearLayout>
 
     <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="4"
+            android:layout_width="fill_parent"
+            android:layout_height="fill_parent"
+            android:layout_weight="1"
             android:orientation="horizontal"
+            android:layout_margin="15dp"
             android:gravity="center_vertical">
         <LinearLayout
                 android:layout_width="0dp"
@@ -51,49 +46,38 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:orientation="vertical">
-        <TextView android:layout_width="wrap_content"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/goodsName"
-                  android:text="狗粮"
-                  android:textColor="@color/black"/>
+            <TextView android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:id="@+id/goodsName"
+                      android:text="狗粮"
+                      android:textColor="@color/black"/>
 
-        <TextView
-                android:layout_marginTop="5dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/up"
-                android:text="+200经验"
-                android:textColor="@color/black"/>
+            <TextView
+                    android:layout_marginTop="5dp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/up"
+                    android:text="+200经验"
+                    android:textColor="@color/black"/>
 
 
-        <Button
-                android:layout_marginTop="5dp"
-                android:id="@+id/buy"
-                android:layout_width="60dp"
-                android:layout_height="25dp"
-                android:background="@drawable/buy_button"/>
+            <Button
+                    android:layout_marginTop="5dp"
+                    android:id="@+id/buy"
+                    android:layout_width="60dp"
+                    android:layout_height="25dp"
+                    android:background="@drawable/buy_button"/>
         </LinearLayout>
-
     </LinearLayout>
-    <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="0dp"
-            android:layout_weight="1"
-            android:orientation="vertical">
-        <TextView android:layout_width="fill_parent"
-                  android:layout_height="wrap_content"
-                  android:id="@+id/ownedNumber"
-                  android:text="已拥有:1"
-                  android:textColor="@color/black"
-                  android:layout_marginLeft="10dp"/>
-
-    </LinearLayout>
-
-
-
-
-
-    </LinearLayout>
-
-
+    <TextView android:layout_width="fill_parent"
+              android:layout_height="fill_parent"
+              android:layout_weight="5"
+              android:id="@+id/ownedNumber"
+              android:text="已拥有:1"
+              android:background="@drawable/market_shadow_left"
+              android:gravity="center_vertical"
+              android:textColor="@color/black"
+              android:paddingLeft="5dp"
+              android:layout_marginBottom="5dp"
+              android:layout_marginLeft="5dp"/>
 </LinearLayout>

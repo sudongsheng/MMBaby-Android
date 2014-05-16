@@ -3,10 +3,11 @@
     <color name="mama_background">#F8F8F8</color>
     <color name="light_red">#ffffac7f</color>
     <color name="red">#ffff1708</color>
-    <color name="green">#00ff00</color>
+    <color name="pink">#ffff66c0</color>
+    <color name="green">#DADF00</color>
     <color name="blue">#0000ff</color>
     <color name="white">#ffffff</color>
-    <color name="blue_bar">#3399cc</color>
+    <color name="light_blue">#4DC2EA</color>
     <color name="black">#000000</color>
     <color name="grey">#2c3e50</color>
     <color name="light_orange">#fffae48b</color>

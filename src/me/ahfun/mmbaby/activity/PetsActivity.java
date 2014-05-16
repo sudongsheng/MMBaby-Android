@@ -10,7 +10,6 @@ import android.media.AudioManager;
 import android.media.SoundPool;
 import android.os.Bundle;
 import android.os.Handler;
-import android.os.Message;
 import android.preference.PreferenceManager;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -219,7 +218,7 @@ public class PetsActivity extends Activity {
                 public void onClick(View view) {
                     if (own[position] <= 0) {
                         soundPool.play(soundMap.get(1), 1, 1, 0, 0, 1);
-                        final CustomDialog dialog = new CustomDialog(PetsActivity.this, R.layout.view_dialog, R.style.settingDialog);
+                        final CustomDialog dialog = new CustomDialog(PetsActivity.this, R.layout.view_dialog_pet, R.style.settingDialog);
                         dialog.show();
                         TextView dialogText = (TextView) dialog.findViewById(R.id.dialogText);
                         dialogText.setText("已经没有啦，去商店买一些吧！");

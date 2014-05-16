@@ -27,7 +27,8 @@
                   android:layout_height="wrap_content"
                   android:textSize="20sp"
                   android:textColor="@color/black"/>
-        <ImageView android:layout_width="wrap_content"
+        <ImageView android:id="@+id/account_img1"
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:src="@drawable/direct_to"
                    android:scaleType="fitCenter"/>
@@ -46,7 +47,8 @@
                   android:layout_height="wrap_content"
                   android:textSize="20sp"
                   android:textColor="@color/black"/>
-        <ImageView android:layout_width="wrap_content"
+        <ImageView android:id="@+id/account_img2"
+                   android:layout_width="wrap_content"
                    android:layout_height="wrap_content"
                    android:src="@drawable/direct_to"
                    android:scaleType="fitCenter"/>

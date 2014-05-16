@@ -12,8 +12,8 @@ public interface BabyData {
             R.drawable.scissors_normal,R.drawable.shovel_normal};
     public final static int[] morality_buttonImage= new int[]{R.drawable.sunlight_button,R.drawable.water_button,
             R.drawable.scissors_button,R.drawable.shovel_button};
-    public final static int[] morality_needMoney = new int[]{20,30,20,10};
-    public final static int[] morality_up = new int[]{20,30,20,10};
+    public final static int[] morality_needMoney = new int[]{50,80,80,60};
+    public final static int[] morality_up = new int[]{50,80,80,60};
     public final static int[] sunflower_image = new int[]{R.drawable.sunflower_image_0,
             R.drawable.sunflower_image_1,R.drawable.sunflower_image_2};
     public final static int[][] morality_animation = new int[][]{
@@ -29,8 +29,8 @@ public interface BabyData {
             R.drawable.basketball_normal,R.drawable.roller_skates_normal};
     public final static int[] physical_buttonImage= new int[]{R.drawable.foodstuff_button,R.drawable.grain_button,
             R.drawable.basketball_button,R.drawable.roller_skates_button};
-    public final static int[] physical_needMoney = new int[]{10,20,30,15};
-    public final static int[] physical_up = new int[]{10,20,30,15};
+    public final static int[] physical_needMoney = new int[]{60,80,40,75};
+    public final static int[] physical_up = new int[]{60,80,40,75};
     public final static int[] chick_image = new int[]{R.drawable.chick_image_0,R.drawable.chick_image_1,
             R.drawable.chick_image_2};
     public final static int[][] physical_animation0 = new int[][]{
@@ -46,10 +46,10 @@ public interface BabyData {
             R.drawable.book_normal,R.drawable.magic_square_normal};
     public final static int[] intelligence_buttonImage= new int[]{R.drawable.foodstuff_button,R.drawable.bone_button,
             R.drawable.book_button,R.drawable.magic_square_button};
-    public final static int[] intelligence_needMoney = new int[]{10,15,25,20};
-    public final static int[] intelligence_up = new int[]{10,15,25,20};
+    public final static int[] intelligence_needMoney = new int[]{50,85,65,70};
+    public final static int[] intelligence_up = new int[]{50,85,65,70};
     public final static int[] dog_image = new int[]{R.drawable.dog_image_0,
-            R.drawable.dog_image_1,R.drawable.dog_image_2,R.drawable.dog_image_2};
+            R.drawable.dog_image_1,R.drawable.dog_image_2};
     public final static int[][] intelligence_animation = new int[][]{
             {R.anim.food_anima0,R.anim.bone_anima0,R.anim.book_anima0,R.anim.cube_anima0},
             {R.anim.food_anima1,R.anim.bone_anima1,R.anim.book_anima1,R.anim.cube_anima1},

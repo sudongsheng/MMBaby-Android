@@ -39,13 +39,14 @@
                 android:layout_marginLeft="30dp"/>
         <TextView
                 android:id="@+id/petLevel"
-                android:layout_width="30dp"
-                android:layout_height="20dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
                 android:text="LV2"
                 android:textColor="@color/black"
                 android:layout_marginLeft="10dp"
                 android:background="@drawable/level_bg"
-                android:gravity="center"/>
+                android:gravity="center"
+                android:textSize="15sp"/>
     </LinearLayout>
     <LinearLayout
             android:layout_marginTop="10dp"

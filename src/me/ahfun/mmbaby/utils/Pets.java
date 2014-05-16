@@ -14,15 +14,15 @@ public class Pets {
         while (integral >= firstNeedIntegral) {
             petsLevel++;
             integral = integral - firstNeedIntegral;
-            firstNeedIntegral = firstNeedIntegral * 2;
+            firstNeedIntegral = firstNeedIntegral + 1000;
         }
-        if (petsLevel<3){
+        if (petsLevel<=20){
             currentIntegral = integral;
             needIntegral = firstNeedIntegral;
         }else {
-            petsLevel = 2;
-            currentIntegral = 4000;
-            needIntegral=4000;
+            petsLevel = 20;
+            currentIntegral = 40000;
+            needIntegral=40000;
         }
 
     }

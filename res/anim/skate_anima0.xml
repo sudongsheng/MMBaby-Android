@@ -2,12 +2,12 @@
 
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
         android:oneshot="true">
-    <item android:drawable="@drawable/skate_up0_0" android:duration="100"/>
-    <item android:drawable="@drawable/skate_up0_1" android:duration="100"/>
-    <item android:drawable="@drawable/skate_up0_2" android:duration="100"/>
-    <item android:drawable="@drawable/skate_up0_3" android:duration="100"/>
-    <item android:drawable="@drawable/skate_up0_4" android:duration="100"/>
-    <item android:drawable="@drawable/skate_up0_5" android:duration="100"/>
-    <item android:drawable="@drawable/skate_up0_6" android:duration="100"/>
+    <item android:drawable="@drawable/skate_up0_0" android:duration="150"/>
+    <item android:drawable="@drawable/skate_up0_1" android:duration="150"/>
+    <item android:drawable="@drawable/skate_up0_2" android:duration="150"/>
+    <item android:drawable="@drawable/skate_up0_3" android:duration="150"/>
+    <item android:drawable="@drawable/skate_up0_4" android:duration="150"/>
+    <item android:drawable="@drawable/skate_up0_5" android:duration="150"/>
+    <item android:drawable="@drawable/skate_up0_6" android:duration="150"/>
 
 </animation-list>

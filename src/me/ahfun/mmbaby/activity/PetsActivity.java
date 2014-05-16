@@ -66,6 +66,28 @@ public class PetsActivity extends Activity {
         tf = Typeface.createFromAsset(PetsActivity.this.getAssets(), "fonts/baby.ttf");
         soundMap.put(1, soundPool.load(this, R.raw.dialog_show, 1));
         soundMap.put(2, soundPool.load(this, R.raw.button_clicked, 1));
+        soundMap.put(7, soundPool.load(this, R.raw.upgrade, 1));
+        switch (petId){
+            case AppConstant.PET_PLANT:
+                soundMap.put(3,soundPool.load(this,R.raw.sunlight,1));
+                soundMap.put(4,soundPool.load(this,R.raw.water,1));
+                soundMap.put(5,soundPool.load(this,R.raw.prune,1));
+                soundMap.put(6,soundPool.load(this,R.raw.loosen,1));
+                break;
+            case AppConstant.PET_CHICK:
+                soundMap.put(3,soundPool.load(this,R.raw.chick,1));
+                soundMap.put(4,soundPool.load(this,R.raw.chick,1));
+                soundMap.put(5,soundPool.load(this,R.raw.chick,1));
+                soundMap.put(6,soundPool.load(this,R.raw.chick,1));
+                break;
+            case AppConstant.PET_DOG:
+                soundMap.put(3,soundPool.load(this,R.raw.smallbark,1));
+                soundMap.put(4,soundPool.load(this,R.raw.smallbark,1));
+                soundMap.put(5,soundPool.load(this,R.raw.smallbark,1));
+                soundMap.put(6,soundPool.load(this,R.raw.smallbark,1));
+                break;
+
+        }
 
 
         initView();
@@ -115,16 +137,72 @@ public class PetsActivity extends Activity {
                 initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), BabyData.sunflower_image[pets.getPetsLevel()],
                         "品德", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.morality_buttonImage, ownedNumber);
+                int plantLevel = (Integer)SharedPreferencesUtils.getParam(PetsActivity.this,AppConstant.PET_PLANT+"level",0);
+                if (pets.getPetsLevel()>plantLevel){
+                    final CustomDialog customDialog = new CustomDialog(PetsActivity.this,R.layout.upgrade_dialog,R.style.settingDialog);
+                    customDialog.show();
+                    ImageView beforeUpgrade = (ImageView)customDialog.findViewById(R.id.beforeUpgrade);
+                    ImageView afterUpgrade = (ImageView)customDialog.findViewById(R.id.afterUpgrade);
+                    TextView upgrade = (TextView)customDialog.findViewById(R.id.upgrade);
+                    beforeUpgrade.setBackgroundResource(BabyData.sunflower_image[plantLevel]);
+                    afterUpgrade.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                    upgrade.setTypeface(tf);
+                    customDialog.setCancelable(true);
+                    customDialog.setCanceledOnTouchOutside(true);
+                    //petImageiv.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                    soundPool.play(soundMap.get(7),1,1,0,0,1);
+                    SharedPreferencesUtils.setParam(PetsActivity.this,petId+"level",pets.getPetsLevel());
+
+                }
+                SharedPreferencesUtils.setParam(PetsActivity.this,AppConstant.PET_PLANT+"level",pets.getPetsLevel());
                 break;
             case AppConstant.PET_CHICK:
                 initPets(R.drawable.physical_bg, petName, pets.getPetsLevel(), BabyData.chick_image[pets.getPetsLevel()],
                         "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.physical_buttonImage, ownedNumber);
+                int chickLevel = (Integer)SharedPreferencesUtils.getParam(PetsActivity.this,AppConstant.PET_CHICK+"level",0);
+                if (pets.getPetsLevel()>chickLevel){
+                    final CustomDialog customDialog = new CustomDialog(PetsActivity.this,R.layout.upgrade_dialog,R.style.settingDialog);
+                    customDialog.show();
+                    ImageView beforeUpgrade = (ImageView)customDialog.findViewById(R.id.beforeUpgrade);
+                    ImageView afterUpgrade = (ImageView)customDialog.findViewById(R.id.afterUpgrade);
+                    TextView upgrade = (TextView)customDialog.findViewById(R.id.upgrade);
+                    beforeUpgrade.setBackgroundResource(BabyData.chick_image[chickLevel]);
+                    afterUpgrade.setBackgroundResource(BabyData.chick_image[pets.getPetsLevel()]);
+                    upgrade.setTypeface(tf);
+                    customDialog.setCancelable(true);
+                    customDialog.setCanceledOnTouchOutside(true);
+                    //petImageiv.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                    soundPool.play(soundMap.get(7),1,1,0,0,1);
+                    SharedPreferencesUtils.setParam(PetsActivity.this,petId+"level",pets.getPetsLevel());
+
+                }
+                SharedPreferencesUtils.setParam(PetsActivity.this,AppConstant.PET_CHICK+"level",pets.getPetsLevel());
+
                 break;
             case AppConstant.PET_DOG:
                 initPets(R.drawable.intelligence_bg, petName, pets.getPetsLevel(), BabyData.dog_image[pets.getPetsLevel()],
                         "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
                 petsData = getData(BabyData.intelligence_buttonImage, ownedNumber);
+                int dogLevel = (Integer)SharedPreferencesUtils.getParam(PetsActivity.this,AppConstant.PET_DOG+"level",0);
+                if (pets.getPetsLevel()>dogLevel){
+                    final CustomDialog customDialog = new CustomDialog(PetsActivity.this,R.layout.upgrade_dialog,R.style.settingDialog);
+                    customDialog.show();
+                    ImageView beforeUpgrade = (ImageView)customDialog.findViewById(R.id.beforeUpgrade);
+                    ImageView afterUpgrade = (ImageView)customDialog.findViewById(R.id.afterUpgrade);
+                    TextView upgrade = (TextView)customDialog.findViewById(R.id.upgrade);
+                    beforeUpgrade.setBackgroundResource(BabyData.dog_image[dogLevel]);
+                    afterUpgrade.setBackgroundResource(BabyData.dog_image[pets.getPetsLevel()]);
+                    upgrade.setTypeface(tf);
+                    customDialog.setCancelable(true);
+                    customDialog.setCanceledOnTouchOutside(true);
+                    //petImageiv.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                    soundPool.play(soundMap.get(7),1,1,0,0,1);
+                    SharedPreferencesUtils.setParam(PetsActivity.this,petId+"level",pets.getPetsLevel());
+
+                }
+                SharedPreferencesUtils.setParam(PetsActivity.this,AppConstant.PET_DOG+"level",pets.getPetsLevel());
+
                 break;
         }
 
@@ -247,32 +325,88 @@ public class PetsActivity extends Activity {
                     } else {
                         own[position]--;
                         switch (petId) {
+
                             case AppConstant.PET_PLANT:
                                 integral = integral + BabyData.morality_up[position];
                                 initPets(R.drawable.morality_bg, petName, pets.getPetsLevel(), BabyData.sunflower_image[pets.getPetsLevel()],
                                         "品德", pets.getNeedIntegral(), pets.getCurrentIntegral());
                                 AnimationDrawable animationDrawable;
-                                //测试动画效果
+                                int plantLevel = (Integer)SharedPreferencesUtils.getParam(PetsActivity.this,AppConstant.PET_PLANT+"level",0);
+                                if (pets.getPetsLevel()>plantLevel){
+                                    final CustomDialog customDialog = new CustomDialog(PetsActivity.this,R.layout.upgrade_dialog,R.style.settingDialog);
+                                    customDialog.show();
+                                    ImageView beforeUpgrade = (ImageView)customDialog.findViewById(R.id.beforeUpgrade);
+                                    ImageView afterUpgrade = (ImageView)customDialog.findViewById(R.id.afterUpgrade);
+                                    TextView upgrade = (TextView)customDialog.findViewById(R.id.upgrade);
+                                    beforeUpgrade.setBackgroundResource(BabyData.sunflower_image[plantLevel]);
+                                    afterUpgrade.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                                    upgrade.setTypeface(tf);
+                                    customDialog.setCancelable(true);
+                                    customDialog.setCanceledOnTouchOutside(true);
+                                    //petImageiv.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                                    soundPool.play(soundMap.get(7),1,1,0,0,1);
+                                    SharedPreferencesUtils.setParam(PetsActivity.this,petId+"level",pets.getPetsLevel());
+
+                                }else {
                                 petImageiv.setBackgroundResource(BabyData.morality_animation[pets.getPetsLevel()][position]);
                                 animationDrawable = (AnimationDrawable) petImageiv.getBackground();
                                 animationDrawable.start();
+                                soundPool.play(soundMap.get(position+3),1,1,0,0,1);}
                                 break;
                             case AppConstant.PET_CHICK:
+                                integral = integral + BabyData.physical_up[position];
                                 initPets(R.drawable.physical_bg, petName, pets.getPetsLevel(), BabyData.chick_image[pets.getPetsLevel()],
                                         "体育", pets.getNeedIntegral(), pets.getCurrentIntegral());
-                                //测试动画效果
+                                int chickLevel = (Integer)SharedPreferencesUtils.getParam(PetsActivity.this,AppConstant.PET_CHICK+"level",0);
+                                if (pets.getPetsLevel()>chickLevel){
+                                    final CustomDialog customDialog = new CustomDialog(PetsActivity.this,R.layout.upgrade_dialog,R.style.settingDialog);
+                                    customDialog.show();
+                                    ImageView beforeUpgrade = (ImageView)customDialog.findViewById(R.id.beforeUpgrade);
+                                    ImageView afterUpgrade = (ImageView)customDialog.findViewById(R.id.afterUpgrade);
+                                    TextView upgrade = (TextView)customDialog.findViewById(R.id.upgrade);
+                                    beforeUpgrade.setBackgroundResource(BabyData.chick_image[chickLevel]);
+                                    afterUpgrade.setBackgroundResource(BabyData.chick_image[pets.getPetsLevel()]);
+                                    upgrade.setTypeface(tf);
+                                    customDialog.setCancelable(true);
+                                    customDialog.setCanceledOnTouchOutside(true);
+                                    //petImageiv.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                                    soundPool.play(soundMap.get(7),1,1,0,0,1);
+                                    SharedPreferencesUtils.setParam(PetsActivity.this,petId+"level",pets.getPetsLevel());
+
+                                }else {
                                 petImageiv.setBackgroundResource(BabyData.physical_animation0[pets.getPetsLevel()][position]);
                                 animationDrawable = (AnimationDrawable) petImageiv.getBackground();
                                 animationDrawable.start();
-                                integral = integral + BabyData.physical_up[position];
+                                soundPool.play(soundMap.get(position+3),1,1,0,0,1);
+                                }
                                 break;
                             case AppConstant.PET_DOG:
                                 integral = integral + BabyData.intelligence_up[position];
                                 initPets(R.drawable.intelligence_bg, petName, pets.getPetsLevel(), BabyData.dog_image[pets.getPetsLevel()],
                                         "智力", pets.getNeedIntegral(), pets.getCurrentIntegral());
+                                int dogLevel = (Integer)SharedPreferencesUtils.getParam(PetsActivity.this,AppConstant.PET_DOG+"level",0);
+                                if (pets.getPetsLevel()>dogLevel){
+                                    final CustomDialog customDialog = new CustomDialog(PetsActivity.this,R.layout.upgrade_dialog,R.style.settingDialog);
+                                    customDialog.show();
+                                    ImageView beforeUpgrade = (ImageView)customDialog.findViewById(R.id.beforeUpgrade);
+                                    ImageView afterUpgrade = (ImageView)customDialog.findViewById(R.id.afterUpgrade);
+                                    TextView upgrade = (TextView)customDialog.findViewById(R.id.upgrade);
+                                    beforeUpgrade.setBackgroundResource(BabyData.dog_image[dogLevel]);
+                                    afterUpgrade.setBackgroundResource(BabyData.dog_image[pets.getPetsLevel()]);
+                                    upgrade.setTypeface(tf);
+                                    customDialog.setCancelable(true);
+                                    customDialog.setCanceledOnTouchOutside(true);
+                                    //petImageiv.setBackgroundResource(BabyData.sunflower_image[pets.getPetsLevel()]);
+                                    soundPool.play(soundMap.get(7),1,1,0,0,1);
+                                    SharedPreferencesUtils.setParam(PetsActivity.this,petId+"level",pets.getPetsLevel());
+
+                                }else {
                                 petImageiv.setBackgroundResource(BabyData.intelligence_animation[pets.getPetsLevel()][position]);
                                 animationDrawable = (AnimationDrawable) petImageiv.getBackground();
                                 animationDrawable.start();
+                                soundPool.play(soundMap.get(position+3),1,1,0,0,1);
+                                }
+
                                 break;
                         }
                         SharedPreferencesUtils.setParam(PetsActivity.this,integral_type + "_integral", integral);

@@ -161,7 +161,10 @@ public class BabyActivity extends Activity {
             TextView time = (TextView) view.findViewById(R.id.account_time);
             ImageView img1 = (ImageView) view.findViewById(R.id.account_img1);
             ImageView img2 = (ImageView) view.findViewById(R.id.account_img2);
+            ImageView img_up=(ImageView)view.findViewById(R.id.account_level_up);
             Animation alpha = AnimationUtils.loadAnimation(BabyActivity.this, R.anim.account_add);
+            Animation up=AnimationUtils.loadAnimation(BabyActivity.this,R.anim.anim_up);
+            img_up.startAnimation(up);
             img1.startAnimation(alpha);
             img2.startAnimation(alpha);
             title.setText(arrayLists.get(i).get(0));

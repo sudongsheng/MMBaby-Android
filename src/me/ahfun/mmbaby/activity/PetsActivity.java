@@ -356,7 +356,11 @@ public class PetsActivity extends Activity {
                                 petImageiv.setBackgroundResource(BabyData.morality_animation[pets.getPetsLevel()/10][position]);
                                 animationDrawable = (AnimationDrawable) petImageiv.getBackground();
                                 animationDrawable.start();
-                                soundPool.play(soundMap.get(position+3),1,1,0,0,1);}
+                                soundPool.play(soundMap.get(position+3),1,1,0,0,1);
+                                    if (pets.getPetsLevel()/10 == 2){
+                                        petLeveltv.setText("LV" + pets.getPetsLevel() + "(满级)");
+                                    }
+                                }
                                 break;
                             case AppConstant.PET_CHICK:
                                 integral = integral + BabyData.physical_up[position];
@@ -387,6 +391,9 @@ public class PetsActivity extends Activity {
                                 animationDrawable = (AnimationDrawable) petImageiv.getBackground();
                                 animationDrawable.start();
                                 soundPool.play(soundMap.get(position+3),1,1,0,0,1);
+                                    if (pets.getPetsLevel()/10 == 2){
+                                        petLeveltv.setText("LV" + pets.getPetsLevel() + "(满级)");
+                                    }
                                 }
                                 break;
                             case AppConstant.PET_DOG:
@@ -418,6 +425,9 @@ public class PetsActivity extends Activity {
                                 animationDrawable = (AnimationDrawable) petImageiv.getBackground();
                                 animationDrawable.start();
                                 soundPool.play(soundMap.get(position+3),1,1,0,0,1);
+                                    if (pets.getPetsLevel()/10 == 2){
+                                        petLeveltv.setText("LV" + pets.getPetsLevel() + "(满级)");
+                                    }
                                 }
 
                                 break;

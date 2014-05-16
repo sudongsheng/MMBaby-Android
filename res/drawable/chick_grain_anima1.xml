@@ -2,12 +2,12 @@
 
 <animation-list xmlns:android="http://schemas.android.com/apk/res/android"
         android:oneshot="true">
-    <item android:drawable="@drawable/chick_grain_up1_0" android:duration="100"/>
-    <item android:drawable="@drawable/chick_grain_up1_1" android:duration="100"/>
-    <item android:drawable="@drawable/chick_grain_up1_2" android:duration="100"/>
-    <item android:drawable="@drawable/chick_grain_up1_3" android:duration="100"/>
-    <item android:drawable="@drawable/chick_grain_up1_4" android:duration="100"/>
-    <item android:drawable="@drawable/chick_grain_up1_5" android:duration="100"/>
-    <item android:drawable="@drawable/chick_grain_up1_6" android:duration="100"/>
+    <item android:drawable="@drawable/chick_grain_up1_0" android:duration="150"/>
+    <item android:drawable="@drawable/chick_grain_up1_1" android:duration="150"/>
+    <item android:drawable="@drawable/chick_grain_up1_2" android:duration="150"/>
+    <item android:drawable="@drawable/chick_grain_up1_3" android:duration="150"/>
+    <item android:drawable="@drawable/chick_grain_up1_4" android:duration="150"/>
+    <item android:drawable="@drawable/chick_grain_up1_5" android:duration="150"/>
+    <item android:drawable="@drawable/chick_grain_up1_6" android:duration="150"/>
 
 </animation-list>

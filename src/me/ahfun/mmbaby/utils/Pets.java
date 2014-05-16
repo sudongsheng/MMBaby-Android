@@ -5,9 +5,7 @@ package me.ahfun.mmbaby.utils;
  */
 public class Pets {
 
-    private String petsName;
     private int petsLevel = 0;
-    private int petsImage;
     private int firstNeedIntegral = 1000;
     private int currentIntegral;
     private int needIntegral;
@@ -28,9 +26,7 @@ public class Pets {
         }
 
     }
-    public int imageUp(int petsLevel){
-        return petsImage;
-    }
+
 
     public int getPetsLevel() {
         return petsLevel;

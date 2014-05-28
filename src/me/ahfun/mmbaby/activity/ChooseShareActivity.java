@@ -37,13 +37,14 @@ public class ChooseShareActivity extends Activity {
     private DatabaseHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
     private Cursor cursor;
+    private ArrayList<String> fields=new ArrayList<String>();
     private ArrayList<String> titles = new ArrayList<String>();
+    private ArrayList<String> times = new ArrayList<String>();
+    private ArrayList<String> keys = new ArrayList<String>();
 
     private Spinner title;
     private int indexFromIntent = -1;
-    private int index = 0;
-    private int index_field = 0;
-    private String field;
+    private int index=0;
     private ImageButton back;
     private Button share;
     private GridView photo;
@@ -68,7 +69,10 @@ public class ChooseShareActivity extends Activity {
                 indexFromIntent = cursor.getPosition();
                 //          Log.i("TAG",indexFromIntent+"");
             }
+            fields.add(cursor.getString(cursor.getColumnIndex("field")));
             titles.add(cursor.getString(cursor.getColumnIndex("title")));
+            times.add(cursor.getString(cursor.getColumnIndex("time")));
+            keys.add(cursor.getInt(cursor.getColumnIndex("primary_key"))+"");
         }
         title = (Spinner) findViewById(R.id.share_item);
         setSpinnerAdapter(title);
@@ -85,11 +89,8 @@ public class ChooseShareActivity extends Activity {
         if (cursor.getCount() == 0) {
             Toast.makeText(ChooseShareActivity.this, "您还没有新建记录，快快去记录下您宝宝的生活记录吧！", Toast.LENGTH_LONG).show();
         } else {
-            field = cursor.getString(cursor.getColumnIndex("field"));
             photo = (GridView) findViewById(R.id.share_photo);
-            arrayList = new FileUtils().readFileName("亲子习惯养成/" + field + index_field);
-//            for (int i = 0; i < arrayList.size(); i++)
-//                Log.i("TAG", arrayList.get(i));
+            arrayList = new FileUtils().readFileName("亲子习惯养成/" + fields.get(0) + "/"+times.get(0)+"-"+keys.get(0));
             myAdapter = new MyAdapter(this, arrayList);
             photo.setAdapter(myAdapter);
             photo.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -127,21 +128,10 @@ public class ChooseShareActivity extends Activity {
         spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-                index = i;
-                cursor.moveToPosition(index);
-                field = cursor.getString(cursor.getColumnIndex("field"));
-                cursor.moveToFirst();
-                for (int num = 0; num <= index; num++) {
-                    if (cursor.getString(cursor.getColumnIndex("field")).equals(field))
-                        index_field++;
-                    cursor.moveToNext();
-                }
-                index_field--;
-                arrayList.clear();
-                arrayList = new FileUtils().readFileName("亲子习惯养成/" + field + index_field);
+                index=i;
+                arrayList = new FileUtils().readFileName("亲子习惯养成/" + fields.get(i)+"/"+times.get(i)+"-"+keys.get(i));
                 myAdapter.array = arrayList;
                 myAdapter.notifyDataSetChanged();
-                index_field = 0;
             }
 
             @Override

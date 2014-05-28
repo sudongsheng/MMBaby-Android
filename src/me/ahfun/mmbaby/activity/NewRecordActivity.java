@@ -47,6 +47,7 @@ public class NewRecordActivity extends Activity {
     private LinearLayout linearLayout;
 
     private Record record;
+    private String time;
 
     private DatabaseHelper dbHelper;
     private SQLiteDatabase sqLiteDatabase;
@@ -66,7 +67,6 @@ public class NewRecordActivity extends Activity {
 
     private MyAdapter myAdapter;
     private int position_photo;
-    private int position_flag;
 
     private int screenWidth;
 
@@ -91,6 +91,7 @@ public class NewRecordActivity extends Activity {
         record.rating = (int) rating.getRating();
         record.photoNum = 0;
         record.isCheck = AppConstant.FALSE;
+        record.primary_key=1;
 
         setListeners();
 
@@ -103,10 +104,12 @@ public class NewRecordActivity extends Activity {
         position = getIntent().getIntExtra("position", -1);
         dbHelper = new DatabaseHelper(NewRecordActivity.this, "MMBaby");
         sqLiteDatabase = dbHelper.getReadableDatabase();
-        cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
+
         if (position != -1) {
+            cursor = sqLiteDatabase.query("record", null, "field" + "=?", new String[]{getIntent().getStringExtra("Field")}, null, null, "time");
             cursor.moveToPosition(position);
-            record.time = cursor.getString(cursor.getColumnIndex("time"));
+            time=cursor.getString(cursor.getColumnIndex("time"));
+            record.time = time;
             record.title = cursor.getString(cursor.getColumnIndex("title"));
             record.content = cursor.getString(cursor.getColumnIndex("content"));
             record.rating = cursor.getInt(cursor.getColumnIndex("rating"));
@@ -121,10 +124,13 @@ public class NewRecordActivity extends Activity {
             rating.setRating(record.rating);
             linearLayout.setFocusable(true);
             linearLayout.setFocusableInTouchMode(true);
-            position_flag = position;
         } else {
-            position_flag = cursor.getCount();
-            //           Log.i("TAG", "position_flag:" + position_flag);
+            cursor = sqLiteDatabase.query("record", null,null,null,null,null,null);
+            if(cursor.getCount()!=0) {
+                cursor.moveToLast();
+                Log.i("TAG", cursor.getInt(cursor.getColumnIndex("primary_key")) + "");
+                record.primary_key = cursor.getInt(cursor.getColumnIndex("primary_key"))+1;
+            }
         }
 
 //        ViewGroup v = (ViewGroup) findViewById(R.id.new_record_activity);
@@ -193,6 +199,8 @@ public class NewRecordActivity extends Activity {
                     SQLiteDatabase sqLiteDatabase = dbHelper.getReadableDatabase();
 
                     if (position == -1) {
+                        File file= new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/"+record.field+"/temp");
+                        file.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/"+record.field+"/"+record.time+"-"+record.primary_key));
                         sqLiteDatabase.insert("record", null, cv);
                         Toast.makeText(NewRecordActivity.this, "新建记录成功", Toast.LENGTH_LONG).show();
                         money = money + record.rating * rate;
@@ -202,6 +210,10 @@ public class NewRecordActivity extends Activity {
                         SharedPreferencesUtils.setParam(NewRecordActivity.this, record.field + "_integral", integral);
                         SharedPreferencesUtils.setParam(NewRecordActivity.this, record.field + "_grade", grade);
                     } else {
+                        if(!time.equals(record.time)){
+                            File file= new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/"+record.field+"/"+time+"-"+record.primary_key);
+                            file.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/"+record.field+"/"+record.time+"-"+record.primary_key));
+                        }
                         sqLiteDatabase.update("record", cv, "primary_key=?", new String[]{String.valueOf(record.primary_key)});
                         money = money + record.rating * rate - money_old;
                         integral = integral + record.rating * rate - integral_old;
@@ -262,7 +274,12 @@ public class NewRecordActivity extends Activity {
             record.photoNum++;
             ByteArrayOutputStream os = new ByteArrayOutputStream();
             bitmap.compress(Bitmap.CompressFormat.PNG, 100, os);
-            new FileUtils().write2SDFromBitmap("亲子习惯养成/" + record.field + position_flag, position_photo + ".jpg", bitmap);
+            if (position == -1)
+                new FileUtils().write2SDFromBitmap("亲子习惯养成/" + record.field + "/temp/", position_photo + ".jpg", bitmap);
+            else
+                new FileUtils().write2SDFromBitmap("亲子习惯养成/" + record.field + "/" + record.time + "-" + record.primary_key, position_photo + ".jpg", bitmap);
+
+
         }
         myAdapter.count = record.photoNum;
         myAdapter.notifyDataSetChanged();
@@ -332,10 +349,14 @@ public class NewRecordActivity extends Activity {
                                 if (state.equals(Environment.MEDIA_MOUNTED)) {
                                     Intent getImageByCamera = new Intent("android.media.action.IMAGE_CAPTURE");
                                     FileUtils fileUtils = new FileUtils();
-                                    fileUtils.createSDDir("亲子习惯养成/" + record.field + position_flag);
                                     File file = null;
                                     try {
-                                        file = fileUtils.createFileInSDCard("亲子习惯养成/" + record.field + position_flag, i + ".jpg");
+                                        if (position == -1) {
+                                            fileUtils.createSDDir("亲子习惯养成/" + record.field + "/temp");
+                                            file = fileUtils.createFileInSDCard("亲子习惯养成/" + record.field + "/temp/", i + ".jpg");
+                                        } else {
+                                            file = fileUtils.createFileInSDCard("亲子习惯养成/" + record.field + "/" + record.time + "-" + record.primary_key + "/", i + ".jpg");
+                                        }
                                     } catch (Exception e) {
                                     }
                                     Uri imageUri = Uri.fromFile(file);
@@ -364,7 +385,12 @@ public class NewRecordActivity extends Activity {
                     }
                 });
             } else if (i < 6) {
-                final ArrayList<String> arrayList = new FileUtils().readFileName("亲子习惯养成/" + record.field + position_flag);
+                ArrayList<String> arrayList_temp = null;
+                if (position == -1)
+                    arrayList_temp = new FileUtils().readFileName("亲子习惯养成/" + record.field + "/temp/");
+                else
+                    arrayList_temp = new FileUtils().readFileName("亲子习惯养成/" + record.field + "/" + record.time + "-" + record.primary_key);
+                final ArrayList<String> arrayList = arrayList_temp;
                 //解决用户手动删除内存卡的图片出现的异常情况
                 if (arrayList.size() < record.photoNum) {
                     record.photoNum = arrayList.size();
@@ -372,7 +398,12 @@ public class NewRecordActivity extends Activity {
                     myAdapter.notifyDataSetChanged();
                     for (int j = 0; j < arrayList.size(); j++) {
                         File file1 = new File(arrayList.get(j));
-                        file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + position_flag + "/" + j + ".jpg"));
+                        if (position == -1)
+                            file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + "/temp/" + j + ".jpg"));
+                        else
+                            file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + "/" + record.time + "-" + record.primary_key + "/" + j + ".jpg"));
+
+
                     }
                 }
                 Bitmap bitmap = BitmapFactory.decodeFile(arrayList.get(i));
@@ -420,7 +451,10 @@ public class NewRecordActivity extends Activity {
                                         record.photoNum--;
                                         for (int j = i + 1; j < arrayList.size(); j++) {
                                             File file1 = new File(arrayList.get(j));
-                                            file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + position_flag + "/" + (j - 1) + ".jpg"));
+                                            if (position == -1)
+                                                file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + "/temp/" + (j - 1) + ".jpg"));
+                                            else
+                                                file1.renameTo(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/亲子习惯养成/" + record.field + "/" + record.time + "-" + record.primary_key + "/" + (j - 1) + ".jpg"));
                                         }
                                         myAdapter.count--;
                                         myAdapter.notifyDataSetChanged();

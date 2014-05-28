@@ -88,7 +88,7 @@
                     android:layout_width="200dp"
                     android:layout_height="50dp"
                     android:text="开始记录吧"
-                    android:background="@drawable/edit_corner2"/>
+                    android:background="@drawable/selectors_mama_guide_button"/>
         </LinearLayout>
     </LinearLayout>
 </ScrollView>

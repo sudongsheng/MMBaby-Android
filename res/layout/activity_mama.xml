@@ -122,7 +122,8 @@
                 android:gravity="center"
                 android:background="@drawable/edit_corner2"/>
 
-        <ListView android:id="@+id/history_item"
+        <me.ahfun.mmbaby.widget.IndexableListView
+                android:id="@+id/history_item"
                   android:layout_width="fill_parent"
                   android:layout_height="fill_parent"
                   android:divider="@null"
